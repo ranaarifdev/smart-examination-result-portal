@@ -24,7 +24,7 @@
   "type": "commonjs",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/ranaarifdev/smart-examination-result-portal.git"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",

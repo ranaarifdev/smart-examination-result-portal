@@ -175,7 +175,7 @@ The application follows a **3-Tier MVC Architecture**:
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/YOUR_USERNAME/smart-examination-result-portal.git
+git clone https://github.com/ranaarifdev/smart-examination-result-portal.git
 
 # 2. Navigate to project directory
 cd smart-examination-result-portal
