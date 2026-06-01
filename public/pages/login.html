@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Login | FCET – Faculty of Computing & Emerging Technology</title>
+    <meta name="description" content="Sign in to the FCET Smart Examination Portal. Access your student dashboard, results, and academic records.">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<div class="auth-page">
+    <div class="auth-card">
+
+        <!-- Left Panel -->
+        <div class="auth-panel">
+            <div>
+                <div class="auth-panel-logo">
+                    <i class="ph-fill ph-graduation-cap"></i>
+                    <div class="logo-text">
+                        <span class="logo-name">FCET</span>
+                        <span class="logo-sub">Official Portal</span>
+                    </div>
+                </div>
+                <h2>Welcome Back to the Portal</h2>
+                <p>Sign in to access your academic dashboard, view examination results, download certificates, and stay updated with the latest announcements.</p>
+                <ul class="auth-panel-features">
+                    <li><i class="ph-fill ph-check-circle"></i> View Semester Results &amp; GPA</li>
+                    <li><i class="ph-fill ph-check-circle"></i> Download Official Result Cards</li>
+                    <li><i class="ph-fill ph-check-circle"></i> Access Lecture &amp; Course Materials</li>
+                    <li><i class="ph-fill ph-check-circle"></i> Receive Exam &amp; Fee Notifications</li>
+                    <li><i class="ph-fill ph-check-circle"></i> View Attendance & Progress Reports</li>
+                </ul>
+            </div>
+            <div class="auth-panel-bottom">
+                <p><i class="ph ph-lock"></i> Your information is protected with 256-bit encryption.</p>
+                <p style="margin-top:0.4rem;">&copy; 2026 FCET &mdash; All rights reserved.</p>
+            </div>
+        </div>
+
+        <!-- Right: Form Section -->
+        <div class="auth-form-section">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+                <a href="../index.html" style="display:flex; align-items:center; gap:0.4rem; font-size:0.8rem; color:var(--text-muted);">
+                    <i class="ph ph-arrow-left"></i> Back to Home
+                </a>
+                <button id="theme-toggle" class="btn btn-outline btn-sm" style="padding:0.3rem 0.6rem;" aria-label="Toggle dark mode">
+                    <i class="ph ph-moon"></i>
+                </button>
+            </div>
+
+            <div style="margin-bottom:2rem;">
+                <h3 style="font-size:1.5rem; color:var(--primary); margin-bottom:0.25rem;">Sign In</h3>
+                <p style="font-size:0.83rem; color:var(--text-muted);">Select your role and enter your credentials below.</p>
+            </div>
+
+            <!-- Role Tabs -->
+            <div class="auth-tabs">
+                <button class="auth-tab-btn active" id="tab-student" onclick="switchTab('student')">
+                    <i class="ph ph-student"></i> Student
+                </button>
+                <button class="auth-tab-btn" id="tab-teacher" onclick="switchTab('teacher')">
+                    <i class="ph ph-chalkboard-teacher"></i> Teacher
+                </button>
+                <button class="auth-tab-btn" id="tab-admin" onclick="switchTab('admin')">
+                    <i class="ph ph-shield-check"></i> Admin
+                </button>
+            </div>
+
+            <!-- Student Form -->
+            <form id="student-form" class="auth-form active" onsubmit="handleLogin(event,'student')">
+                <div class="form-group">
+                    <label class="form-label">Student ID / Roll Number</label>
+                    <div style="position:relative;">
+                        <input type="text" id="student-id" class="form-control" placeholder="e.g. 3400002312" required style="padding-left:2.5rem;">
+                        <i class="ph ph-identification-card" style="position:absolute;left:0.75rem;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:1.1rem;"></i>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <div style="position:relative;">
+                        <input type="password" id="student-pass" class="form-control" placeholder="Enter your password" required style="padding-left:2.5rem; padding-right:2.5rem;">
+                        <i class="ph ph-lock" style="position:absolute;left:0.75rem;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:1.1rem;"></i>
+                        <button type="button" onclick="togglePass('student-pass',this)" style="position:absolute;right:0.75rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text-muted);">
+                            <i class="ph ph-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem;">
+                    <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;cursor:pointer;color:var(--text-muted);">
+                        <input type="checkbox"> Remember me
+                    </label>
+                    <a href="#" style="font-size:0.82rem; font-weight:600;">Forgot Password?</a>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block btn-lg" id="btn-student">
+                    <i class="ph ph-sign-in"></i> Sign In as Student
+                </button>
+                <p style="text-align:center;margin-top:1rem;font-size:0.82rem;color:var(--text-muted);">
+                    New student? <a href="signup.html" style="font-weight:700;">Create an Account</a>
+                </p>
+                <div style="background:var(--primary-pale);border-radius:var(--radius-sm);padding:0.75rem;margin-top:1rem;font-size:0.78rem;color:var(--text-muted);">
+                    <strong style="color:var(--primary);">Demo:</strong> Roll No: <code>3400002312</code> &nbsp; Pass: <code>student123</code>
+                </div>
+            </form>
+
+            <!-- Teacher Form -->
+            <form id="teacher-form" class="auth-form" onsubmit="handleLogin(event,'teacher')">
+                <div class="form-group">
+                    <label class="form-label">Employee ID / CNIC</label>
+                    <div style="position:relative;">
+                        <input type="text" id="teacher-id" class="form-control" placeholder="e.g. EMP-998" required style="padding-left:2.5rem;">
+                        <i class="ph ph-identification-badge" style="position:absolute;left:0.75rem;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:1.1rem;"></i>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <div style="position:relative;">
+                        <input type="password" id="teacher-pass" class="form-control" placeholder="Enter your password" required style="padding-left:2.5rem; padding-right:2.5rem;">
+                        <i class="ph ph-lock" style="position:absolute;left:0.75rem;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:1.1rem;"></i>
+                        <button type="button" onclick="togglePass('teacher-pass',this)" style="position:absolute;right:0.75rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text-muted);">
+                            <i class="ph ph-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem;">
+                    <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;cursor:pointer;color:var(--text-muted);">
+                        <input type="checkbox"> Remember me
+                    </label>
+                    <a href="#" style="font-size:0.82rem; font-weight:600;">Forgot Password?</a>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block btn-lg" id="btn-teacher">
+                    <i class="ph ph-sign-in"></i> Sign In as Teacher
+                </button>
+                <div style="background:var(--primary-pale);border-radius:var(--radius-sm);padding:0.75rem;margin-top:1rem;font-size:0.78rem;color:var(--text-muted);">
+                    <strong style="color:var(--primary);">Demo:</strong> Employee ID: <code>EMP-998</code> &nbsp; Pass: <code>teacher123</code>
+                </div>
+            </form>
+
+            <!-- Admin Form -->
+            <form id="admin-form" class="auth-form" onsubmit="handleLogin(event,'admin')">
+                <div style="background:rgba(200,16,46,0.07);border:1px solid rgba(200,16,46,0.2);border-radius:var(--radius-sm);padding:0.75rem;margin-bottom:1.25rem;font-size:0.8rem;color:var(--secondary);display:flex;gap:0.5rem;align-items:center;">
+                    <i class="ph ph-warning" style="flex-shrink:0;font-size:1rem;"></i>
+                    Restricted area. Authorized administrators only.
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Admin Email / Username</label>
+                    <div style="position:relative;">
+                        <input type="text" id="admin-id" class="form-control" placeholder="admin@fcet.edu.pk" required style="padding-left:2.5rem;">
+                        <i class="ph ph-shield-check" style="position:absolute;left:0.75rem;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:1.1rem;"></i>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <div style="position:relative;">
+                        <input type="password" id="admin-pass" class="form-control" placeholder="Enter admin password" required style="padding-left:2.5rem; padding-right:2.5rem;">
+                        <i class="ph ph-lock" style="position:absolute;left:0.75rem;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:1.1rem;"></i>
+                        <button type="button" onclick="togglePass('admin-pass',this)" style="position:absolute;right:0.75rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text-muted);">
+                            <i class="ph ph-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-secondary btn-block btn-lg" id="btn-admin" style="margin-top:1rem;">
+                    <i class="ph ph-shield-check"></i> Sign In as Admin
+                </button>
+                <div style="background:var(--primary-pale);border-radius:var(--radius-sm);padding:0.75rem;margin-top:1rem;font-size:0.78rem;color:var(--text-muted);">
+                    <strong style="color:var(--primary);">Demo:</strong> Email: <code>admin@fcet.edu.pk</code> &nbsp; Pass: <code>admin123</code>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="../js/main.js"></script>
+<script>
+    function switchTab(role) {
+        document.querySelectorAll('.auth-tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+        document.getElementById('tab-' + role).classList.add('active');
+        document.getElementById(role + '-form').classList.add('active');
+    }
+
+    function togglePass(id, btn) {
+        const inp = document.getElementById(id);
+        const isPass = inp.type === 'password';
+        inp.type = isPass ? 'text' : 'password';
+        btn.innerHTML = isPass ? '<i class="ph ph-eye-slash"></i>' : '<i class="ph ph-eye"></i>';
+    }
+
+    async function handleLogin(e, role) {
+        e.preventDefault();
+        const btn = document.getElementById('btn-' + role);
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<i class="ph-bold ph-spinner animate-spin"></i> Authenticating...';
+        btn.disabled = true;
+
+        const idEl   = document.getElementById(role + '-id');
+        const passEl = document.getElementById(role + '-pass');
+        const id     = idEl ? idEl.value : '';
+        const password = passEl ? passEl.value : '';
+
+        try {
+            const API_URL = window.location.protocol === 'file:' ? 'http://localhost:3000' : '';
+            const response = await fetch(API_URL + '/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id, password, role })
+            });
+            const data = await response.json();
+
+            if (response.ok) {
+                showToast('Login successful! Redirecting...', 'success');
+                localStorage.setItem('token', data.token);
+                setTimeout(() => {
+                    if (role === 'student') window.location.href = 'student-dashboard.html';
+                    if (role === 'teacher') window.location.href = 'teacher-dashboard.html';
+                    if (role === 'admin')   window.location.href = 'admin-dashboard.html';
+                }, 1200);
+            } else {
+                showToast(data.error || 'Login failed. Check your credentials.', 'error');
+                btn.innerHTML = orig;
+                btn.disabled = false;
+            }
+        } catch (err) {
+            showToast('Server not reachable. Please try again.', 'error');
+            btn.innerHTML = orig;
+            btn.disabled = false;
+        }
+    }
+</script>
+</body>
+</html>
