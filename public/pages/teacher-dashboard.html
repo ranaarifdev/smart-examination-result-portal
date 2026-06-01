@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard | FCET Portal</title>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        body { overflow: hidden; }
+        .db-layout { display: flex; height: 100vh; }
+
+        .db-sidebar {
+            width: 250px;
+            background: linear-gradient(180deg, #0a3161 0%, #0d3f78 100%);
+            display: flex; flex-direction: column; flex-shrink: 0;
+            transition: width 0.25s ease; overflow: hidden;
+        }
+        .db-sidebar.collapsed { width: 68px; }
+        .db-sidebar.collapsed .sidebar-label,
+        .db-sidebar.collapsed .sidebar-section-title { display: none; }
+        .db-sidebar.collapsed .db-nav a { justify-content: center; padding: 0.9rem; }
+
+        .db-sidebar-head {
+            padding: 1.25rem; border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex; align-items: center; gap: 0.75rem;
+        }
+        .s-logo { width: 40px; height: 40px; background: rgba(255,255,255,0.15); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .s-logo i { color: var(--accent); font-size: 1.4rem; }
+        .sidebar-label h4 { color: white; font-size: 0.9rem; margin: 0; white-space: nowrap; }
+        .sidebar-label p  { color: rgba(255,255,255,0.5); font-size: 0.68rem; white-space: nowrap; }
+
+        .db-nav { flex: 1; padding: 0.75rem 0; overflow-y: auto; }
+        .sidebar-section-title { font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.35); padding: 0.75rem 1.25rem 0.3rem; }
+        .db-nav a { display: flex; align-items: center; gap: 0.85rem; padding: 0.7rem 1.25rem; color: rgba(255,255,255,0.72); font-size: 0.85rem; font-weight: 500; transition: all 0.18s; border-left: 3px solid transparent; white-space: nowrap; }
+        .db-nav a i { font-size: 1.15rem; flex-shrink: 0; }
+        .db-nav a:hover { background: rgba(255,255,255,0.1); color: white; border-left-color: rgba(255,255,255,0.4); }
+        .db-nav a.active { background: rgba(255,255,255,0.15); color: white; border-left-color: var(--accent); font-weight: 700; }
+        .db-sidebar-foot { padding: 1rem; border-top: 1px solid rgba(255,255,255,0.1); }
+        .db-sidebar-foot a { display: flex; align-items: center; gap: 0.7rem; color: rgba(255,255,255,0.55); font-size: 0.82rem; padding: 0.5rem 0.25rem; border-radius: var(--radius-sm); transition: all 0.18s; white-space: nowrap; }
+        .db-sidebar-foot a:hover { background: rgba(255,255,255,0.08); color: white; }
+
+        .db-main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+        .db-topbar { background: var(--bg-card); border-bottom: 1px solid var(--border-color); padding: 0 1.5rem; height: 62px; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-shrink: 0; }
+        .db-topbar-left { display: flex; align-items: center; gap: 1rem; }
+        .db-topbar-left h4 { font-size: 1rem; color: var(--primary); }
+        .db-topbar-right { display: flex; align-items: center; gap: 0.75rem; }
+
+        .profile-pill { display: flex; align-items: center; gap: 0.6rem; padding: 0.35rem 0.75rem 0.35rem 0.35rem; border: 1px solid var(--border-color); border-radius: var(--radius-full); cursor: pointer; transition: all 0.18s; background: var(--bg-main); }
+        .profile-pill:hover { border-color: var(--primary); }
+        .avatar { width: 32px; height: 32px; background: #c8102e; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 0.9rem; }
+        .profile-pill p    { font-size: 0.8rem; font-weight: 600; color: var(--text-main); margin: 0; line-height: 1.2; }
+        .profile-pill small{ font-size: 0.68rem; color: var(--text-muted); }
+
+        .db-content { flex: 1; padding: 1.5rem; overflow-y: auto; background: var(--bg-main); }
+        .page-title { margin-bottom: 1.5rem; }
+        .page-title h2 { font-size: 1.3rem; color: var(--primary); margin-bottom: 0.2rem; }
+        .page-title p  { font-size: 0.82rem; color: var(--text-muted); }
+
+        .widgets-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+
+        /* Class Card */
+        .class-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem;
+            border-top: 4px solid var(--primary);
+            box-shadow: var(--shadow-xs);
+            transition: all 0.18s;
+        }
+        .class-card:nth-child(2) { border-top-color: var(--secondary); }
+        .class-card:nth-child(3) { border-top-color: var(--success); }
+        .class-card:nth-child(4) { border-top-color: var(--accent-dark); }
+        .class-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+        .class-card-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.85rem; }
+        .class-code { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--primary); background: var(--primary-pale); padding: 0.2rem 0.5rem; border-radius: var(--radius-xs); }
+        .class-card h4 { font-size: 0.95rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.3rem; }
+        .class-card .class-meta { font-size: 0.75rem; color: var(--text-muted); display: flex; gap: 1rem; margin-bottom: 1rem; }
+        .class-card .class-meta span { display: flex; align-items: center; gap: 0.3rem; }
+
+        /* Students table */
+        .mini-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+        .mini-table th { background: var(--bg-hover); color: var(--text-muted); padding: 0.5rem 0.75rem; text-align: left; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; }
+        .mini-table td { padding: 0.6rem 0.75rem; border-bottom: 1px solid var(--border-color); }
+        .mini-table tr:last-child td { border-bottom: none; }
+        .mini-table tr:hover td { background: var(--bg-hover); }
+
+        @media (max-width: 900px) { .widgets-row { grid-template-columns: 1fr 1fr; } }
+    </style>
+</head>
+<body>
+<div class="db-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="db-sidebar" id="dbSidebar">
+        <div class="db-sidebar-head">
+            <div class="s-logo"><i class="ph-fill ph-chalkboard-teacher"></i></div>
+            <div class="sidebar-label">
+                <h4>FCET Portal</h4>
+                <p>Teacher Dashboard</p>
+            </div>
+        </div>
+        <nav class="db-nav">
+            <div class="sidebar-section-title">Main Menu</div>
+            <a href="teacher-dashboard.html" class="active"><i class="ph ph-house"></i><span class="sidebar-label">Dashboard</span></a>
+            <a href="#"><i class="ph ph-chalkboard"></i><span class="sidebar-label">My Classes</span></a>
+            <a href="#"><i class="ph ph-users"></i><span class="sidebar-label">Students</span></a>
+            <a href="#"><i class="ph ph-clipboard-text"></i><span class="sidebar-label">Attendance</span></a>
+            <a href="#"><i class="ph ph-chart-bar"></i><span class="sidebar-label">Enter Marks</span></a>
+            <div class="sidebar-section-title">Reports</div>
+            <a href="#"><i class="ph ph-file-text"></i><span class="sidebar-label">Result Reports</span></a>
+            <a href="#"><i class="ph ph-calendar"></i><span class="sidebar-label">Exam Schedule</span></a>
+            <a href="#"><i class="ph ph-bell"></i><span class="sidebar-label">Notifications</span></a>
+        </nav>
+        <div class="db-sidebar-foot">
+            <a href="../index.html"><i class="ph ph-arrow-left"></i><span class="sidebar-label">Back to Portal</span></a>
+            <a href="#" onclick="logout()"><i class="ph ph-sign-out"></i><span class="sidebar-label">Logout</span></a>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="db-main">
+        <div class="db-topbar">
+            <div class="db-topbar-left">
+                <button style="background:none;border:none;cursor:pointer;font-size:1.3rem;color:var(--text-muted);" onclick="toggleSidebar()">
+                    <i class="ph ph-list"></i>
+                </button>
+                <h4>Teacher Dashboard</h4>
+            </div>
+            <div class="db-topbar-right">
+                <button id="theme-toggle" class="btn btn-outline btn-sm" style="padding:0.35rem 0.6rem;">
+                    <i class="ph ph-moon"></i>
+                </button>
+                <div class="profile-pill">
+                    <div class="avatar">D</div>
+                    <div>
+                        <p id="teacherName">Dr. Ahmed Raza</p>
+                        <small>Permanent Faculty</small>
+                    </div>
+                    <i class="ph ph-caret-down" style="font-size:0.8rem;color:var(--text-muted);"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="db-content">
+            <div class="page-title">
+                <h2>Welcome, Dr. Ahmed Raza 👨‍🏫</h2>
+                <p>You have <strong>2 assigned classes</strong> this semester. Spring 2026.</p>
+            </div>
+
+            <!-- Stat Widgets -->
+            <div class="widgets-row">
+                <div class="stat-widget">
+                    <div class="stat-widget-icon blue"><i class="ph ph-chalkboard"></i></div>
+                    <div class="stat-widget-info">
+                        <p>Assigned Classes</p>
+                        <h3 id="classCount">2</h3>
+                        <small>Spring 2026</small>
+                    </div>
+                </div>
+                <div class="stat-widget">
+                    <div class="stat-widget-icon green"><i class="ph ph-users"></i></div>
+                    <div class="stat-widget-info">
+                        <p>Total Students</p>
+                        <h3>84</h3>
+                        <small>All classes</small>
+                    </div>
+                </div>
+                <div class="stat-widget">
+                    <div class="stat-widget-icon gold"><i class="ph ph-chart-bar"></i></div>
+                    <div class="stat-widget-info">
+                        <p>Marks Entered</p>
+                        <h3>42</h3>
+                        <small>Pending: 42</small>
+                    </div>
+                </div>
+                <div class="stat-widget">
+                    <div class="stat-widget-icon red"><i class="ph ph-calendar"></i></div>
+                    <div class="stat-widget-info">
+                        <p>Next Exam</p>
+                        <h3>June 15</h3>
+                        <small>Final Term</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Classes Grid -->
+            <div class="section-header" style="margin-bottom:1rem;">
+                <p class="eyebrow">Assigned Courses</p>
+                <h2>My Classes — Spring 2026</h2>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.5rem;" id="classesGrid">
+                <!-- Demo card 1 -->
+                <div class="class-card">
+                    <div class="class-card-head">
+                        <div>
+                            <span class="class-code">CS-301</span>
+                            <h4 style="margin-top:0.5rem;">Web Engineering</h4>
+                        </div>
+                        <span class="badge badge-success">Active</span>
+                    </div>
+                    <div class="class-meta">
+                        <span><i class="ph ph-users"></i> 42 Students</span>
+                        <span><i class="ph ph-book"></i> BSCS Sem 6</span>
+                        <span><i class="ph ph-clock"></i> 3 Cr. Hrs</span>
+                    </div>
+                    <div style="display:flex;gap:0.5rem;">
+                        <button class="btn btn-primary btn-sm" onclick="showToast('Marks entry coming soon!','info')">
+                            <i class="ph ph-pencil"></i> Enter Marks
+                        </button>
+                        <button class="btn btn-outline btn-sm" onclick="showToast('Attendance coming soon!','info')">
+                            <i class="ph ph-clipboard-text"></i> Attendance
+                        </button>
+                    </div>
+                </div>
+                <!-- Demo card 2 -->
+                <div class="class-card">
+                    <div class="class-card-head">
+                        <div>
+                            <span class="class-code" style="background:rgba(200,16,46,0.1);color:var(--secondary);">SE-402</span>
+                            <h4 style="margin-top:0.5rem;">Software Project Management</h4>
+                        </div>
+                        <span class="badge badge-success">Active</span>
+                    </div>
+                    <div class="class-meta">
+                        <span><i class="ph ph-users"></i> 38 Students</span>
+                        <span><i class="ph ph-book"></i> BSSE Sem 8</span>
+                        <span><i class="ph ph-clock"></i> 3 Cr. Hrs</span>
+                    </div>
+                    <div style="display:flex;gap:0.5rem;">
+                        <button class="btn btn-primary btn-sm" onclick="showToast('Marks entry coming soon!','info')">
+                            <i class="ph ph-pencil"></i> Enter Marks
+                        </button>
+                        <button class="btn btn-outline btn-sm" onclick="showToast('Attendance coming soon!','info')">
+                            <i class="ph ph-clipboard-text"></i> Attendance
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Students -->
+            <div class="card">
+                <div class="card-header">
+                    <h4><i class="ph ph-users"></i> Recent Students — Web Engineering (CS-301)</h4>
+                    <span class="badge badge-primary">42 Enrolled</span>
+                </div>
+                <div class="card-body" style="padding:0;">
+                    <div class="table-wrapper">
+                        <table class="mini-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Roll No.</th>
+                                    <th>Student Name</th>
+                                    <th>Program</th>
+                                    <th>Mid Marks</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td><td>3400002312</td><td>Ali Hassan</td><td>BSCS-6</td>
+                                    <td><strong>88</strong>/100</td>
+                                    <td><span class="badge badge-success">Pass</span></td>
+                                    <td><button class="btn btn-outline btn-sm" onclick="showToast('Edit marks feature coming soon!','info')"><i class="ph ph-pencil-simple"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td>2</td><td>3400002313</td><td>Sara Khan</td><td>BSCS-6</td>
+                                    <td><strong>76</strong>/100</td>
+                                    <td><span class="badge badge-success">Pass</span></td>
+                                    <td><button class="btn btn-outline btn-sm" onclick="showToast('Edit marks feature coming soon!','info')"><i class="ph ph-pencil-simple"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td>3</td><td>3400002314</td><td>Usman Tariq</td><td>BSCS-6</td>
+                                    <td><strong>55</strong>/100</td>
+                                    <td><span class="badge badge-danger">Fail</span></td>
+                                    <td><button class="btn btn-outline btn-sm" onclick="showToast('Edit marks feature coming soon!','info')"><i class="ph ph-pencil-simple"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td>4</td><td>3400002315</td><td>Fatima Malik</td><td>BSCS-6</td>
+                                    <td><strong>91</strong>/100</td>
+                                    <td><span class="badge badge-success">Pass</span></td>
+                                    <td><button class="btn btn-outline btn-sm" onclick="showToast('Edit marks feature coming soon!','info')"><i class="ph ph-pencil-simple"></i></button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../js/main.js"></script>
+<script>
+    function toggleSidebar() { document.getElementById('dbSidebar').classList.toggle('collapsed'); }
+    function logout() { localStorage.removeItem('token'); window.location.href = 'login.html'; }
+
+    (async () => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) { window.location.href = 'login.html'; return; }
+            const API_URL = window.location.protocol === 'file:' ? 'http://localhost:3000' : '';
+            const res = await fetch(API_URL + '/api/teacher/classes', { headers: { 'Authorization': 'Bearer ' + token } });
+            if (res.status === 401 || res.status === 403) { window.location.href = 'login.html'; return; }
+            const classes = await res.json();
+            if (classes && classes.length) {
+                document.getElementById('classCount').textContent = classes.length;
+                const grid = document.getElementById('classesGrid');
+                grid.innerHTML = classes.map((c, i) => `
+                    <div class="class-card">
+                        <div class="class-card-head">
+                            <div>
+                                <span class="class-code">${c.subject_code}</span>
+                                <h4 style="margin-top:0.5rem;">${c.subject_name}</h4>
+                            </div>
+                            <span class="badge badge-success">Active</span>
+                        </div>
+                        <div class="class-meta">
+                            <span><i class="ph ph-book"></i> ${c.program} Sem ${c.semester}</span>
+                            <span><i class="ph ph-clock"></i> ${c.credit_hours} Cr. Hrs</span>
+                        </div>
+                        <div style="display:flex;gap:0.5rem;">
+                            <button class="btn btn-primary btn-sm" onclick="showToast('Marks entry coming soon!','info')"><i class="ph ph-pencil"></i> Enter Marks</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        } catch (e) { console.log('Using demo data'); }
+    })();
+</script>
+</body>
+</html>

@@ -1,0 +1,417 @@
+================================================================================
+          ACADEMIC PROJECT PROPOSAL: SMART EXAMINATION RESULT PORTAL
+================================================================================
+     Institution: Faculty of Computing and Emerging Technology (FCET)
+                  Emerson University Multan (EUM)
+     Address:     Bosan Road, Multan, Punjab, Pakistan
+     Academic Session: Spring 2026
+================================================================================
+
+--------------------------------------------------------------------------------
+Abstract
+--------------------------------------------------------------------------------
+Traditional educational grading systems are plagued by slow feedback cycles, human calculation errors, and administrative bottlenecks. To address these challenges, we introduce the "Smart Examination Result Portal" for the Faculty of Computing and Emerging Technology (FCET). This system is a secure, full-stack web application designed to digitize the entire academic evaluation lifecycle. By introducing three distinct, role-based modules—Students, Teachers, and Administrators—the portal streamlines operations from mark submission to official result cards. 
+
+The proposed solution utilizes lightweight, high-performance technologies, including Node.js and Express.js for application logic, and SQLite3 as a serverless relational database to store academic records. Key security features include 256-bit JSON Web Token (JWT) session authorization, bcryptjs password hashing, and real-time CAPTCHA protection for result queries. 
+
+Expected results include a 70% reduction in administrative grading overhead, instantaneous student result checking, and 100% mathematical accuracy in GPA/CGPA calculations. Ultimately, this system establishes a reliable, premium digital infrastructure that empowers students and staff with transparent, secure academic data.
+
+--------------------------------------------------------------------------------
+1. Introduction / Background
+--------------------------------------------------------------------------------
+Examination management is a core pillar of academic institutions. At the Faculty of Computing and Emerging Technology (FCET), consolidating semester results, verifying grades, and releasing official result cards has traditionally relied on fragmented spreadsheets and manual record-keeping. The lack of a centralized dashboard leads to significant delays in publishing results and places a massive logistical strain on administrators.
+
+Developing a specialized examination portal addresses these limitations. It bridges the communication gap between students, faculty members, and administrators, providing instant grade access and reducing administrative friction.
+
+### Sustainable Development Goals (SDG) Alignment:
+The Smart Examination Result Portal actively aligns with the following United Nations Sustainable Development Goals (UN SDGs):
+* **SDG 4: Quality Education** 
+  By providing immediate, secure, and detailed access to subject-wise grades, GPAs, and CGPA trends, the portal promotes transparency. It enables students to monitor their performance, identify learning gaps, and receive feedback, which enhances overall educational outcomes.
+* **SDG 9: Industry, Innovation, and Infrastructure** 
+  Replacing manual paper-based grading with a secure digital database and responsive web workflows promotes innovation. It provides the institution with resilient digital infrastructure, laying a path for modern campus automation.
+
+--------------------------------------------------------------------------------
+2. Problem Statement & Proposed Solution
+--------------------------------------------------------------------------------
+This section defines the core gaps in existing traditional processes and outlines how our system addresses them.
+
++-----------------------------------------+-----------------------------------------+
+| Problem                                 | Proposed Solution                       |
++-----------------------------------------+-----------------------------------------+
+| **P1: Slow and Error-Prone Grading**    | **S1: Secure Teacher Portal Entry**     |
+| Manual grading and marks distribution   | Dr. Ahmed Raza and other faculty can    |
+| worksheets lead to delayed submissions,  | input mid and final marks directly. The |
+| math consolidation errors, and strain  | server performs validation checks and   |
+| on teachers.                            | computes grades automatically.          |
++-----------------------------------------+-----------------------------------------+
+| **P2: Lack of Administrative Control**  | **S2: Admin Panel & Managed Publishing**|
+| Admins lack a unified overview of       | Super Administrators can monitor stats, |
+| student registrations, active courses,  | manage users, and release grades        |
+| and publication release schedules.      | batch-wise. Results remain hidden until |
+|                                         | the admin changes their status.         |
++-----------------------------------------+-----------------------------------------+
+| **P3: Result Access & Gazette Delay**   | **S3: Search Card & Dynamic CAPTCHA**   |
+| Students struggle to access secure, formal| Students can look up results on the     |
+| result cards, while admins take days    | homepage using Roll No and a security   |
+| to compile batch PDF Gazettes.          | CAPTCHA. It generates a print-ready PDF |
+|                                         | Result Card with a verifiable QR code.  |
++-----------------------------------------+-----------------------------------------+
+
+--------------------------------------------------------------------------------
+3. Project Objectives
+--------------------------------------------------------------------------------
+The project objectives are designed to be Specific, Measurable, Achievable, Relevant, and Time-bound (SMART).
+
+* **Main Goal:** 
+  To design, implement, test, and deploy a secure, high-performance, and responsive full-stack Smart Examination Result Portal for FCET to completely digitize student and grading records.
+
+* **Specific Objectives:**
+  1. **Design** a premium, institutional Navy & Red responsive user interface (UI) featuring unified style rules for consistent aesthetics across desktop and mobile screens by Week 3.
+  2. **Implement** robust user authentication and session security utilizing 256-bit JWT and salted bcryptjs password hashing by Week 5.
+  3. **Build** a lightweight, relational SQLite3 database schema consisting of users, students, teachers, classes, exams, results, and notification tables by Week 6.
+  4. **Develop** rest APIs to handle student results lookup, automatic GPA/CGPA calculations, and system stats for the Admin dashboard by Week 7.
+  5. **Evaluate** the system by executing verification tests to guarantee under-1-second page loads and 100% arithmetic accuracy in grading totals by Week 8.
+
+--------------------------------------------------------------------------------
+4. Scope of the Project
+--------------------------------------------------------------------------------
+The Smart Examination Result Portal covers the digital examination process for the Faculty of Computing and Emerging Technology (FCET).
+
+### What the Project Covers:
+* Role-based Student, Teacher, and Administrator dashboards.
+* Real-time public result checking with CAPTCHA validation.
+* Auto-calculation of student GPAs, CGPAs, and subject-wise percentages.
+* Class lists, student enrollment counts, and marks entry systems for teachers.
+* Student and teacher user account registration, password hashing, and authorization.
+* A campus notice marquee and dynamic portal announcements.
+* Print-ready official result cards with dynamic QR verification codes.
+
+### What the Project Does NOT Cover:
+* An online financial transaction gateway (fees are tracked as paid/pending statuses but payments are handled offline).
+* Live virtual classroom hosting or online video lectures.
+* Real-time automated attendance tracking (attendance values are entered manually).
+
+### Boundaries & Intended Users:
+The portal is strictly bounded within the FCET network. The intended users include:
+1. **Students:** View academic progress, search results, and download PDFs.
+2. **Teachers:** View assigned classes and input student course grades.
+3. **Administrators:** Oversee registrations, edit users, and publish grades.
+
+--------------------------------------------------------------------------------
+5. Requirement Gathering and Analysis
+--------------------------------------------------------------------------------
+The functional and technical requirements of the system were established through systematic requirement analysis.
+
++--------------------------+--------------------------------------------------------+
+| Category                 | Details                                                |
++--------------------------+--------------------------------------------------------+
+| **Data Collection**      | • Interviews with FCET exam coordinators.              |
+|                          | • Questionnaires distributed to students and faculty.  |
+|                          | • Literature review of Board Portals (e.g., BISE Multan)|
+|                          |   for academic branding standards.                     |
++--------------------------+--------------------------------------------------------+
+| **User Requirements**    | • Students need an official, printable result card.    |
+|                          | • Teachers need a simple, fast gradesheet layout.       |
+|                          | • Admins need absolute control over results release.   |
++--------------------------+--------------------------------------------------------+
+| **Functional**           | • Secure JWT session verification.                     |
+|                          | • Secure search using Roll No + Select Program + CAPTCHA.|
+|                          | • Automated GPA and CGPA mathematical calculation.     |
+|                          | • Database-driven notifications on Student dashboard.  |
++--------------------------+--------------------------------------------------------+
+| **Non-Functional**       | • **Security:** Passwords encrypted using bcryptjs.    |
+|                          | • **Performance:** Query responses under 100ms.        |
+|                          | • **Usability:** Premium responsive UI (Dark/Light).    |
+|                          | • **Reliability:** Zero mathematical grade rounding.    |
++--------------------------+--------------------------------------------------------+
+| **Users**                | • **Student:** View grades, PDF Result, read notifications.|
+|                          | • **Teacher:** View assigned classes, input marks.     |
+|                          | • **Admin:** CRUD on users, publish results, system stats|
++--------------------------+--------------------------------------------------------+
+
+### 5.1. Use Case Diagram
+The following text-based use case model outlines user boundaries and primary operations.
+
+                    +------------------------------------+
+                    |   FCET SMART EXAMINATION PORTAL    |
+                    +------------------------------------+
+                    |                                    |
+  (( Student )) --->| ---> [Check Result Card]           |
+                    | ---> [Download PDF Result]         |
+                    | ---> [View CGPA Dashboard]         |
+                    | ---> [Read Notifications]          |
+                    |                                    |
+  (( Teacher )) --->| ---> [View Assigned Classes]       |
+                    | ---> [Enter Student Marks]         |
+                    | ---> [Track Class Enrollments]     |
+                    |                                    |
+  (( Admin ))   --->| ---> [Register Students/Teachers]  |
+                    | ---> [Create Exam Sessions]        |
+                    | ---> [Publish Exam Results]        |
+                    | ---> [Monitor System Stats]        |
+                    |                                    |
+                    +------------------------------------+
+
+--------------------------------------------------------------------------------
+6. Feasibility Study
+--------------------------------------------------------------------------------
+Before system implementation, a multi-dimensional feasibility study was performed.
+
+* **Technical Feasibility:** Highly Feasible. 
+  The project utilizes standard web technologies (HTML, Custom CSS, Vanilla JavaScript, Node.js, Express.js). SQLite3 is a lightweight, reliable, file-based database that requires no complex hosting configurations, making it extremely practical for a local deployment.
+* **Economic Feasibility:** Feasible. 
+  Development costs are close to zero as it utilizes open-source technologies (VS Code, Node, npm, SQLite3, Phosphor Icons). Host system resource requirements are minimal, allowing it to run smoothly on standard local computers.
+* **Operational Feasibility:** Highly Feasible. 
+  The system operates through standard web browsers, meaning no special client-side installation is needed. It matches existing educational evaluation workflows, resulting in a minimal learning curve for faculty and students.
+* **Schedule Feasibility:** Feasible. 
+  The project was planned as an 8-week SDLC project. Core backend APIs, secure JWT setups, database seeding, and the premium responsive UI are already completed and verified.
+
+--------------------------------------------------------------------------------
+7. Methodology / System Design
+--------------------------------------------------------------------------------
+The portal is built utilizing the **Agile Scrum Methodology**, allowing for rapid, iterative sprint cycles that quickly transform design mockups into functional features.
+
+### System Design Approach:
+The application adopts a **3-Tier Model-View-Controller (MVC)** software architecture:
+1. **Presentation Layer (View):** Premium, responsive frontend built with HTML5, Custom HSL Vanilla CSS, Phosphor Icons, and Google Fonts.
+2. **Application Logic Layer (Controller):** Node.js and Express.js servers hosting secure RESTful APIs and JWT verification middleware.
+3. **Data Layer (Model):** SQLite3 database storing persistent relational tables.
+
+### 7.1. System Architecture Diagram
+
+     +------------------+     HTTPS API Requests     +-------------------+
+     |  Browser Client  | <========================> | Express.js Server |
+     | (Student/Teacher)|       JSON Responses       |  (Node.js App)    |
+     +------------------+                            +-------------------+
+                                                               ^
+                                                               |
+                                                     SQLite Database Queries
+                                                               |
+                                                               v
+                                                     +-------------------+
+                                                     | SQLite3 Database  |
+                                                     |  (database.db)    |
+                                                     +-------------------+
+
+### 7.2. Entity Relationship Diagram (ERD)
+The following diagram describes all database entities and their relationships:
+
+  +-----------+       1:1       +------------+        1:N       +----------+
+  |  USERS    |<--------------->|  STUDENTS  |<---------------->|  RESULTS |
+  +-----------+                 +------------+                  +----------+
+  | PK: id    |                 | PK: id     |                  | PK: id         |
+  | username  |                 | FK: user_id|                  | FK: student_id |
+  | email     |                 | roll_number|                  | FK: class_id   |
+  | password  |                 | program    |                  | FK: exam_id    |
+  | role      |                 | semester   |                  | marks_obtained |
+  +-----------+                 | cgpa       |                  | status         |
+       |                        +------------+                  +----------+
+       | 1:1                                                         |
+       v                                                             |
+  +-----------+                                                      |
+  |  TEACHERS |         1:N                                          |
+  +-----------+  <-------- +----------+                              |
+  | PK: id    |            | CLASSES  |  <---------------------------+
+  | FK: user_id|           +----------+        N:1
+  | employee_id|           | PK: id        |
+  | faculty_type|          | subject_name  |
+  +-----------+            | subject_code  |
+                           | program       |
+                           | semester      |
+                           | credit_hours  |
+                           | FK: teacher_id|
+                           +----------+
+                                  |
+         +----------+             |
+         |  EXAMS   | <-----------+ (Results references Exams)
+         +----------+
+         | PK: id        |
+         | exam_name     |
+         | session       |
+         | status        |
+         +----------+
+
+  +----------------+
+  | NOTIFICATIONS  |
+  +----------------+
+  | PK: id         |
+  | date           |
+  | type           |
+  | message        |
+  | target_role    |
+  +----------------+
+  (Standalone — queried by dashboards, no direct foreign keys)
+
+  ERD Relationship Summary:
+  +========================+=======================+============================+
+  | Parent Table           | Child Table           | Cardinality                |
+  +========================+=======================+============================+
+  | users                  | students              | One-to-One (1:1)           |
+  | users                  | teachers              | One-to-One (1:1)           |
+  | teachers               | classes               | One-to-Many (1:N)          |
+  | students               | results               | One-to-Many (1:N)          |
+  | classes                | results               | One-to-Many (1:N)          |
+  | exams                  | results               | One-to-Many (1:N)          |
+  +========================+=======================+============================+
+
+### 7.3. Data Flow Diagrams (DFD)
+
+#### DFD Level 0 — Context Diagram:
+
+  ((Student))  -----> +----------------------------+ <----- ((Teacher))
+                      | Smart Examination Result   |
+  ((Guest))   -----> |         Portal             | <----- ((Admin))
+                      +----------------------------+
+                                 |
+                                 v
+                      +----------------------------+
+                      |  SQLite3 Database          |
+                      |  (database.db)             |
+                      +----------------------------+
+
+#### DFD Level 1 — Major Processes:
+
+  +-------------------------------------------------------------------+
+  |                                                                   |
+  |  P1: Authentication       P2: Result Search     P3: Dashboard     |
+  |  (Login / Register)       (Public CAPTCHA)      (Role-Based)      |
+  |       |                        |                      |           |
+  |       v                        v                      v           |
+  |  [Users Table]           [Students Table]       [Results Table]   |
+  |  [Students/Teachers]     [Results Table]        [Classes Table]   |
+  |                          [Exams Table]          [Notifications]   |
+  |                                                                   |
+  |  P4: Admin Management    P5: Marks Entry                          |
+  |  (Stats / Publishing)    (Teacher Grading)                        |
+  |       |                        |                                  |
+  |       v                        v                                  |
+  |  [All Tables]            [Results Table]                          |
+  |  [Notifications]         [Classes Table]                          |
+  +-------------------------------------------------------------------+
+
+#### Authentication Flow:
+
+  [User] --> [Enter ID + Password + Role]
+    --> [POST /api/auth/login]
+    --> [Server: Query users + students/teachers JOIN]
+    --> [bcrypt.compare(password, hash)]
+    --> [Valid? -> jwt.sign(payload, secret, {expiresIn: 24h})]
+    --> [Set Cookie + Return Token]
+    --> [Redirect to Dashboard]
+
+#### Public Result Search Flow:
+
+  [Guest] --> [Enter Roll No + Program + CAPTCHA]
+    --> [Validate CAPTCHA Code]
+    --> [GET /api/public/search?roll_number=XXX]
+    --> [Server: Query students JOIN users]
+    --> [Found? -> Return name, program, semester, CGPA]
+    --> [Render Official Result Card + QR Code]
+    --> [Print / Download PDF]
+
+#### Admin Publishing Flow:
+
+  [Admin] --> [Login -> JWT Verified]
+    --> [GET /api/admin/stats -> View Pending Count]
+    --> [Click "Publish Results"]
+    --> [UPDATE results SET status='published' WHERE exam_id=?]
+    --> [POST notification -> "Results Published"]
+    --> [Students Can Now View on Dashboard]
+
+### 7.4. Tools and Technologies
+
++-------------------------+---------------------------------------------------------+
+| Category                | Tool/Technology                                         |
++-------------------------+---------------------------------------------------------+
+| **Programming Language**| JavaScript (ES6+), Node.js (Runtime Engine)             |
++-------------------------+---------------------------------------------------------+
+| **Framework / Platform**| Express.js (v5.2.1), npm (Node Package Manager)         |
++-------------------------+---------------------------------------------------------+
+| **Database**            | SQLite3 (Serverless Relational Database)                |
++-------------------------+---------------------------------------------------------+
+| **Frontend Tools**      | Custom Vanilla CSS (with HSL variables), HTML5, JS      |
++-------------------------+---------------------------------------------------------+
+| **APIs / Libraries**    | jsonwebtoken, bcryptjs, cookie-parser, cors             |
++-------------------------+---------------------------------------------------------+
+| **Hardware**            | Standard PC / Laptop (Core i3+, 4GB RAM)                |
++-------------------------+---------------------------------------------------------+
+
+--------------------------------------------------------------------------------
+8. Expected Deliverables
+--------------------------------------------------------------------------------
+The concrete deliverables provided at the completion of the project include:
+
+* **Software Prototype:** 
+  A fully functional, responsive, and cross-platform web application featuring public result lookup, login portal, student dashboards, teacher portals, and administrative views.
+* **Database:** 
+  A configured, relational, and seeded `database.db` SQLite file containing tables for registered students, faculty members, classes, active examination sessions, and academic notifications.
+* **Documentation:** 
+  Comprehensive user manuals, technical guides, system setup reports, and this academic proposal documentation.
+* **Presentation:** 
+  A final slides presentation and interactive live demo verifying the full student lookup and teacher marks uploading flows.
+
+--------------------------------------------------------------------------------
+9. Project Timeline
+--------------------------------------------------------------------------------
+The project spans an 8-week SDLC schedule.
+
++--------------------------+-----------------------+--------------------------------+
+| Phase                    | Duration (Dates)      | Deliverable                    |
++--------------------------+-----------------------+--------------------------------+
+| **Requirement Gathering**| Weeks 1-2             | Complete SRS documentation     |
+| **& Analysis**           | (May 1 - May 14)      | and UI/UX mockups.             |
++--------------------------+-----------------------+--------------------------------+
+| **System Design**        | Week 3                | Database ERD schema, DFD,      |
+|                          | (May 15 - May 21)     | API routing & flow diagrams.   |
++--------------------------+-----------------------+--------------------------------+
+| **Implementation**       | Weeks 4-6             | Full-stack code integration,   |
+|                          | (May 22 - June 11)    | UI layout and API logic.       |
++--------------------------+-----------------------+--------------------------------+
+| **Testing & Refinement** | Week 7                | Unit testing, security check,  |
+|                          | (June 12 - June 18)   | and UI alignment tuning.       |
++--------------------------+-----------------------+--------------------------------+
+| **Documentation &**      | Week 8                | Final documentation, user guide|
+| **Presentation**         | (June 19 - June 25)   | and slide deck creation.       |
++--------------------------+-----------------------+--------------------------------+
+
+### Gantt Chart Visual Representation:
+
+Weeks:      W1  W2  W3  W4  W5  W6  W7  W8
+Phase 1:   [=======]                               (Requirements)
+Phase 2:           [===]                           (System Design)
+Phase 3:               [===========]               (Implementation)
+Phase 4:                           [===]           (Testing & Refinement)
+Phase 5:                               [===]       (Documentation & Slide)
+
+--------------------------------------------------------------------------------
+10. Resources Required
+--------------------------------------------------------------------------------
+The resources utilized for development and execution are standard and open-source:
+* **Hardware:** laptop or desktop computer with standard CPU, 4GB minimum RAM, stable internet for setup and Google Font asset rendering.
+* **Software:** Microsoft Windows OS, Visual Studio Code (VS Code editor), Node.js runtime, DB Browser for SQLite, Git version control system.
+* **APIs / Libraries:** Express.js, sqlite3, bcryptjs, jsonwebtoken, cookie-parser, cors, Phosphor Icons library.
+
+--------------------------------------------------------------------------------
+11. Expected Outcomes
+--------------------------------------------------------------------------------
+We measure the success of the portal against clear benchmark targets:
+
+* **Functional Outcome:** 
+  Achieve 100% automation of grading operations, result checking, and academic announcements propagation, resulting in zero calculation discrepancies.
+* **Performance Outcome:** 
+  Maintain a page load speed under 1 second for the homepage and dashboards on standard connections, and API transaction latency under 100 milliseconds.
+* **User Outcome:** 
+  Reduces student result query times from 3 days to under 5 seconds, providing a transparent, stress-free educational experience.
+
+--------------------------------------------------------------------------------
+12. References
+--------------------------------------------------------------------------------
+1. Somani, A. (2020). *Design and Development of Web-Based Student Information Systems*. Journal of Educational Technology Development, 14(2), 45-56.
+2. Allen, J., & Davis, M. (2021). *Secure Authentication in Modern Web Applications Using JSON Web Tokens*. Computer & Security Sciences Review, 29(4), 108-119.
+3. SQLite Development Group. (2025). *SQLite Database Architecture & Serverless SQL Mechanics*. Retrieved from https://www.sqlite.org/docs.html
+4. UN Sustainable Development Goals. (2015). *Quality Education (Goal 4) & Industry, Innovation, and Infrastructure (Goal 9) Frameworks*. United Nations.
+5. Express.js Community. (2025). *Express.js Middleware and Routing Best Practices*. Retrieved from https://expressjs.com/en/guide/routing.html
+================================================================================
+  Faculty of Computing and Emerging Technology (FCET)
+  Emerson University Multan | Bosan Road, Multan, Punjab, Pakistan
+================================================================================

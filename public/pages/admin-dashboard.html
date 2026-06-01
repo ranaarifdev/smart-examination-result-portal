@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | FCET Portal</title>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        body { overflow: hidden; }
+        .db-layout { display: flex; height: 100vh; }
+
+        .db-sidebar {
+            width: 250px;
+            background: linear-gradient(180deg, #071e3d 0%, #0a2b52 100%);
+            display: flex; flex-direction: column; flex-shrink: 0;
+            transition: width 0.25s ease; overflow: hidden;
+        }
+        .db-sidebar.collapsed { width: 68px; }
+        .db-sidebar.collapsed .sidebar-label,
+        .db-sidebar.collapsed .sidebar-section-title { display: none; }
+        .db-sidebar.collapsed .db-nav a { justify-content: center; padding: 0.9rem; }
+
+        .db-sidebar-head { padding: 1.25rem; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; gap: 0.75rem; }
+        .s-logo { width: 40px; height: 40px; background: rgba(244,169,0,0.2); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .s-logo i { color: var(--accent); font-size: 1.4rem; }
+        .sidebar-label h4 { color: white; font-size: 0.9rem; margin: 0; white-space: nowrap; }
+        .sidebar-label p  { color: rgba(255,255,255,0.45); font-size: 0.68rem; white-space: nowrap; }
+
+        .db-nav { flex: 1; padding: 0.75rem 0; overflow-y: auto; }
+        .sidebar-section-title { font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.3); padding: 0.75rem 1.25rem 0.3rem; }
+        .db-nav a { display: flex; align-items: center; gap: 0.85rem; padding: 0.7rem 1.25rem; color: rgba(255,255,255,0.65); font-size: 0.85rem; font-weight: 500; transition: all 0.18s; border-left: 3px solid transparent; white-space: nowrap; }
+        .db-nav a i { font-size: 1.15rem; flex-shrink: 0; }
+        .db-nav a:hover { background: rgba(255,255,255,0.07); color: white; border-left-color: var(--accent); }
+        .db-nav a.active { background: rgba(244,169,0,0.1); color: var(--accent); border-left-color: var(--accent); font-weight: 700; }
+        .db-sidebar-foot { padding: 1rem; border-top: 1px solid rgba(255,255,255,0.08); }
+        .db-sidebar-foot a { display: flex; align-items: center; gap: 0.7rem; color: rgba(255,255,255,0.45); font-size: 0.82rem; padding: 0.5rem 0.25rem; border-radius: var(--radius-sm); transition: all 0.18s; white-space: nowrap; }
+        .db-sidebar-foot a:hover { background: rgba(255,255,255,0.06); color: white; }
+
+        .db-main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+        .db-topbar { background: var(--bg-card); border-bottom: 2px solid var(--secondary); padding: 0 1.5rem; height: 62px; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-shrink: 0; }
+        .db-topbar-left { display: flex; align-items: center; gap: 1rem; }
+        .db-topbar-left h4 { font-size: 1rem; color: var(--primary); }
+        .db-topbar-right { display: flex; align-items: center; gap: 0.75rem; }
+
+        .profile-pill { display: flex; align-items: center; gap: 0.6rem; padding: 0.35rem 0.75rem 0.35rem 0.35rem; border: 1px solid var(--border-color); border-radius: var(--radius-full); cursor: pointer; background: var(--bg-main); }
+        .avatar { width: 32px; height: 32px; background: linear-gradient(135deg, var(--secondary), #ff6b6b); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 0.9rem; }
+        .profile-pill p    { font-size: 0.8rem; font-weight: 600; color: var(--text-main); margin: 0; line-height: 1.2; }
+        .profile-pill small{ font-size: 0.68rem; color: var(--text-muted); }
+
+        .db-content { flex: 1; padding: 1.5rem; overflow-y: auto; background: var(--bg-main); }
+        .page-title { margin-bottom: 1.5rem; }
+        .page-title h2 { font-size: 1.3rem; color: var(--primary); margin-bottom: 0.2rem; }
+        .page-title p  { font-size: 0.82rem; color: var(--text-muted); }
+
+        .widgets-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+
+        /* Activity Feed */
+        .activity-item { display: flex; gap: 0.85rem; padding: 0.85rem 0; border-bottom: 1px solid var(--border-color); align-items: flex-start; }
+        .activity-item:last-child { border-bottom: none; }
+        .activity-dot-wrap { display: flex; flex-direction: column; align-items: center; gap: 0; }
+        .activity-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+        .activity-line { width: 2px; flex: 1; background: var(--border-color); min-height: 30px; }
+        .activity-content p { font-size: 0.83rem; font-weight: 600; color: var(--text-main); margin-bottom: 0.2rem; }
+        .activity-content small { font-size: 0.72rem; color: var(--text-muted); }
+
+        /* Quick Actions */
+        .action-btn {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 0.6rem; padding: 1.25rem 0.75rem;
+            background: var(--bg-card); border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg); cursor: pointer;
+            transition: all 0.18s; text-align: center;
+            text-decoration: none; color: var(--text-main);
+        }
+        .action-btn:hover { border-color: var(--primary); background: var(--primary-pale); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+        .action-btn i { font-size: 1.8rem; }
+        .action-btn span { font-size: 0.78rem; font-weight: 700; }
+
+        @media (max-width: 900px) { .widgets-row { grid-template-columns: 1fr 1fr; } }
+    </style>
+</head>
+<body>
+<div class="db-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="db-sidebar" id="dbSidebar">
+        <div class="db-sidebar-head">
+            <div class="s-logo"><i class="ph-fill ph-shield-check"></i></div>
+            <div class="sidebar-label">
+                <h4>FCET Admin</h4>
+                <p>Super Administrator</p>
+            </div>
+        </div>
+        <nav class="db-nav">
+            <div class="sidebar-section-title">Overview</div>
+            <a href="admin-dashboard.html" class="active"><i class="ph ph-squares-four"></i><span class="sidebar-label">Dashboard</span></a>
+            <div class="sidebar-section-title">Management</div>
+            <a href="#"><i class="ph ph-student"></i><span class="sidebar-label">Students</span></a>
+            <a href="#"><i class="ph ph-chalkboard-teacher"></i><span class="sidebar-label">Teachers</span></a>
+            <a href="#"><i class="ph ph-chalkboard"></i><span class="sidebar-label">Classes</span></a>
+            <a href="#"><i class="ph ph-exam"></i><span class="sidebar-label">Examinations</span></a>
+            <div class="sidebar-section-title">Results</div>
+            <a href="#"><i class="ph ph-chart-bar"></i><span class="sidebar-label">Publish Results</span></a>
+            <a href="#"><i class="ph ph-file-pdf"></i><span class="sidebar-label">Result Gazettes</span></a>
+            <div class="sidebar-section-title">System</div>
+            <a href="#"><i class="ph ph-bell-ringing"></i><span class="sidebar-label">Notifications</span></a>
+            <a href="#"><i class="ph ph-users-three"></i><span class="sidebar-label">User Accounts</span></a>
+            <a href="#"><i class="ph ph-gear"></i><span class="sidebar-label">Settings</span></a>
+        </nav>
+        <div class="db-sidebar-foot">
+            <a href="../index.html"><i class="ph ph-arrow-left"></i><span class="sidebar-label">Public Portal</span></a>
+            <a href="#" onclick="logout()"><i class="ph ph-sign-out"></i><span class="sidebar-label">Logout</span></a>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="db-main">
+        <div class="db-topbar">
+            <div class="db-topbar-left">
+                <button style="background:none;border:none;cursor:pointer;font-size:1.3rem;color:var(--text-muted);" onclick="toggleSidebar()">
+                    <i class="ph ph-list"></i>
+                </button>
+                <h4>Administration Panel</h4>
+                <span class="badge badge-danger" style="font-size:0.7rem;">Admin Access</span>
+            </div>
+            <div class="db-topbar-right">
+                <button id="theme-toggle" class="btn btn-outline btn-sm" style="padding:0.35rem 0.6rem;">
+                    <i class="ph ph-moon"></i>
+                </button>
+                <div class="profile-pill">
+                    <div class="avatar">A</div>
+                    <div>
+                        <p>Super Admin</p>
+                        <small>admin@fcet.edu.pk</small>
+                    </div>
+                    <i class="ph ph-caret-down" style="font-size:0.8rem;color:var(--text-muted);"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="db-content">
+            <div class="page-title">
+                <h2>System Overview 🛡️</h2>
+                <p>FCET Examination Management System &mdash; Spring 2026 Session</p>
+            </div>
+
+            <!-- Stat Widgets -->
+            <div class="widgets-row">
+                <div class="stat-widget">
+                    <div class="stat-widget-icon blue"><i class="ph ph-student"></i></div>
+                    <div class="stat-widget-info">
+                        <p>Total Students</p>
+                        <h3 id="totalStudents">—</h3>
+                        <small>Registered</small>
+                    </div>
+                </div>
+                <div class="stat-widget">
+                    <div class="stat-widget-icon red"><i class="ph ph-chalkboard-teacher"></i></div>
+                    <div class="stat-widget-info">
+                        <p>Total Teachers</p>
+                        <h3 id="totalTeachers">—</h3>
+                        <small>Active faculty</small>
+                    </div>
+                </div>
+                <div class="stat-widget">
+                    <div class="stat-widget-icon green"><i class="ph ph-chart-bar"></i></div>
+                    <div class="stat-widget-info">
+                        <p>Results Published</p>
+                        <h3 id="resultsPublished">—</h3>
+                        <small>This session</small>
+                    </div>
+                </div>
+                <div class="stat-widget">
+                    <div class="stat-widget-icon gold"><i class="ph ph-chalkboard"></i></div>
+                    <div class="stat-widget-info">
+                        <p>Active Classes</p>
+                        <h3>12</h3>
+                        <small>Spring 2026</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Two-column layout -->
+            <div style="display:grid;grid-template-columns:1fr 320px;gap:1.25rem;margin-bottom:1.25rem;">
+
+                <!-- Quick Actions -->
+                <div>
+                    <div class="section-header" style="margin-bottom:1rem;">
+                        <p class="eyebrow">Admin Tools</p>
+                        <h2>Quick Actions</h2>
+                    </div>
+                    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.85rem;margin-bottom:1.5rem;">
+                        <a class="action-btn" href="#">
+                            <i class="ph ph-user-plus" style="color:var(--primary);"></i>
+                            <span>Add Student</span>
+                        </a>
+                        <a class="action-btn" href="#">
+                            <i class="ph ph-user-gear" style="color:var(--secondary);"></i>
+                            <span>Add Teacher</span>
+                        </a>
+                        <a class="action-btn" href="#">
+                            <i class="ph ph-pencil-simple-line" style="color:var(--success);"></i>
+                            <span>Enter Marks</span>
+                        </a>
+                        <a class="action-btn" href="#">
+                            <i class="ph ph-seal-check" style="color:var(--accent-dark);"></i>
+                            <span>Publish Result</span>
+                        </a>
+                        <a class="action-btn" href="#">
+                            <i class="ph ph-file-pdf" style="color:var(--secondary);"></i>
+                            <span>Generate Gazette</span>
+                        </a>
+                        <a class="action-btn" href="#">
+                            <i class="ph ph-bell-ringing" style="color:var(--primary);"></i>
+                            <span>Send Notice</span>
+                        </a>
+                        <a class="action-btn" href="#">
+                            <i class="ph ph-calendar-plus" style="color:var(--success);"></i>
+                            <span>Add Exam</span>
+                        </a>
+                        <a class="action-btn" href="#">
+                            <i class="ph ph-download-simple" style="color:var(--info);"></i>
+                            <span>Export Data</span>
+                        </a>
+                    </div>
+
+                    <!-- Recent Accounts Table -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h4><i class="ph ph-users"></i> Recently Registered Users</h4>
+                            <a href="#" style="font-size:0.78rem;font-weight:600;color:var(--primary);">View All →</a>
+                        </div>
+                        <div class="card-body" style="padding:0;">
+                            <div class="table-wrapper">
+                                <table class="data-table" style="font-size:0.82rem;">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Role</th>
+                                            <th>Joined</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Ali Hassan</td>
+                                            <td>ali@fcet.edu.pk</td>
+                                            <td><span class="badge badge-primary">Student</span></td>
+                                            <td>May 2026</td>
+                                            <td><span class="badge badge-success">Active</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Dr. Ahmed Raza</td>
+                                            <td>ahmed@fcet.edu.pk</td>
+                                            <td><span class="badge badge-info">Teacher</span></td>
+                                            <td>Jan 2026</td>
+                                            <td><span class="badge badge-success">Active</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Sara Khan</td>
+                                            <td>sara@fcet.edu.pk</td>
+                                            <td><span class="badge badge-primary">Student</span></td>
+                                            <td>May 2026</td>
+                                            <td><span class="badge badge-success">Active</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Activity Feed -->
+                <div class="card" style="height:fit-content;">
+                    <div class="card-header">
+                        <h4><i class="ph ph-activity"></i> Recent Activity</h4>
+                    </div>
+                    <div class="card-body" style="padding:0 1.5rem;">
+                        <div class="activity-item">
+                            <div class="activity-dot-wrap">
+                                <div class="activity-dot" style="background:var(--success);"></div>
+                                <div class="activity-line"></div>
+                            </div>
+                            <div class="activity-content">
+                                <p>Result Published — CS-301 Mid Term</p>
+                                <small>May 15, 2026 at 10:30 AM</small>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-dot-wrap">
+                                <div class="activity-dot" style="background:var(--primary);"></div>
+                                <div class="activity-line"></div>
+                            </div>
+                            <div class="activity-content">
+                                <p>New student registered: Sara Khan</p>
+                                <small>May 14, 2026 at 2:15 PM</small>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-dot-wrap">
+                                <div class="activity-dot" style="background:var(--accent-dark);"></div>
+                                <div class="activity-line"></div>
+                            </div>
+                            <div class="activity-content">
+                                <p>Notification sent — Final datesheet</p>
+                                <small>May 10, 2026 at 9:00 AM</small>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-dot-wrap">
+                                <div class="activity-dot" style="background:var(--secondary);"></div>
+                                <div class="activity-line"></div>
+                            </div>
+                            <div class="activity-content">
+                                <p>Exam created — Spring 2026 Final</p>
+                                <small>May 05, 2026 at 11:00 AM</small>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-dot-wrap">
+                                <div class="activity-dot" style="background:var(--success);"></div>
+                            </div>
+                            <div class="activity-content">
+                                <p>Gazette generated — Fall 2025 Final</p>
+                                <small>Apr 28, 2026 at 3:45 PM</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exam Status -->
+            <div class="card">
+                <div class="card-header">
+                    <h4><i class="ph ph-exam"></i> Examination Status — Spring 2026</h4>
+                    <button class="btn btn-primary btn-sm" onclick="showToast('Add exam coming soon!','info')">
+                        <i class="ph ph-plus"></i> Add Exam
+                    </button>
+                </div>
+                <div class="card-body" style="padding:0;">
+                    <div class="table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Exam Name</th>
+                                    <th>Session</th>
+                                    <th>Status</th>
+                                    <th>Results</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Spring 2026 Mid Term</strong></td>
+                                    <td>Spring 2026</td>
+                                    <td><span class="badge badge-success">Completed</span></td>
+                                    <td><span class="badge badge-success">Published</span></td>
+                                    <td>
+                                        <button class="btn btn-outline btn-sm" onclick="showToast('View results coming soon!','info')"><i class="ph ph-eye"></i> View</button>
+                                        <button class="btn btn-primary btn-sm" onclick="showToast('Gazette coming soon!','info')"><i class="ph ph-file-pdf"></i> Gazette</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Spring 2026 Final Term</strong></td>
+                                    <td>Spring 2026</td>
+                                    <td><span class="badge badge-warning">Scheduled</span></td>
+                                    <td><span class="badge badge-warning">Pending</span></td>
+                                    <td>
+                                        <button class="btn btn-outline btn-sm" onclick="showToast('Manage exam coming soon!','info')"><i class="ph ph-pencil"></i> Manage</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../js/main.js"></script>
+<script>
+    function toggleSidebar() { document.getElementById('dbSidebar').classList.toggle('collapsed'); }
+    function logout() { localStorage.removeItem('token'); window.location.href = 'login.html'; }
+
+    (async () => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) { window.location.href = 'login.html'; return; }
+            const API_URL = window.location.protocol === 'file:' ? 'http://localhost:3000' : '';
+            const res = await fetch(API_URL + '/api/admin/stats', { headers: { 'Authorization': 'Bearer ' + token } });
+            if (res.status === 401 || res.status === 403) { window.location.href = 'login.html'; return; }
+            const data = await res.json();
+            document.getElementById('totalStudents').textContent = data.totalStudents ?? '—';
+            document.getElementById('totalTeachers').textContent = data.totalTeachers ?? '—';
+            document.getElementById('resultsPublished').textContent = data.resultsPublished ?? '—';
+        } catch (e) { console.log('Using demo data'); }
+    })();
+</script>
+</body>
+</html>

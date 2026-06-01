@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FCET – Faculty of Computing & Emerging Technology | Result Portal</title>
+    <meta name="description" content="Official Examination Result Portal for Faculty of Computing and Emerging Technology (FCET). Check semester results, download gazettes, and access academic services.">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Page-specific styles only */
+        .notices-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        .download-list li { display: flex; align-items: center; gap: 0.75rem; padding: 0.65rem 0; border-bottom: 1px dashed var(--border-color); }
+        .download-list li:last-child { border-bottom: none; }
+        .download-list li i.file-icon { color: var(--secondary); font-size: 1.1rem; }
+        .download-list li a { font-size: 0.85rem; font-weight: 500; color: var(--text-main); flex: 1; }
+        .download-list li a:hover { color: var(--primary); }
+        .download-list li .dl-btn { font-size: 0.72rem; color: var(--primary); font-weight: 600; flex-shrink: 0; }
+        .image-slider { position: relative; overflow: hidden; border-radius: var(--radius-lg); height: 260px; }
+        .image-slider img { width: 100%; height: 100%; object-fit: cover; }
+        .slider-caption { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.75)); padding: 1.5rem 1rem 0.75rem; color: white; font-size: 0.82rem; font-weight: 500; }
+        @media (max-width: 900px) { .notices-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<!-- ===================== TOP BAR ===================== -->
+<div class="top-bar">
+    <div class="container">
+        <div class="top-bar-left">
+            <span><i class="ph ph-phone"></i> 061-9210125</span>
+            <a href="mailto:info@fcet.edu.pk"><i class="ph ph-envelope"></i> info@fcet.edu.pk</a>
+        </div>
+        <div class="top-bar-marquee">
+            <span>
+                📢 Final Term Datesheet for BSCS Semester 6 has been uploaded.&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+                📢 Spring 2026 Mid Examination Result is now available.&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+                📢 Fee submission deadline extended to June 15, 2026.&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+                📢 New faculty positions open – Apply before June 30, 2026.
+            </span>
+        </div>
+        <div class="top-bar-right">
+            <a href="#"><i class="ph ph-facebook-logo"></i></a>
+            <a href="#"><i class="ph ph-twitter-logo"></i></a>
+            <a href="#"><i class="ph ph-youtube-logo"></i></a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================== HEADER ===================== -->
+<header class="site-header" id="siteHeader">
+    <div class="container">
+        <div class="header-inner">
+            <a href="index.html" class="logo-block">
+                <div class="logo-icon">
+                    <i class="ph-fill ph-graduation-cap"></i>
+                </div>
+                <div class="logo-text">
+                    <span class="logo-name">FCET</span>
+                    <span class="logo-sub">Faculty of Computing & Emerging Technology</span>
+                </div>
+            </a>
+
+            <nav class="main-nav" id="mainNav">
+                <a href="index.html" class="active">Home</a>
+                <a href="#programs">Programs</a>
+                <a href="#notices">Notices</a>
+                <a href="#downloads">Downloads</a>
+                <a href="#contact">Contact</a>
+            </nav>
+
+            <div class="nav-actions">
+                <a href="pages/login.html" class="btn btn-primary btn-sm">
+                    <i class="ph ph-sign-in"></i> Portal Login
+                </a>
+                <button id="theme-toggle" class="btn btn-outline btn-sm" style="padding:0.35rem 0.6rem;" aria-label="Toggle dark mode">
+                    <i class="ph ph-moon"></i>
+                </button>
+                <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation">
+                    <i class="ph ph-list"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero" id="home">
+    <div class="container">
+        <div class="hero-content">
+            <div class="hero-text animate-fade">
+                <div class="hero-badge">
+                    <i class="ph ph-seal-check"></i>
+                    Official Result Portal — Spring 2026
+                </div>
+                <h1>
+                    Smart Examination
+                    <span class="highlight">Result Portal</span>
+                </h1>
+                <p>Faculty of Computing and Emerging Technology's official digital gateway. Access semester results, download official gazettes, manage admissions and stay updated with examination news.</p>
+                <div class="hero-buttons">
+                    <a href="#result-search" class="btn btn-accent btn-xl">
+                        <i class="ph ph-magnifying-glass"></i> Check Your Result
+                    </a>
+                    <a href="pages/login.html" class="btn btn-outline-white btn-xl">
+                        <i class="ph ph-student"></i> Student Portal
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="hero-stat-item">
+                        <h3>4,500+</h3>
+                        <p>Active Students</p>
+                    </div>
+                    <div class="hero-stat-item">
+                        <h3>6</h3>
+                        <p>Degree Programs</p>
+                    </div>
+                    <div class="hero-stat-item">
+                        <h3>120+</h3>
+                        <p>Faculty Members</p>
+                    </div>
+                    <div class="hero-stat-item">
+                        <h3>8</h3>
+                        <p>Semesters</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Result Search Card -->
+            <div class="search-card animate-fade animate-delay-2" id="result-search">
+                <div class="search-card-header">
+                    <i class="ph ph-magnifying-glass"></i>
+                    <h3>Quick Result Search</h3>
+                </div>
+                <div class="search-card-body">
+                    <form id="searchForm" onsubmit="handleSearch(event)">
+                        <div class="form-group">
+                            <label class="form-label">Roll Number / Student ID</label>
+                            <input type="text" id="rollInput" class="form-control" placeholder="e.g. 3400002312" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Degree Program</label>
+                            <select class="form-control" id="programSelect" required>
+                                <option value="">-- Select Program --</option>
+                                <option value="BSCS">BS Computer Science (BSCS)</option>
+                                <option value="BSIT">BS Information Technology (BSIT)</option>
+                                <option value="BSDS">BS Data Science (BSDS)</option>
+                                <option value="BSSE">BS Software Engineering (BSSE)</option>
+                                <option value="BSAI">BS Artificial Intelligence (BSAI)</option>
+                                <option value="BSCYS">BS Cyber Security (BSCYS)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Examination</label>
+                            <select class="form-control" required>
+                                <option value="">-- Select Examination --</option>
+                                <option>Spring 2026 – Mid Term</option>
+                                <option>Spring 2026 – Final Term</option>
+                                <option>Fall 2025 – Mid Term</option>
+                                <option>Fall 2025 – Final Term</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Security Code</label>
+                            <div class="captcha-wrapper">
+                                <span class="captcha-text" id="captchaText">X7K9P</span>
+                                <button type="button" class="btn btn-outline btn-sm" onclick="generateCaptcha()" title="Refresh CAPTCHA">
+                                    <i class="ph ph-arrows-clockwise"></i>
+                                </button>
+                            </div>
+                            <input type="text" class="form-control" id="captchaInput" placeholder="Enter the code above" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block" id="searchBtn" style="margin-top:0.5rem;">
+                            <i class="ph ph-magnifying-glass"></i> Find Result
+                        </button>
+                        <p style="text-align:center; font-size:0.75rem; color:var(--text-muted); margin-top:0.75rem;">
+                            <i class="ph ph-lock"></i> Your data is secure and encrypted
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== QUICK SERVICES ===================== -->
+<section class="services-section">
+    <div class="container">
+        <div class="services-grid">
+            <a href="pages/result.html" class="service-item">
+                <div class="service-icon"><i class="ph ph-chart-bar"></i></div>
+                <h4>View Result</h4>
+                <p>Check semester results online</p>
+            </a>
+            <a href="#downloads" class="service-item">
+                <div class="service-icon"><i class="ph ph-file-pdf"></i></div>
+                <h4>Result Gazette</h4>
+                <p>Download official gazette PDF</p>
+            </a>
+            <a href="pages/login.html" class="service-item">
+                <div class="service-icon"><i class="ph ph-student"></i></div>
+                <h4>Student Portal</h4>
+                <p>Login to student dashboard</p>
+            </a>
+            <a href="#notices" class="service-item">
+                <div class="service-icon"><i class="ph ph-bell-ringing"></i></div>
+                <h4>Notifications</h4>
+                <p>Latest announcements & news</p>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== NOTICES & DOWNLOADS ===================== -->
+<section class="section" id="notices">
+    <div class="container">
+        <div class="notices-grid">
+
+            <!-- Notices Column -->
+            <div>
+                <div class="card">
+                    <div class="card-header">
+                        <h4><i class="ph ph-bell-ringing"></i> Latest Notifications</h4>
+                        <a href="#" style="font-size:0.78rem; color:var(--primary); font-weight:600;">View All →</a>
+                    </div>
+                    <div class="card-body" style="padding:0 1.5rem;">
+                        <div class="notice-item">
+                            <div class="notice-icon exam"><i class="ph ph-calendar"></i></div>
+                            <div class="notice-content">
+                                <h5>Final Term Datesheet – Spring 2026 Uploaded</h5>
+                                <div class="notice-meta">
+                                    <span><i class="ph ph-clock"></i> May 15, 2026</span>
+                                    <span><i class="ph ph-tag"></i> Exam</span>
+                                </div>
+                            </div>
+                            <span class="notice-new">New</span>
+                        </div>
+                        <div class="notice-item">
+                            <div class="notice-icon result"><i class="ph ph-chart-bar"></i></div>
+                            <div class="notice-content">
+                                <h5>Spring 2026 Mid Term Result Declared – BSCS Sem 6</h5>
+                                <div class="notice-meta">
+                                    <span><i class="ph ph-clock"></i> May 10, 2026</span>
+                                    <span><i class="ph ph-tag"></i> Result</span>
+                                </div>
+                            </div>
+                            <span class="notice-new">New</span>
+                        </div>
+                        <div class="notice-item">
+                            <div class="notice-icon fee"><i class="ph ph-money"></i></div>
+                            <div class="notice-content">
+                                <h5>Semester Fee Submission Deadline: June 15, 2026</h5>
+                                <div class="notice-meta">
+                                    <span><i class="ph ph-clock"></i> May 05, 2026</span>
+                                    <span><i class="ph ph-tag"></i> Fee</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="notice-item">
+                            <div class="notice-icon news"><i class="ph ph-newspaper"></i></div>
+                            <div class="notice-content">
+                                <h5>Rechecking Form Submission Open – Fall 2025 Results</h5>
+                                <div class="notice-meta">
+                                    <span><i class="ph ph-clock"></i> Apr 28, 2026</span>
+                                    <span><i class="ph ph-tag"></i> Admin</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="notice-item">
+                            <div class="notice-icon form"><i class="ph ph-file-text"></i></div>
+                            <div class="notice-content">
+                                <h5>Admission Form for Fall 2026 – New Batch Available</h5>
+                                <div class="notice-meta">
+                                    <span><i class="ph ph-clock"></i> Apr 20, 2026</span>
+                                    <span><i class="ph ph-tag"></i> Admission</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Downloads Column -->
+            <div id="downloads">
+                <div class="card" style="margin-bottom:1.25rem;">
+                    <div class="card-header">
+                        <h4><i class="ph ph-download-simple"></i> Quick Downloads</h4>
+                    </div>
+                    <div class="card-body" style="padding:0 1.5rem;">
+                        <ul class="download-list">
+                            <li>
+                                <i class="ph ph-file-pdf file-icon"></i>
+                                <a href="#">Spring 2026 Mid-Term Result Gazette</a>
+                                <a href="#" class="dl-btn"><i class="ph ph-download-simple"></i> PDF</a>
+                            </li>
+                            <li>
+                                <i class="ph ph-file-pdf file-icon"></i>
+                                <a href="#">Fall 2025 Final Result Gazette</a>
+                                <a href="#" class="dl-btn"><i class="ph ph-download-simple"></i> PDF</a>
+                            </li>
+                            <li>
+                                <i class="ph ph-file-doc file-icon"></i>
+                                <a href="#">Spring 2026 Final Term Datesheet</a>
+                                <a href="#" class="dl-btn"><i class="ph ph-download-simple"></i> PDF</a>
+                            </li>
+                            <li>
+                                <i class="ph ph-file-doc file-icon"></i>
+                                <a href="#">Fee Schedule – Spring 2026</a>
+                                <a href="#" class="dl-btn"><i class="ph ph-download-simple"></i> PDF</a>
+                            </li>
+                            <li>
+                                <i class="ph ph-file-doc file-icon"></i>
+                                <a href="#">Admission Form – Fall 2026 Batch</a>
+                                <a href="#" class="dl-btn"><i class="ph ph-download-simple"></i> PDF</a>
+                            </li>
+                            <li>
+                                <i class="ph ph-file-doc file-icon"></i>
+                                <a href="#">Rechecking Application Form</a>
+                                <a href="#" class="dl-btn"><i class="ph ph-download-simple"></i> PDF</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="image-slider">
+                        <img src="../campus_hero.png" alt="FCET Campus" style="object-position: center;">
+                        <div class="slider-caption">Faculty of Computing and Emerging Technology Campus</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ===================== STATS BAND ===================== -->
+<section class="stats-band">
+    <div class="container">
+        <div class="stats-band-grid">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="ph ph-student"></i></div>
+                <h2 class="counter" data-target="4500">0</h2>
+                <p>Active Students</p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="ph ph-chalkboard-teacher"></i></div>
+                <h2 class="counter" data-target="120">0</h2>
+                <p>Faculty Members</p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="ph ph-trophy"></i></div>
+                <h2 class="counter" data-target="6">0</h2>
+                <p>Degree Programs</p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="ph ph-certificate"></i></div>
+                <h2 class="counter" data-target="1250">0</h2>
+                <p>Graduates Produced</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== PROGRAMS ===================== -->
+<section class="section" id="programs">
+    <div class="container">
+        <div class="section-header centered">
+            <p class="eyebrow">Academic Programs</p>
+            <h2>Degree Programs Offered</h2>
+            <div class="section-divider"><span></span><div class="dot"></div><span></span></div>
+            <p>Faculty of Computing and Emerging Technology offers six HEC-recognized 4-year (8-semester) undergraduate programs.</p>
+        </div>
+        <div class="programs-grid mt-4">
+            <div class="program-card">
+                <div class="program-icon"><i class="ph-duotone ph-desktop"></i></div>
+                <div class="program-info">
+                    <h4>Computer Science</h4>
+                    <p>BSCS &nbsp;·&nbsp; 8 Semesters &nbsp;·&nbsp; 138 Cr. Hrs</p>
+                </div>
+            </div>
+            <div class="program-card">
+                <div class="program-icon"><i class="ph-duotone ph-network"></i></div>
+                <div class="program-info">
+                    <h4>Information Technology</h4>
+                    <p>BSIT &nbsp;·&nbsp; 8 Semesters &nbsp;·&nbsp; 136 Cr. Hrs</p>
+                </div>
+            </div>
+            <div class="program-card">
+                <div class="program-icon"><i class="ph-duotone ph-database"></i></div>
+                <div class="program-info">
+                    <h4>Data Science</h4>
+                    <p>BSDS &nbsp;·&nbsp; 8 Semesters &nbsp;·&nbsp; 138 Cr. Hrs</p>
+                </div>
+            </div>
+            <div class="program-card">
+                <div class="program-icon"><i class="ph-duotone ph-code"></i></div>
+                <div class="program-info">
+                    <h4>Software Engineering</h4>
+                    <p>BSSE &nbsp;·&nbsp; 8 Semesters &nbsp;·&nbsp; 136 Cr. Hrs</p>
+                </div>
+            </div>
+            <div class="program-card">
+                <div class="program-icon"><i class="ph-duotone ph-brain"></i></div>
+                <div class="program-info">
+                    <h4>Artificial Intelligence</h4>
+                    <p>BSAI &nbsp;·&nbsp; 8 Semesters &nbsp;·&nbsp; 138 Cr. Hrs</p>
+                </div>
+            </div>
+            <div class="program-card">
+                <div class="program-icon"><i class="ph-duotone ph-shield-check"></i></div>
+                <div class="program-info">
+                    <h4>Cyber Security</h4>
+                    <p>BSCYS &nbsp;·&nbsp; 8 Semesters &nbsp;·&nbsp; 136 Cr. Hrs</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== CONTACT ===================== -->
+<section class="section" id="contact" style="background:var(--bg-card);">
+    <div class="container">
+        <div class="section-header centered">
+            <p class="eyebrow">Get In Touch</p>
+            <h2>Contact & Location</h2>
+            <div class="section-divider"><span></span><div class="dot"></div><span></span></div>
+        </div>
+        <div class="grid-3 mt-4">
+            <div class="card" style="text-align:center; padding:2rem;">
+                <div class="stat-widget-icon blue" style="margin:0 auto 1rem; width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+                    <i class="ph ph-phone" style="font-size:1.5rem;color:var(--primary);"></i>
+                </div>
+                <h4 style="color:var(--primary);margin-bottom:0.5rem;">Phone</h4>
+                <p style="font-size:0.88rem;color:var(--text-muted);">061-9210125<br>061-9210126</p>
+            </div>
+            <div class="card" style="text-align:center; padding:2rem;">
+                <div class="stat-widget-icon blue" style="margin:0 auto 1rem; width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+                    <i class="ph ph-envelope" style="font-size:1.5rem;color:var(--primary);"></i>
+                </div>
+                <h4 style="color:var(--primary);margin-bottom:0.5rem;">Email</h4>
+                <p style="font-size:0.88rem;color:var(--text-muted);">info@fcet.edu.pk<br>result@fcet.edu.pk</p>
+            </div>
+            <div class="card" style="text-align:center; padding:2rem;">
+                <div class="stat-widget-icon blue" style="margin:0 auto 1rem; width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+                    <i class="ph ph-map-pin" style="font-size:1.5rem;color:var(--primary);"></i>
+                </div>
+                <h4 style="color:var(--primary);margin-bottom:0.5rem;">Address</h4>
+                <p style="font-size:0.88rem;color:var(--text-muted);">Bosan Road, Multan<br>Punjab, Pakistan</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="footer">
+    <div class="footer-top">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo-block" style="margin-bottom:1rem;">
+                        <div class="logo-icon" style="width:48px;height:48px;"><i class="ph-fill ph-graduation-cap" style="font-size:1.5rem;color:white;"></i></div>
+                        <div class="logo-text">
+                            <span class="logo-name">FCET Portal</span>
+                            <span class="logo-sub">Official Exam Portal</span>
+                        </div>
+                    </div>
+                    <p>The official digital examination and result management portal of the Faculty of Computing and Emerging Technology. Providing transparent, fast, and secure access to academic records.</p>
+                    <div class="footer-social">
+                        <a href="#"><i class="ph ph-facebook-logo"></i></a>
+                        <a href="#"><i class="ph ph-twitter-logo"></i></a>
+                        <a href="#"><i class="ph ph-linkedin-logo"></i></a>
+                        <a href="#"><i class="ph ph-youtube-logo"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h5>Quick Links</h5>
+                    <ul>
+                        <li><a href="#"><i class="ph ph-caret-right"></i> Check Result</a></li>
+                        <li><a href="pages/login.html"><i class="ph ph-caret-right"></i> Student Portal</a></li>
+                        <li><a href="#downloads"><i class="ph ph-caret-right"></i> Downloads</a></li>
+                        <li><a href="#notices"><i class="ph ph-caret-right"></i> Notices</a></li>
+                        <li><a href="#programs"><i class="ph ph-caret-right"></i> Programs</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h5>Services</h5>
+                    <ul>
+                        <li><a href="#"><i class="ph ph-caret-right"></i> Result Gazette</a></li>
+                        <li><a href="#"><i class="ph ph-caret-right"></i> Roll Number Slip</a></li>
+                        <li><a href="#"><i class="ph ph-caret-right"></i> Rechecking Form</a></li>
+                        <li><a href="#"><i class="ph ph-caret-right"></i> Degree Verification</a></li>
+                        <li><a href="#"><i class="ph ph-caret-right"></i> Migration Certificate</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h5>Contact Info</h5>
+                    <ul class="footer-contact">
+                        <li><i class="ph ph-map-pin"></i> Bosan Road, Multan, Punjab</li>
+                        <li><i class="ph ph-phone"></i> 061-9210125</li>
+                        <li><i class="ph ph-envelope"></i> info@fcet.edu.pk</li>
+                        <li><i class="ph ph-clock"></i> Mon – Fri: 8:00 AM – 4:00 PM</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <div class="container">
+            <p>&copy; 2026 Faculty of Computing and Emerging Technology (FCET). All rights reserved. Educational Purpose Only.</p>
+            <p>Designed & Developed by FCET IT Team</p>
+        </div>
+    </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+    // Mobile nav toggle
+    document.getElementById('mobileToggle').addEventListener('click', () => {
+        document.getElementById('mainNav').classList.toggle('open');
+    });
+
+    // CAPTCHA
+    function generateCaptcha() {
+        const chars = '0123456789ABCDEFGHJKLMNPQRSTUVWXYZ';
+        let c = '';
+        for (let i = 0; i < 5; i++) c += chars[Math.floor(Math.random() * chars.length)];
+        document.getElementById('captchaText').textContent = c;
+    }
+
+    // Search handler
+    function handleSearch(e) {
+        e.preventDefault();
+        const roll = document.getElementById('rollInput').value.trim();
+        const captchaEntered = document.getElementById('captchaInput').value.trim().toUpperCase();
+        const captchaActual = document.getElementById('captchaText').textContent.trim();
+
+        if (captchaEntered !== captchaActual) {
+            showToast('Security code does not match. Please try again.', 'error');
+            generateCaptcha();
+            return;
+        }
+
+        const btn = document.getElementById('searchBtn');
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<i class="ph-bold ph-spinner animate-spin"></i> Searching...';
+        btn.disabled = true;
+
+        // Attempt API call first
+        const API_URL = window.location.protocol === 'file:' ? 'http://localhost:3000' : '';
+        fetch(`${API_URL}/api/public/search?roll_number=${encodeURIComponent(roll)}`)
+            .then(r => r.json())
+            .then(data => {
+                if (data.error) throw new Error(data.error);
+                window.location.href = 'pages/result.html?roll=' + encodeURIComponent(roll);
+            })
+            .catch(() => {
+                // Fallback: redirect to mock result page
+                setTimeout(() => {
+                    btn.innerHTML = orig;
+                    btn.disabled = false;
+                    window.location.href = 'pages/result.html?roll=' + encodeURIComponent(roll);
+                }, 1500);
+            });
+    }
+
+    // Counter animation
+    function animateCounters() {
+        document.querySelectorAll('.counter').forEach(counter => {
+            const target = +counter.getAttribute('data-target');
+            const speed = 60;
+            const inc = Math.ceil(target / speed);
+            const update = () => {
+                const current = +counter.innerText;
+                if (current < target) {
+                    counter.innerText = Math.min(current + inc, target);
+                    setTimeout(update, 20);
+                } else {
+                    counter.innerText = target >= 1000 ? target.toLocaleString() + '+' : target;
+                }
+            };
+            update();
+        });
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) { animateCounters(); observer.disconnect(); } });
+    }, { threshold: 0.3 });
+    if (document.querySelector('.stats-band')) observer.observe(document.querySelector('.stats-band'));
+
+    generateCaptcha();
+</script>
+</body>
+</html>

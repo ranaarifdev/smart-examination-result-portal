@@ -1,0 +1,37 @@
+{
+  "name": "smart-examination-result-portal",
+  "version": "1.0.0",
+  "description": "Smart Examination Result Portal — A secure, full-stack campus management and evaluation platform for the Faculty of Computing and Emerging Technology (FCET), Emerson University Multan. Features role-based dashboards for Students, Teachers, and Administrators with JWT authentication, automated GPA/CGPA calculations, and official result card generation.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "examination-portal",
+    "campus-management",
+    "result-portal",
+    "nodejs",
+    "expressjs",
+    "sqlite3",
+    "jwt-authentication",
+    "education",
+    "emerson-university"
+  ],
+  "author": "Faculty of Computing and Emerging Technology (FCET), Emerson University Multan",
+  "license": "MIT",
+  "type": "commonjs",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "sqlite3": "^6.0.1"
+  }
+}
