@@ -168,8 +168,8 @@ function initFakeDatabase() {
                 role: 'student',
                 login_id: '3400002312',
                 password: 'student123',
-                username: 'Ali Hassan',
-                email: 'ali@fcet.edu.pk',
+                username: 'Muhammad Hassan',
+                email: 'hassan.m@fcet.edu.pk',
                 program: 'BSCS',
                 semester: 6,
                 cgpa: 3.84,
@@ -180,11 +180,11 @@ function initFakeDatabase() {
                 role: 'student',
                 login_id: '3400002313',
                 password: 'student123',
-                username: 'Sara Khan',
-                email: 'sara@fcet.edu.pk',
+                username: 'Fatima Khan',
+                email: 'fatima.k@fcet.edu.pk',
                 program: 'BSCS',
                 semester: 6,
-                cgpa: 3.45,
+                cgpa: 3.92,
                 reference_id: '3400002313',
                 student_id: 2
             },
@@ -192,23 +192,67 @@ function initFakeDatabase() {
                 role: 'student',
                 login_id: '3400002314',
                 password: 'student123',
-                username: 'Usman Tariq',
-                email: 'usman@fcet.edu.pk',
+                username: 'Usman Ali',
+                email: 'usman.ali@fcet.edu.pk',
                 program: 'BSCS',
                 semester: 6,
-                cgpa: 2.98,
+                cgpa: 3.56,
                 reference_id: '3400002314',
                 student_id: 3
             },
             {
+                role: 'student',
+                login_id: '3400002315',
+                password: 'student123',
+                username: 'Ayesha Malik',
+                email: 'ayesha.m@fcet.edu.pk',
+                program: 'BSIT',
+                semester: 6,
+                cgpa: 3.78,
+                reference_id: '3400002315',
+                student_id: 4
+            },
+            {
+                role: 'student',
+                login_id: '3400002316',
+                password: 'student123',
+                username: 'Ali Raza',
+                email: 'ali.raza@fcet.edu.pk',
+                program: 'BSSE',
+                semester: 4,
+                cgpa: 3.45,
+                reference_id: '3400002316',
+                student_id: 5
+            },
+            {
                 role: 'teacher',
-                login_id: 'EMP-998',
+                login_id: 'EMP-001',
                 password: 'teacher123',
-                username: 'Dr. Ahmed Raza',
-                email: 'ahmed@fcet.edu.pk',
+                username: 'Dr. Zia Ur Rehman',
+                email: 'zia.rehman@fcet.edu.pk',
                 faculty_type: 'permanent',
-                reference_id: 'EMP-998',
+                reference_id: 'EMP-001',
                 teacher_id: 1
+            },
+            {
+                role: 'teacher',
+                login_id: 'EMP-002',
+                password: 'teacher123',
+                username: 'Dr. Muhammad Rafiq',
+                email: 'rafiq.m@fcet.edu.pk',
+                faculty_type: 'permanent',
+                reference_id: 'EMP-002',
+                teacher_id: 2
+            },
+            {
+                role: 'teacher',
+                login_id: 'EMP-003',
+                password: 'teacher123',
+                username: 'Dr. Hina Khalid',
+                email: 'hina.khalid@fcet.edu.pk',
+                faculty_type: 'permanent',
+                reference_id: 'EMP-003',
+                teacher_id: 3
             },
             {
                 role: 'admin',
@@ -220,36 +264,36 @@ function initFakeDatabase() {
         ],
         classes: [
             {
-                subject_name: 'Web Engineering',
-                subject_code: 'CS-301',
+                subject_name: 'Wireless and Mobile Security',
+                subject_code: 'CS-401',
                 program: 'BSCS',
                 semester: 6,
-                credit_hours: 3,
-                teacher_id: 'EMP-998'
+                credit_hours: 4,
+                teacher_id: 'EMP-001'
             },
             {
-                subject_name: 'Software Project Management',
-                subject_code: 'SE-402',
-                program: 'BSSE',
+                subject_name: 'Virtual System and Services',
+                subject_code: 'IT-403',
+                program: 'BSIT',
                 semester: 8,
-                credit_hours: 3,
-                teacher_id: 'EMP-998'
+                credit_hours: 4,
+                teacher_id: 'EMP-002'
             },
             {
-                subject_name: 'Artificial Intelligence',
+                subject_name: 'Professional Practices',
                 subject_code: 'CS-305',
-                program: 'BSCS',
-                semester: 6,
-                credit_hours: 4,
-                teacher_id: 'EMP-998'
+                program: 'BSSE',
+                semester: 4,
+                credit_hours: 3,
+                teacher_id: 'EMP-003'
             },
             {
-                subject_name: 'Computer Networks',
-                subject_code: 'CS-311',
+                subject_name: 'Data Science Fundamentals',
+                subject_code: 'CS-351',
                 program: 'BSCS',
                 semester: 6,
                 credit_hours: 4,
-                teacher_id: 'EMP-998'
+                teacher_id: 'EMP-001'
             }
         ],
         notifications: [
@@ -259,9 +303,11 @@ function initFakeDatabase() {
             { id: 4, date: '2026-04-28', type: 'Admin', message: 'Gazette generated for Fall 2025 Final.' }
         ],
         results: [
-            { student_id: '3400002312', roll_number: '3400002312', username: 'Ali Hassan', program: 'BSCS', semester: 6, cgpa: 3.84, status: 'published' },
-            { student_id: '3400002313', roll_number: '3400002313', username: 'Sara Khan', program: 'BSCS', semester: 6, cgpa: 3.45, status: 'published' },
-            { student_id: '3400002314', roll_number: '3400002314', username: 'Usman Tariq', program: 'BSCS', semester: 6, cgpa: 2.98, status: 'pending' }
+            { student_id: '3400002312', roll_number: '3400002312', username: 'Muhammad Hassan', program: 'BSCS', semester: 6, cgpa: 3.84, status: 'published' },
+            { student_id: '3400002313', roll_number: '3400002313', username: 'Fatima Khan', program: 'BSCS', semester: 6, cgpa: 3.92, status: 'published' },
+            { student_id: '3400002314', roll_number: '3400002314', username: 'Usman Ali', program: 'BSCS', semester: 6, cgpa: 3.56, status: 'published' },
+            { student_id: '3400002315', roll_number: '3400002315', username: 'Ayesha Malik', program: 'BSIT', semester: 6, cgpa: 3.78, status: 'published' },
+            { student_id: '3400002316', roll_number: '3400002316', username: 'Ali Raza', program: 'BSSE', semester: 4, cgpa: 3.45, status: 'pending' }
         ],
         timetable: [
             { day: 'Monday', program: 'BS Cyber-Security 6th Semester Morning', time: '8:30 - 9:20', lab: '12:00 - 1:00', subject: 'Wireless and Mobile Security', room: 'BOT-B1-F-104' },

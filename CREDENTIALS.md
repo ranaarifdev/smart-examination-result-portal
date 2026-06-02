@@ -12,9 +12,11 @@ Use these credentials to access the **Student Dashboard**:
 
 | Roll Number | Username | Email | Password | Program | Semester |
 |:---|:---|:---|:---|:---|:---|
-| `3400002312` | Ali Hassan | `ali@fcet.edu.pk` | `student123` | BSCS | 6 |
-| `3400002313` | Sara Khan | `sara@fcet.edu.pk` | `student123` | BSCS | 6 |
-| `3400002314` | Usman Tariq | `usman@fcet.edu.pk` | `student123` | BSCS | 6 |
+| `3400002312` | Muhammad Hassan | `hassan.m@fcet.edu.pk` | `student123` | BSCS | 6 |
+| `3400002313` | Fatima Khan | `fatima.k@fcet.edu.pk` | `student123` | BSCS | 6 |
+| `3400002314` | Usman Ali | `usman.ali@fcet.edu.pk` | `student123` | BSCS | 6 |
+| `3400002315` | Ayesha Malik | `ayesha.m@fcet.edu.pk` | `student123` | BSIT | 6 |
+| `3400002316` | Ali Raza | `ali.raza@fcet.edu.pk` | `student123` | BSSE | 4 |
 
 **Dashboard Features:**
 - View semester results and CGPA
@@ -29,9 +31,11 @@ Use these credentials to access the **Student Dashboard**:
 
 Use these credentials to access the **Teacher Dashboard**:
 
-| Employee ID | Name | Email | Password | Faculty Type |
+| Employee ID | Name | Email | Password | Specialization |
 |:---|:---|:---|:---|:---|
-| `EMP-998` | Dr. Ahmed Raza | `ahmed@fcet.edu.pk` | `teacher123` | Permanent |
+| `EMP-001` | Dr. Zia Ur Rehman | `zia.rehman@fcet.edu.pk` | `teacher123` | Wireless & Mobile Security |
+| `EMP-002` | Dr. Muhammad Rafiq | `rafiq.m@fcet.edu.pk` | `teacher123` | Virtual Systems & Services |
+| `EMP-003` | Dr. Hina Khalid | `hina.khalid@fcet.edu.pk` | `teacher123` | Professional Practices |
 
 **Dashboard Features:**
 - View assigned classes (Web Engineering, Software Project Management)
