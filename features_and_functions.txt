@@ -1,0 +1,428 @@
+================================================================================
+  FEATURES AND FUNCTIONS SPECIFICATION: SMART EXAMINATION RESULT PORTAL
+================================================================================
+  Institution: Faculty of Computing and Emerging Technology (FCET)
+               Emerson University Multan (EUM)
+  Address:     Bosan Road, Multan, Punjab, Pakistan
+  Session:     Spring 2026
+================================================================================
+
+--------------------------------------------------------------------------------
+1. PROJECT DESCRIPTION
+--------------------------------------------------------------------------------
+The Smart Examination Result Portal is a specialized, full-stack campus
+management and evaluation platform developed for the Faculty of Computing and
+Emerging Technology (FCET) at Emerson University Multan (EUM). This system
+completely digitizes standard university exam workflows, replacing paper
+marks-sheets and manual calculations with secure, real-time database operations.
+
+Featuring custom dashboards for three distinct user roles — Students, Teachers,
+and Administrators — the portal ensures seamless session security, bot
+protection, automated grading, and high-performance data queries. It is built
+with a 3-Tier MVC architecture using Node.js, Express.js, and SQLite3, and is
+designed to be lightweight, cost-free, and deployable on any standard computer
+without external hosting requirements.
+
+--------------------------------------------------------------------------------
+2. USER ROLES & DYNAMIC FUNCTIONALITIES
+--------------------------------------------------------------------------------
+
+A. PUBLIC GUEST / RESULT LOOKUP FLOW
+================================================================================
+This is the public-facing area on the homepage that allows students to check
+their official semester results instantly without logging into a persistent
+dashboard.
+
+  * Quick Search Card:
+    - Allows searching by entering a Roll Number / Student ID.
+
+  * Drop-Down Filters:
+    - Search by Degree Program (BSCS, BSIT, BSDS, BSSE, BSAI, BSCYS).
+    - Filter by Examination Session (e.g. Spring 2026 - Mid Term).
+
+  * Live CAPTCHA Security:
+    - Uses an active, randomly-generated 5-character alphanumeric verification
+      code to protect the server from automatic query bots.
+
+  * Official Result Card PDF Generation:
+    - Dynamic QR verification code generation containing verification links.
+    - Formally styled official layout matching Pakistani educational board
+      conventions (using dynamic Navy & Red palette).
+    - High-precision calculation display (Midterm 30%, Final term 70%, total,
+      GPA, and subject percentage).
+    - Distinction badges and fail/pass indicators.
+    - Automatic print stylesheet configuration for seamless physical printing.
+
+B. STUDENT PORTAL (Dashboard)
+================================================================================
+Provides students with a private dashboard to track academic milestones.
+
+  * Role-Based Authentication:
+    - Students log in securely using their Roll Number / Email and encrypted
+      password.
+    - JWT token issued on successful login and stored in cookies/headers.
+
+  * Academic Tracker Widgets:
+    - Cumulative GPA (CGPA) with descriptive evaluation ratings
+      (e.g., "Excellent", "Good Standing").
+    - Semester Attendance tracker percentage.
+    - Enrollment details (degree program, current semester).
+    - Financial fee status (all-clear or pending status indicator).
+
+  * Interactive Dynamic Notifications:
+    - Displays exam announcements, datesheet releases, and fee deadlines
+      retrieved live from the notifications database table.
+
+  * Recent Marks Sheet Preview:
+    - An inline tabular layout of current semester grades, GPA per subject,
+      and overall credit counts.
+    - Only shows results with status = 'published'.
+
+C. TEACHER / FACULTY PORTAL (Dashboard)
+================================================================================
+Provides the department's faculty members with tools to control and grade
+assigned classes.
+
+  * Faculty CNIC / Employee Authentication:
+    - Highly secure login using Employee ID or CNIC.
+    - JWT-based session management with 24-hour expiry.
+
+  * Class Roster Overview:
+    - Automatically detects and displays assigned courses via teacher_id
+      foreign key in the classes table.
+    - Shows program, semester, subject code, and credit hours per class.
+
+  * Student Enrollment Lists:
+    - Displays all enrolled students inside assigned courses with real-time
+      class size counters.
+
+  * Direct Marks Entry Panel:
+    - Offers quick marks entry and attendance logging directly connected to
+      the central student roll sheets.
+    - Marks are submitted to the results table with status = 'pending' until
+      admin publishes them.
+
+D. ADMINISTRATOR CONTROL PANEL (Dashboard)
+================================================================================
+The super-user module giving complete security and configuration control to
+department heads.
+
+  * Department Stats Tracker:
+    - Real-time dashboard widgets showing:
+      > Total registered students (COUNT from students table).
+      > Active faculty members (COUNT from teachers table).
+      > Published results (COUNT from results table WHERE status='published').
+
+  * Quick Action Controls:
+    - Register new students (creates user + students table entries).
+    - Register new faculty (creates user + teachers table entries).
+    - Publish pending exam grades (updates results.status from 'pending'
+      to 'published').
+    - Generate batch PDF Gazettes for download.
+    - Post department-wide notices to the notifications table.
+
+  * User Accounts Audit Roster:
+    - A detailed table of recently registered student and teacher profiles
+      with active/pending status flags.
+
+  * Activity & Logs Monitor:
+    - A feed tracking database actions (e.g., result publications, datesheet
+      changes, new registrations).
+
+  * Examination Scheduler:
+    - Administrative forms to schedule new mid/final term exam periods.
+    - Maps exam sessions to semesters in the exams table.
+
+--------------------------------------------------------------------------------
+3. TECHNICAL FEATURES & ARCHITECTURE
+--------------------------------------------------------------------------------
+
+  * 3-Tier MVC Architecture:
+    1. Front-End (View):
+       Vanilla HTML5, premium responsive HSL-CSS styling, Phosphor Icon
+       typography, Google Fonts (Inter).
+    2. Back-End (Controller):
+       High-speed Express.js framework handling routing, CORS reflections,
+       and JWT authentication middleware.
+    3. Database (Model):
+       SQLite3 serverless database engine, writing all persistent data records
+       directly to a local disk file (database.db).
+
+  * Cryptographic Security:
+    - Password Salt Hashing: bcryptjs library is used to hash user credentials
+      with a Work Factor of 10. Passwords are never stored in raw text.
+    - Session Management: Secure, 256-bit JSON Web Tokens (JWT) signed using
+      a server-side secret key, authorizing subsequent API calls via
+      cookie/auth headers. Tokens expire after 24 hours.
+
+  * Protocol-Aware Backend Connectivity:
+    All front-end fetch calls dynamically assess active browser loading
+    mechanisms. If pages are loaded directly from local directories
+    (file:// protocol), scripts automatically forward API transactions to
+    http://localhost:3000, bypassing standard browser offline limitations.
+
+  * RESTful API Endpoints:
+    - POST /api/auth/login       -> User authentication (Student/Teacher/Admin)
+    - POST /api/auth/register    -> New user registration
+    - GET  /api/user/me          -> Get current authenticated user profile
+    - GET  /api/student/dashboard -> Student academic data + notifications
+    - GET  /api/student/results   -> Student published exam results
+    - GET  /api/teacher/classes   -> Teacher assigned classes list
+    - GET  /api/admin/stats       -> Admin dashboard statistics
+    - GET  /api/public/search     -> Public result lookup by roll number
+
+--------------------------------------------------------------------------------
+4. HOW THE SYSTEM RESOLVES TRADITIONAL PROBLEMS
+--------------------------------------------------------------------------------
+
+  +--------------------------------------------+---------------------------------------------+
+  | Traditional Problem                        | How Our System Solves It                    |
+  +--------------------------------------------+---------------------------------------------+
+  | Manual GPA calculation errors and student  | Automated code processes semester GPA and   |
+  | grading disputes due to rounding mistakes. | CGPA scales without manual rounding errors. |
+  +--------------------------------------------+---------------------------------------------+
+  | Unfinished or draft results accidentally   | Results stay in "pending" status and are    |
+  | released to students prematurely.          | invisible until admin clicks "Publish".     |
+  +--------------------------------------------+---------------------------------------------+
+  | High cost of hosting and maintaining a     | SQLite3 writes transactions directly to a   |
+  | production database server (MySQL/Postgres)| secure local file (database.db), removing   |
+  |                                            | any monthly hosting costs entirely.         |
+  +--------------------------------------------+---------------------------------------------+
+  | Poor mobile experience on traditional      | The entire system is engineered using media  |
+  | university portals.                        | fluid layouts and responsive CSS grids.     |
+  +--------------------------------------------+---------------------------------------------+
+  | Unsecured passwords stored in plain text   | bcryptjs hashes all passwords with a salt   |
+  | in legacy systems.                         | factor of 10 before database storage.       |
+  +--------------------------------------------+---------------------------------------------+
+  | Bot/spam attacks on public result search   | Live CAPTCHA verification code required     |
+  | endpoints.                                 | before any result query is processed.       |
+  +--------------------------------------------+---------------------------------------------+
+
+--------------------------------------------------------------------------------
+5. ENTITY RELATIONSHIP DIAGRAM (ERD) — TEXT REPRESENTATION
+--------------------------------------------------------------------------------
+
+  +-----------+       1:1       +------------+        1:N       +----------+
+  |  USERS    |<--------------->|  STUDENTS  |<---------------->|  RESULTS |
+  +-----------+                 +------------+                  +----------+
+  | PK: id    |                 | PK: id     |                  | PK: id   |
+  | username  |                 | FK: user_id|                  | FK: student_id |
+  | email     |                 | roll_number|                  | FK: class_id   |
+  | password  |                 | program    |                  | FK: exam_id    |
+  | role      |                 | semester   |                  | marks_obtained |
+  +-----------+                 | cgpa       |                  | status         |
+       |                        +------------+                  +----------+
+       | 1:1                                                         |
+       v                                                             |
+  +-----------+                                                      |
+  |  TEACHERS |         1:N                                          |
+  +-----------+  <-------- +----------+                              |
+  | PK: id    |            | CLASSES  |  <---------------------------+
+  | FK: user_id|           +----------+        N:1
+  | employee_id|           | PK: id        |
+  | faculty_type|          | subject_name  |
+  +-----------+            | subject_code  |
+                           | program       |
+                           | semester      |
+                           | credit_hours  |
+                           | FK: teacher_id|
+                           +----------+
+                                  |
+         +----------+             |
+         |  EXAMS   | <-----------+ (Results references Exams)
+         +----------+
+         | PK: id        |
+         | exam_name     |
+         | session       |
+         | status        |
+         +----------+
+
+  +----------------+
+  | NOTIFICATIONS  |
+  +----------------+
+  | PK: id         |
+  | date           |
+  | type           |
+  | message        |
+  | target_role    |
+  +----------------+
+  (Standalone — queried by dashboards, no foreign keys)
+
+  Relationship Summary:
+  ╔═══════════════════════╦══════════════════════╦═══════════════════════════╗
+  ║ Parent Table          ║ Child Table          ║ Cardinality               ║
+  ╠═══════════════════════╬══════════════════════╬═══════════════════════════╣
+  ║ users                 ║ students             ║ One-to-One (1:1)          ║
+  ║ users                 ║ teachers             ║ One-to-One (1:1)          ║
+  ║ teachers              ║ classes              ║ One-to-Many (1:N)         ║
+  ║ students              ║ results              ║ One-to-Many (1:N)         ║
+  ║ classes               ║ results              ║ One-to-Many (1:N)         ║
+  ║ exams                 ║ results              ║ One-to-Many (1:N)         ║
+  ╚═══════════════════════╩══════════════════════╩═══════════════════════════╝
+
+--------------------------------------------------------------------------------
+6. SYSTEM FLOW DIAGRAMS
+--------------------------------------------------------------------------------
+
+A. USER AUTHENTICATION FLOW
+================================================================================
+
+  [User Opens Portal]
+         |
+         v
+  [Selects Role: Student / Teacher / Admin]
+         |
+         v
+  [Enters ID + Password]
+         |
+         v
+  [POST /api/auth/login]
+         |
+         v
+  +------ Is User Found? ------+
+  |                             |
+  NO                           YES
+  |                             |
+  v                             v
+  [Return Error:            [bcrypt.compare(password)]
+   "User not found"]              |
+                          +-- Valid? --+
+                          |            |
+                         NO           YES
+                          |            |
+                          v            v
+                   [Return Error: [Sign JWT Token (24hr)]
+                    "Invalid        |
+                     password"]     v
+                              [Set Cookie + Return Token]
+                                    |
+                                    v
+                              [Redirect to Role Dashboard]
+
+B. PUBLIC RESULT SEARCH FLOW
+================================================================================
+
+  [Homepage: Enter Roll Number]
+         |
+         v
+  [Select Program & Exam Session]
+         |
+         v
+  [Enter CAPTCHA Verification Code]
+         |
+         v
+  +--- CAPTCHA Valid? ---+
+  |                      |
+  NO                    YES
+  |                      |
+  v                      v
+  [Show Error:     [GET /api/public/search?roll_number=XXX]
+   "Invalid              |
+    CAPTCHA"]            v
+                  +-- Student Found? --+
+                  |                    |
+                  NO                  YES
+                  |                    |
+                  v                    v
+            [Show Error:         [Display Result Card]
+             "Not Found"]              |
+                                       v
+                                 [Generate PDF with QR Code]
+                                       |
+                                       v
+                                 [Print / Download Option]
+
+C. STUDENT DASHBOARD DATA FLOW
+================================================================================
+
+  [Student Logs In Successfully]
+         |
+         v
+  [JWT Token Stored in Cookie/LocalStorage]
+         |
+         v
+  [GET /api/student/dashboard] ---> [authenticateToken middleware]
+         |                                     |
+         v                              +-- Valid JWT? --+
+  [Fetch Student Profile]              |                |
+  [Fetch Notifications (LIMIT 3)]     NO              YES
+         |                             |                |
+         v                             v                v
+  [Render Dashboard Widgets:]    [401 Error]     [Return Data]
+  - CGPA Card
+  - Attendance Card
+  - Fee Status Card
+  - Notifications List
+         |
+         v
+  [GET /api/student/results] ---> [Return Published Marks]
+         |
+         v
+  [Render Marks Table: Subject, Code, Marks, GPA]
+
+D. ADMIN RESULT PUBLISHING FLOW
+================================================================================
+
+  [Admin Logs In]
+         |
+         v
+  [GET /api/admin/stats] ---> [Display Dashboard Stats]
+         |
+         v
+  [View Pending Results in Queue]
+         |
+         v
+  [Click "Publish Results" Button]
+         |
+         v
+  [UPDATE results SET status='published' WHERE exam_id=?]
+         |
+         v
+  [Results Now Visible to Students via /api/student/results]
+         |
+         v
+  [POST notification: "Results for [Session] have been published"]
+         |
+         v
+  [Notification Appears on Student Dashboard]
+
+E. NEW USER REGISTRATION FLOW
+================================================================================
+
+  [Admin / Self-Registration Form]
+         |
+         v
+  [Enter: Name, Email, Password, Role, Reference ID, Program]
+         |
+         v
+  [POST /api/auth/register]
+         |
+         v
+  [bcrypt.genSalt(10) -> bcrypt.hash(password)]
+         |
+         v
+  [INSERT INTO users (username, email, password, role)]
+         |
+         v
+  +--- Role? ---+
+  |             |
+  Student     Teacher
+  |             |
+  v             v
+  [INSERT INTO    [INSERT INTO
+   students        teachers
+   (user_id,       (user_id,
+    roll_number,    employee_id,
+    program,        faculty_type)
+    semester=1,    ]
+    cgpa=0.0)
+  ]
+         |
+         v
+  [Return: "Registration successful"]
+
+================================================================================
+  END OF FEATURES AND FUNCTIONS SPECIFICATION
+  Faculty of Computing and Emerging Technology (FCET)
+  Emerson University Multan | Bosan Road, Multan
+================================================================================
