@@ -197,6 +197,25 @@ http://localhost:3000
 
 ---
 
+## 🧩 Backend Deployment
+
+This project includes a full Node.js backend with SQLite and authentication APIs.
+
+- The backend entry point is `server.js`.
+- The SQLite schema and seed data are in `db.js`.
+- `Procfile` is included so this app can be deployed on Node-friendly hosts such as Render, Railway, or Heroku.
+
+### Deploy on a Node host
+
+1. Push the repository to GitHub.
+2. Connect the repo to your host provider.
+3. Use `npm install` and `npm start` as the build/run commands.
+4. Ensure the app runs in `NODE_ENV=production` and `PORT` is provided by the host.
+
+> GitHub Pages cannot host the Node backend. Use a server provider for full API and login functionality.
+
+---
+
 ## 📡 API Endpoints
 
 | Method | Endpoint | Auth | Description |
