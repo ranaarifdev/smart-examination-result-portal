@@ -300,8 +300,23 @@
                             </li>
                             <li>
                                 <i class="ph ph-file-doc file-icon"></i>
-                                <a href="#">Spring 2026 Final Term Datesheet</a>
-                                <a href="#" class="dl-btn"><i class="ph ph-download-simple"></i> PDF</a>
+                                <a href="pages/datesheet.html">Complete Final Term Date Sheet 2026 (All 60 Entries)</a>
+                                <a href="pages/datesheet.html" class="dl-btn"><i class="ph ph-download-simple"></i> View</a>
+                            </li>
+                            <li>
+                                <i class="ph ph-file-pdf file-icon"></i>
+                                <a href="pages/attendance-marks.html">6th Semester Sessional Attendance and Paper Marks</a>
+                                <a href="pages/attendance-marks.html" class="dl-btn"><i class="ph ph-download-simple"></i> View</a>
+                            </li>
+                            <li>
+                                <i class="ph ph-file-doc file-icon"></i>
+                                <a href="pages/course-allocation.html">Course Allocation Fall 2025</a>
+                                <a href="pages/course-allocation.html" class="dl-btn"><i class="ph ph-download-simple"></i> View</a>
+                            </li>
+                            <li>
+                                <i class="ph ph-file-pdf file-icon"></i>
+                                <a href="pages/award-sheet.html">Award Sheet ICySec E Fall 2025</a>
+                                <a href="pages/award-sheet.html" class="dl-btn"><i class="ph ph-download-simple"></i> View</a>
                             </li>
                             <li>
                                 <i class="ph ph-file-doc file-icon"></i>
@@ -431,7 +446,7 @@
                     <i class="ph ph-phone" style="font-size:1.5rem;color:var(--primary);"></i>
                 </div>
                 <h4 style="color:var(--primary);margin-bottom:0.5rem;">Phone</h4>
-                <p style="font-size:0.88rem;color:var(--text-muted);">061-9210125<br>061-9210126</p>
+                <p style="font-size:0.88rem;color:var(--text-muted);">03060830941<br>03476111728</p>
             </div>
             <div class="card" style="text-align:center; padding:2rem;">
                 <div class="stat-widget-icon blue" style="margin:0 auto 1rem; width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;">
@@ -445,7 +460,7 @@
                     <i class="ph ph-map-pin" style="font-size:1.5rem;color:var(--primary);"></i>
                 </div>
                 <h4 style="color:var(--primary);margin-bottom:0.5rem;">Address</h4>
-                <p style="font-size:0.88rem;color:var(--text-muted);">Bosan Road, Multan<br>Punjab, Pakistan</p>
+                <p style="font-size:0.88rem;color:var(--text-muted);">Emerson University Multan<br>Bosan Road, Multan<br>Punjab, Pakistan</p>
             </div>
         </div>
     </div>
@@ -548,16 +563,13 @@
         btn.innerHTML = '<i class="ph-bold ph-spinner animate-spin"></i> Searching...';
         btn.disabled = true;
 
-        // Attempt API call first
-        const API_URL = window.location.protocol === 'file:' ? 'http://localhost:3000' : '';
-        fetch(`${API_URL}/api/public/search?roll_number=${encodeURIComponent(roll)}`)
+        apiFetch(`/api/public/search?roll_number=${encodeURIComponent(roll)}`)
             .then(r => r.json())
             .then(data => {
                 if (data.error) throw new Error(data.error);
                 window.location.href = 'pages/result.html?roll=' + encodeURIComponent(roll);
             })
             .catch(() => {
-                // Fallback: redirect to mock result page
                 setTimeout(() => {
                     btn.innerHTML = orig;
                     btn.disabled = false;

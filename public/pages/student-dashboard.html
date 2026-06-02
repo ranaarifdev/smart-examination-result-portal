@@ -294,36 +294,9 @@
                                         <th>GPA</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="studentResultsBody">
                                     <tr>
-                                        <td>CS-301</td><td style="text-align:left;">Web Engineering</td>
-                                        <td>88/100</td>
-                                        <td><span class="grade-badge" style="background:var(--success-bg);color:var(--success);">A</span></td>
-                                        <td>3.8</td>
-                                    </tr>
-                                    <tr>
-                                        <td>CS-305</td><td style="text-align:left;">Artificial Intelligence</td>
-                                        <td>92/100</td>
-                                        <td><span class="grade-badge" style="background:var(--success-bg);color:var(--success);">A+</span></td>
-                                        <td>4.0</td>
-                                    </tr>
-                                    <tr>
-                                        <td>SE-402</td><td style="text-align:left;">Software Project Mgmt</td>
-                                        <td>78/100</td>
-                                        <td><span class="grade-badge" style="background:var(--info-bg);color:var(--info);">B+</span></td>
-                                        <td>3.3</td>
-                                    </tr>
-                                    <tr>
-                                        <td>CS-311</td><td style="text-align:left;">Computer Networks</td>
-                                        <td>85/100</td>
-                                        <td><span class="grade-badge" style="background:var(--success-bg);color:var(--success);">A</span></td>
-                                        <td>3.7</td>
-                                    </tr>
-                                    <tr>
-                                        <td>HU-201</td><td style="text-align:left;">Technical Writing</td>
-                                        <td>75/100</td>
-                                        <td><span class="grade-badge" style="background:var(--info-bg);color:var(--info);">B</span></td>
-                                        <td>3.0</td>
+                                        <td colspan="5" style="text-align:center;color:var(--text-muted);padding:1rem;">Loading results...</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -376,15 +349,15 @@
                     <div style="font-size:0.82rem;font-weight:700;color:var(--text-main);">Download Result</div>
                     <div style="font-size:0.72rem;color:var(--text-muted);">Official PDF card</div>
                 </a>
-                <a href="#" class="card" style="padding:1.25rem;text-align:center;text-decoration:none;display:block;">
+                <a href="datesheet.html" class="card" style="padding:1.25rem;text-align:center;text-decoration:none;display:block;">
                     <i class="ph ph-calendar" style="font-size:2rem;color:var(--primary);display:block;margin-bottom:0.5rem;"></i>
                     <div style="font-size:0.82rem;font-weight:700;color:var(--text-main);">View Datesheet</div>
                     <div style="font-size:0.72rem;color:var(--text-muted);">Final term schedule</div>
                 </a>
-                <a href="#" class="card" style="padding:1.25rem;text-align:center;text-decoration:none;display:block;">
+                <a href="attendance-marks.html" class="card" style="padding:1.25rem;text-align:center;text-decoration:none;display:block;">
                     <i class="ph ph-clipboard-text" style="font-size:2rem;color:var(--success);display:block;margin-bottom:0.5rem;"></i>
                     <div style="font-size:0.82rem;font-weight:700;color:var(--text-main);">Attendance Report</div>
-                    <div style="font-size:0.72rem;color:var(--text-muted);">Subject-wise detail</div>
+                    <div style="font-size:0.72rem;color:var(--text-muted);">Sessional attendance & marks</div>
                 </a>
                 <a href="#" class="card" style="padding:1.25rem;text-align:center;text-decoration:none;display:block;">
                     <i class="ph ph-identification-card" style="font-size:2rem;color:var(--accent-dark);display:block;margin-bottom:0.5rem;"></i>
@@ -413,8 +386,7 @@
             const token = localStorage.getItem('token');
             if (!token) { window.location.href = 'login.html'; return; }
 
-            const API_URL = window.location.protocol === 'file:' ? 'http://localhost:3000' : '';
-            const res = await fetch(API_URL + '/api/student/dashboard', {
+            const res = await apiFetch('/api/student/dashboard', {
                 headers: { 'Authorization': 'Bearer ' + token }
             });
             const data = await res.json();
@@ -443,6 +415,20 @@
                         </div>
                     </div>
                 `).join('');
+            }
+
+            const resultsRes = await apiFetch('/api/student/results', { headers: { 'Authorization': 'Bearer ' + token } });
+            if (resultsRes.status === 200) {
+                const results = await resultsRes.json();
+                document.getElementById('studentResultsBody').innerHTML = results.length ? results.map(r => `
+                    <tr>
+                        <td>${r.roll_number}</td>
+                        <td style="text-align:left;">${r.username}</td>
+                        <td>${r.program}</td>
+                        <td>${r.semester}</td>
+                        <td>${r.cgpa?.toFixed(2) || '0.00'}</td>
+                    </tr>
+                `).join('') : `<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:1rem;">No results found yet.</td></tr>`;
             }
         } catch (e) { console.log('Using demo data'); }
     })();

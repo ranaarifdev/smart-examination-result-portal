@@ -176,7 +176,7 @@
                     <div class="stat-widget-icon gold"><i class="ph ph-chalkboard"></i></div>
                     <div class="stat-widget-info">
                         <p>Active Classes</p>
-                        <h3>12</h3>
+                        <h3 id="activeClasses">—</h3>
                         <small>Spring 2026</small>
                     </div>
                 </div>
@@ -244,28 +244,87 @@
                                             <th>Status</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="recentAccountsBody">
                                         <tr>
-                                            <td>Ali Hassan</td>
-                                            <td>ali@fcet.edu.pk</td>
-                                            <td><span class="badge badge-primary">Student</span></td>
-                                            <td>May 2026</td>
-                                            <td><span class="badge badge-success">Active</span></td>
+                                            <td colspan="5" style="text-align:center;color:var(--text-muted);padding:1rem;">Loading account details...</td>
                                         </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h4><i class="ph ph-list-check"></i> Admin Data Snapshot</h4>
+                        </div>
+                        <div class="card-body" style="padding:1.25rem;">
+                            <div class="table-wrapper" style="margin-bottom:1.25rem;">
+                                <h5>Students</h5>
+                                <table class="data-table" style="font-size:0.82rem;">
+                                    <thead>
                                         <tr>
-                                            <td>Dr. Ahmed Raza</td>
-                                            <td>ahmed@fcet.edu.pk</td>
-                                            <td><span class="badge badge-info">Teacher</span></td>
-                                            <td>Jan 2026</td>
-                                            <td><span class="badge badge-success">Active</span></td>
+                                            <th>Name</th>
+                                            <th>Roll</th>
+                                            <th>Program</th>
+                                            <th>Semester</th>
+                                            <th>CGPA</th>
                                         </tr>
+                                    </thead>
+                                    <tbody id="adminStudentListBody">
+                                        <tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:1rem;">Loading student data...</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="table-wrapper" style="margin-bottom:1.25rem;">
+                                <h5>Teachers</h5>
+                                <table class="data-table" style="font-size:0.82rem;">
+                                    <thead>
                                         <tr>
-                                            <td>Sara Khan</td>
-                                            <td>sara@fcet.edu.pk</td>
-                                            <td><span class="badge badge-primary">Student</span></td>
-                                            <td>May 2026</td>
-                                            <td><span class="badge badge-success">Active</span></td>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Employee ID</th>
+                                            <th>Type</th>
                                         </tr>
+                                    </thead>
+                                    <tbody id="adminTeacherListBody">
+                                        <tr><td colspan="4" style="text-align:center;color:var(--text-muted);padding:1rem;">Loading teacher data...</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="table-wrapper" style="margin-bottom:1.25rem;">
+                                <h5>Timetable Extract (PDF)</h5>
+                                <table class="data-table" style="font-size:0.82rem;">
+                                    <thead>
+                                        <tr>
+                                            <th>Day</th>
+                                            <th>Program</th>
+                                            <th>Time</th>
+                                            <th>Subject</th>
+                                            <th>Room</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="adminTimetableBody">
+                                        <tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:1rem;">Loading timetable data...</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="table-wrapper">
+                                <h5>Course Allocation Snapshot</h5>
+                                <table class="data-table" style="font-size:0.82rem;">
+                                    <thead>
+                                        <tr>
+                                            <th>Course Code</th>
+                                            <th>Course Title</th>
+                                            <th>Program</th>
+                                            <th>Credit Hours</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="adminCourseAllocationBody">
+                                        <tr><td colspan="4" style="text-align:center;color:var(--text-muted);padding:1rem;">Loading course allocation...</td></tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -390,14 +449,67 @@
         try {
             const token = localStorage.getItem('token');
             if (!token) { window.location.href = 'login.html'; return; }
-            const API_URL = window.location.protocol === 'file:' ? 'http://localhost:3000' : '';
-            const res = await fetch(API_URL + '/api/admin/stats', { headers: { 'Authorization': 'Bearer ' + token } });
-            if (res.status === 401 || res.status === 403) { window.location.href = 'login.html'; return; }
-            const data = await res.json();
-            document.getElementById('totalStudents').textContent = data.totalStudents ?? '—';
-            document.getElementById('totalTeachers').textContent = data.totalTeachers ?? '—';
-            document.getElementById('resultsPublished').textContent = data.resultsPublished ?? '—';
-        } catch (e) { console.log('Using demo data'); }
+
+            const statsRes = await apiFetch('/api/admin/stats', { headers: { 'Authorization': 'Bearer ' + token } });
+            if (statsRes.status === 401 || statsRes.status === 403) { window.location.href = 'login.html'; return; }
+            const stats = await statsRes.json();
+            document.getElementById('totalStudents').textContent = stats.totalStudents ?? '—';
+            document.getElementById('totalTeachers').textContent = stats.totalTeachers ?? '—';
+            document.getElementById('resultsPublished').textContent = stats.resultsPublished ?? '—';
+            document.getElementById('activeClasses').textContent = stats.totalClasses ?? '—';
+
+            const detailsRes = await apiFetch('/api/admin/details', { headers: { 'Authorization': 'Bearer ' + token } });
+            const details = await detailsRes.json();
+            if (detailsRes.status === 401 || detailsRes.status === 403) { window.location.href = 'login.html'; return; }
+
+            document.getElementById('recentAccountsBody').innerHTML = details.students.concat(details.teachers).slice(0, 5).map(user => `
+                <tr>
+                    <td>${user.username}</td>
+                    <td>${user.email}</td>
+                    <td><span class="badge badge-${user.role === 'teacher' ? 'info' : user.role === 'student' ? 'primary' : 'secondary'}">${user.role.charAt(0).toUpperCase() + user.role.slice(1)}</span></td>
+                    <td>${user.role === 'teacher' ? 'Jan 2026' : 'May 2026'}</td>
+                    <td><span class="badge badge-success">Active</span></td>
+                </tr>
+            `).join('');
+
+            document.getElementById('adminStudentListBody').innerHTML = details.students.map(s => `
+                <tr>
+                    <td>${s.username}</td>
+                    <td>${s.login_id}</td>
+                    <td>${s.program || 'N/A'}</td>
+                    <td>${s.semester || 'N/A'}</td>
+                    <td>${s.cgpa?.toFixed(2) || '0.00'}</td>
+                </tr>
+            `).join('');
+
+            document.getElementById('adminTeacherListBody').innerHTML = details.teachers.map(t => `
+                <tr>
+                    <td>${t.username}</td>
+                    <td>${t.email}</td>
+                    <td>${t.login_id}</td>
+                    <td>${t.faculty_type || 'N/A'}</td>
+                </tr>
+            `).join('');
+
+            document.getElementById('adminTimetableBody').innerHTML = details.timetable.slice(0, 8).map(item => `
+                <tr>
+                    <td>${item.day}</td>
+                    <td>${item.program}</td>
+                    <td>${item.time}${item.lab ? ' / ' + item.lab : ''}</td>
+                    <td>${item.subject}</td>
+                    <td>${item.room}</td>
+                </tr>
+            `).join('');
+
+            document.getElementById('adminCourseAllocationBody').innerHTML = details.courseAllocation.map(item => `
+                <tr>
+                    <td>${item.course_code}</td>
+                    <td>${item.course_title}</td>
+                    <td>${item.program}</td>
+                    <td>${item.credit_hours}</td>
+                </tr>
+            `).join('');
+        } catch (e) { console.log('Using demo data', e); }
     })();
 </script>
 </body>

@@ -200,10 +200,8 @@
         const password = passEl ? passEl.value : '';
 
         try {
-            const API_URL = window.location.protocol === 'file:' ? 'http://localhost:3000' : '';
-            const response = await fetch(API_URL + '/api/auth/login', {
+            const response = await apiFetch('/api/auth/login', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ id, password, role })
             });
             const data = await response.json();

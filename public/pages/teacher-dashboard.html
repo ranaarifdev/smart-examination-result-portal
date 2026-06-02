@@ -303,8 +303,7 @@
         try {
             const token = localStorage.getItem('token');
             if (!token) { window.location.href = 'login.html'; return; }
-            const API_URL = window.location.protocol === 'file:' ? 'http://localhost:3000' : '';
-            const res = await fetch(API_URL + '/api/teacher/classes', { headers: { 'Authorization': 'Bearer ' + token } });
+            const res = await apiFetch('/api/teacher/classes', { headers: { 'Authorization': 'Bearer ' + token } });
             if (res.status === 401 || res.status === 403) { window.location.href = 'login.html'; return; }
             const classes = await res.json();
             if (classes && classes.length) {

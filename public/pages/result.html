@@ -527,8 +527,7 @@
         if (!roll) return;
 
         try {
-            const API_URL = window.location.protocol === 'file:' ? 'http://localhost:3000' : '';
-            const res = await fetch(API_URL + '/api/public/search?roll_number=' + encodeURIComponent(roll));
+            const res = await apiFetch('/api/public/search?roll_number=' + encodeURIComponent(roll));
             const data = await res.json();
             if (data.username) {
                 document.getElementById('rc-name').textContent = data.username;

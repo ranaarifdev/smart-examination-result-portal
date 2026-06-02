@@ -193,6 +193,8 @@ npm start
 http://localhost:3000
 ```
 
+> **Static Preview:** You can also open `index.html` in the repository root to redirect into the static site at `public/index.html`. This is useful for GitHub Pages or file-based preview.
+
 > **Note:** The database (`database.db`) is auto-created and seeded with sample data on first startup. No manual database setup is required.
 
 ---
@@ -212,7 +214,33 @@ This project includes a full Node.js backend with SQLite and authentication APIs
 3. Use `npm install` and `npm start` as the build/run commands.
 4. Ensure the app runs in `NODE_ENV=production` and `PORT` is provided by the host.
 
-> GitHub Pages cannot host the Node backend. Use a server provider for full API and login functionality.
+> GitHub Pages cannot host the Node backend. For a GitHub Pages deployment, the site runs in static mode using the browser-side fake backend contained in `public/js/main.js`.
+> The `index.html` at the repository root redirects to `public/index.html` so the static portal can still be opened directly from GitHub Pages.
+> The full `server.js` / SQLite backend remains available for local or server deployment, but is not required for the GitHub Pages static preview.
+
+### Deploy on GitHub Pages (Free Static Hosting)
+
+1. Push this repository to GitHub:
+   ```bash
+   git remote add origin https://github.com/yourusername/smart-examination-result-portal.git
+   git branch -M main
+   git push -u origin main
+   ```
+
+2. Go to your repository **Settings** → **Pages**.
+
+3. Under **Build and deployment**, select:
+   - Source: `Deploy from a branch`
+   - Branch: `main` / `/ (root)` directory
+
+4. Save. Your site will be live at:
+   ```
+   https://yourusername.github.io/smart-examination-result-portal/
+   ```
+
+5. The site automatically runs with the fake browser backend (`public/js/main.js`). All data is stored in browser `localStorage`.
+
+**Note:** Data is lost on browser cache clear. For persistent storage, use the Node.js backend on a separate server (Render, Railway, etc.) and point the frontend to it.
 
 ---
 

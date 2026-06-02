@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>6th Semester Sessional Attendance & Paper Marks | FCET Portal</title>
+    <meta name="description" content="6th Semester sessional attendance and paper marks for FCET students. Download or view the official academic records.">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <header class="site-header" id="siteHeader">
+        <div class="container">
+            <div class="header-inner">
+                <a href="../index.html" class="logo-block">
+                    <div class="logo-icon">
+                        <i class="ph-fill ph-graduation-cap"></i>
+                    </div>
+                    <div class="logo-text">
+                        <span class="logo-name">FCET</span>
+                        <span class="logo-sub">Faculty of Computing & Emerging Technology</span>
+                    </div>
+                </a>
+                <nav class="main-nav" id="mainNav">
+                    <a href="../index.html">Home</a>
+                    <a href="../index.html#downloads">Downloads</a>
+                    <a href="../index.html#notices">Notices</a>
+                    <a href="../index.html#contact">Contact</a>
+                </nav>
+                <div class="nav-actions">
+                    <a href="login.html" class="btn btn-primary btn-sm">
+                        <i class="ph ph-sign-in"></i> Portal Login
+                    </a>
+                    <button id="theme-toggle" class="btn btn-outline btn-sm" style="padding:0.35rem 0.6rem;" aria-label="Toggle dark mode">
+                        <i class="ph ph-moon"></i>
+                    </button>
+                    <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation">
+                        <i class="ph ph-list"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="section" style="padding: 4rem 0;">
+        <div class="container">
+            <div class="section-header centered">
+                <p class="eyebrow">Attendance & Marks</p>
+                <h2>6th Semester Sessional Attendance & Paper Marks</h2>
+                <div class="section-divider"><span></span><div class="dot"></div><span></span></div>
+                <p>Download or view the official sessional attendance and paper marks record for the 6th semester.</p>
+            </div>
+
+            <div class="card" style="max-width:920px;margin:0 auto;">
+                <div class="card-body" style="padding:2rem;">
+                    <div style="display:flex;align-items:flex-start;gap:1rem;margin-bottom:1.5rem;">
+                        <span style="font-size:2rem;color:var(--primary);"><i class="ph ph-clipboard"></i></span>
+                        <div>
+                            <h3 style="margin:0 0 0.5rem;">6th Semester Attendance and Marks</h3>
+                            <p style="margin:0;color:var(--text-muted);">This page links to your sessional attendance and paper marks file. Replace the placeholder file below with the actual PDF or XLSX document from your system.</p>
+                        </div>
+                    </div>
+
+                    <div style="display:flex;flex-wrap:wrap;gap:1rem;">
+                        <a href="../downloads/6th-semester-sessional-attendance-paper-marks.html" class="btn btn-primary btn-lg">View Attendance & Marks</a>
+                        <a href="../pages/login.html" class="btn btn-outline btn-lg">Open Portal</a>
+                    </div>
+
+                    <div style="margin-top:2rem; padding:1rem; border:1px solid var(--border-color); border-radius:var(--radius-md); background:var(--bg-muted); color:var(--text-muted);">
+                        <strong>Note:</strong> Place your actual file in <code>public/downloads/</code> and update the filename if needed.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer" style="padding:2rem 0;">
+        <div class="footer-bottom">
+            <div class="container" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:0.75rem;">
+                <p>&copy; 2026 Faculty of Computing and Emerging Technology (FCET). All rights reserved.</p>
+                <p>Educational Purpose Only.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/main.js"></script>
+    <script>
+        document.getElementById('mobileToggle').addEventListener('click', () => {
+            document.getElementById('mainNav').classList.toggle('open');
+        });
+    </script>
+</body>
+</html>
