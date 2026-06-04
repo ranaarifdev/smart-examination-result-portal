@@ -3,9 +3,11 @@ node_modules/
 
 # Database (auto-generated on first run)
 database.db
+*.db
 
 # Environment variables
 .env
+.env.local
 
 # IDE / Editor
 .vscode/
@@ -14,10 +16,16 @@ database.db
 *.swo
 *~
 
+# Temporary extraction/conversion scripts
+extract_*.py
+pdf_extracted_*.txt
+
 # OS generated files
 .DS_Store
 Thumbs.db
 Desktop.ini
+*.log
+*.pid
 
 # Logs
 *.log

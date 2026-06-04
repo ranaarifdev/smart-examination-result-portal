@@ -264,34 +264,82 @@ function initFakeDatabase() {
         ],
         classes: [
             {
-                subject_name: 'Wireless and Mobile Security',
-                subject_code: 'CS-401',
-                program: 'BSCS',
-                semester: 6,
+                subject_name: 'Virtual System and Services',
+                subject_code: 'IT-401',
+                program: 'BSIT',
+                semester: 7,
                 credit_hours: 4,
                 teacher_id: 'EMP-001'
             },
             {
-                subject_name: 'Virtual System and Services',
+                subject_name: 'Advance OOP with Java',
                 subject_code: 'IT-403',
                 program: 'BSIT',
-                semester: 8,
-                credit_hours: 4,
+                semester: 7,
+                credit_hours: 3,
                 teacher_id: 'EMP-002'
             },
             {
-                subject_name: 'Professional Practices',
-                subject_code: 'CS-305',
-                program: 'BSSE',
-                semester: 4,
+                subject_name: 'Telecommunication Systems',
+                subject_code: 'IT-405',
+                program: 'BSIT',
+                semester: 7,
                 credit_hours: 3,
                 teacher_id: 'EMP-003'
             },
             {
-                subject_name: 'Data Science Fundamentals',
-                subject_code: 'CS-351',
-                program: 'BSCS',
+                subject_name: 'Web Technologies',
+                subject_code: 'IT-302',
+                program: 'BSIT',
                 semester: 6,
+                credit_hours: 3,
+                teacher_id: 'EMP-001'
+            },
+            {
+                subject_name: 'Enterprise Systems',
+                subject_code: 'IT-304',
+                program: 'BSIT',
+                semester: 6,
+                credit_hours: 3,
+                teacher_id: 'EMP-002'
+            },
+            {
+                subject_name: 'Fundamentals of Data Mining',
+                subject_code: 'IT-306',
+                program: 'BSIT',
+                semester: 6,
+                credit_hours: 3,
+                teacher_id: 'EMP-003'
+            },
+            {
+                subject_name: 'Programming Fundamentals',
+                subject_code: 'COSC-1102',
+                program: 'BSIT',
+                semester: 1,
+                credit_hours: 4,
+                teacher_id: 'EMP-001'
+            },
+            {
+                subject_name: 'Data Structures',
+                subject_code: 'COSC-2106',
+                program: 'BSIT',
+                semester: 3,
+                credit_hours: 4,
+                teacher_id: 'EMP-002'
+            },
+            {
+                subject_name: 'Software Engineering',
+                subject_code: 'COSC-2110',
+                program: 'BSIT',
+                semester: 3,
+                credit_hours: 3,
+                teacher_id: 'EMP-003'
+            },
+            {
+                subject_name: 'Database Systems',
+                subject_code: 'COSC-1104',
+                program: 'BSIT',
+                semester: 2,
                 credit_hours: 4,
                 teacher_id: 'EMP-001'
             }
