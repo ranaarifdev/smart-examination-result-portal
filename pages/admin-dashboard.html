@@ -101,7 +101,7 @@
             <a href="#"><i class="ph ph-chalkboard"></i><span class="sidebar-label">Classes</span></a>
             <a href="#"><i class="ph ph-exam"></i><span class="sidebar-label">Examinations</span></a>
             <div class="sidebar-section-title">Results</div>
-            <a href="#"><i class="ph ph-chart-bar"></i><span class="sidebar-label">Publish Results</span></a>
+            <a href="#"><i class="ph ph-chart-bar"></i><span class="sidebar-label">View Results</span></a>
             <a href="#"><i class="ph ph-file-pdf"></i><span class="sidebar-label">Result Gazettes</span></a>
             <div class="sidebar-section-title">System</div>
             <a href="#"><i class="ph ph-bell-ringing"></i><span class="sidebar-label">Notifications</span></a>
@@ -185,47 +185,7 @@
             <!-- Two-column layout -->
             <div style="display:grid;grid-template-columns:1fr 320px;gap:1.25rem;margin-bottom:1.25rem;">
 
-                <!-- Quick Actions -->
                 <div>
-                    <div class="section-header" style="margin-bottom:1rem;">
-                        <p class="eyebrow">Admin Tools</p>
-                        <h2>Quick Actions</h2>
-                    </div>
-                    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.85rem;margin-bottom:1.5rem;">
-                        <a class="action-btn" href="#">
-                            <i class="ph ph-user-plus" style="color:var(--primary);"></i>
-                            <span>Add Student</span>
-                        </a>
-                        <a class="action-btn" href="#">
-                            <i class="ph ph-user-gear" style="color:var(--secondary);"></i>
-                            <span>Add Teacher</span>
-                        </a>
-                        <a class="action-btn" href="#">
-                            <i class="ph ph-pencil-simple-line" style="color:var(--success);"></i>
-                            <span>Enter Marks</span>
-                        </a>
-                        <a class="action-btn" href="#">
-                            <i class="ph ph-seal-check" style="color:var(--accent-dark);"></i>
-                            <span>Publish Result</span>
-                        </a>
-                        <a class="action-btn" href="#">
-                            <i class="ph ph-file-pdf" style="color:var(--secondary);"></i>
-                            <span>Generate Gazette</span>
-                        </a>
-                        <a class="action-btn" href="#">
-                            <i class="ph ph-bell-ringing" style="color:var(--primary);"></i>
-                            <span>Send Notice</span>
-                        </a>
-                        <a class="action-btn" href="#">
-                            <i class="ph ph-calendar-plus" style="color:var(--success);"></i>
-                            <span>Add Exam</span>
-                        </a>
-                        <a class="action-btn" href="#">
-                            <i class="ph ph-download-simple" style="color:var(--info);"></i>
-                            <span>Export Data</span>
-                        </a>
-                    </div>
-
                     <!-- Recent Accounts Table -->
                     <div class="card">
                         <div class="card-header">
@@ -395,9 +355,6 @@
             <div class="card">
                 <div class="card-header">
                     <h4><i class="ph ph-exam"></i> Examination Status — Spring 2026</h4>
-                    <button class="btn btn-primary btn-sm" onclick="showToast('Add exam coming soon!','info')">
-                        <i class="ph ph-plus"></i> Add Exam
-                    </button>
                 </div>
                 <div class="card-body" style="padding:0;">
                     <div class="table-wrapper">
@@ -440,6 +397,7 @@
     </div>
 </div>
 
+<script src="../js/data.js"></script>
 <script src="../js/script.js"></script>
 <script>
     function toggleSidebar() { document.getElementById('dbSidebar').classList.toggle('collapsed'); }

@@ -107,7 +107,6 @@
             <a href="#"><i class="ph ph-chalkboard"></i><span class="sidebar-label">My Classes</span></a>
             <a href="#"><i class="ph ph-users"></i><span class="sidebar-label">Students</span></a>
             <a href="#"><i class="ph ph-clipboard-text"></i><span class="sidebar-label">Attendance</span></a>
-            <a href="#"><i class="ph ph-chart-bar"></i><span class="sidebar-label">Enter Marks</span></a>
             <div class="sidebar-section-title">Reports</div>
             <a href="#"><i class="ph ph-file-text"></i><span class="sidebar-label">Result Reports</span></a>
             <a href="#"><i class="ph ph-calendar"></i><span class="sidebar-label">Exam Schedule</span></a>
@@ -206,14 +205,7 @@
                         <span><i class="ph ph-book"></i> BSCS Sem 6</span>
                         <span><i class="ph ph-clock"></i> 3 Cr. Hrs</span>
                     </div>
-                    <div style="display:flex;gap:0.5rem;">
-                        <button class="btn btn-primary btn-sm" onclick="showToast('Marks entry coming soon!','info')">
-                            <i class="ph ph-pencil"></i> Enter Marks
-                        </button>
-                        <button class="btn btn-outline btn-sm" onclick="showToast('Attendance coming soon!','info')">
-                            <i class="ph ph-clipboard-text"></i> Attendance
-                        </button>
-                    </div>
+
                 </div>
                 <!-- Demo card 2 -->
                 <div class="class-card">
@@ -229,14 +221,7 @@
                         <span><i class="ph ph-book"></i> BSSE Sem 8</span>
                         <span><i class="ph ph-clock"></i> 3 Cr. Hrs</span>
                     </div>
-                    <div style="display:flex;gap:0.5rem;">
-                        <button class="btn btn-primary btn-sm" onclick="showToast('Marks entry coming soon!','info')">
-                            <i class="ph ph-pencil"></i> Enter Marks
-                        </button>
-                        <button class="btn btn-outline btn-sm" onclick="showToast('Attendance coming soon!','info')">
-                            <i class="ph ph-clipboard-text"></i> Attendance
-                        </button>
-                    </div>
+
                 </div>
             </div>
 
@@ -257,7 +242,6 @@
                                     <th>Program</th>
                                     <th>Mid Marks</th>
                                     <th>Status</th>
-                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -265,25 +249,25 @@
                                     <td>1</td><td>3400002312</td><td>Ali Hassan</td><td>BSCS-6</td>
                                     <td><strong>88</strong>/100</td>
                                     <td><span class="badge badge-success">Pass</span></td>
-                                    <td><button class="btn btn-outline btn-sm" onclick="showToast('Edit marks feature coming soon!','info')"><i class="ph ph-pencil-simple"></i></button></td>
+
                                 </tr>
                                 <tr>
                                     <td>2</td><td>3400002313</td><td>Sara Khan</td><td>BSCS-6</td>
                                     <td><strong>76</strong>/100</td>
                                     <td><span class="badge badge-success">Pass</span></td>
-                                    <td><button class="btn btn-outline btn-sm" onclick="showToast('Edit marks feature coming soon!','info')"><i class="ph ph-pencil-simple"></i></button></td>
+
                                 </tr>
                                 <tr>
                                     <td>3</td><td>3400002314</td><td>Usman Tariq</td><td>BSCS-6</td>
                                     <td><strong>55</strong>/100</td>
                                     <td><span class="badge badge-danger">Fail</span></td>
-                                    <td><button class="btn btn-outline btn-sm" onclick="showToast('Edit marks feature coming soon!','info')"><i class="ph ph-pencil-simple"></i></button></td>
+
                                 </tr>
                                 <tr>
                                     <td>4</td><td>3400002315</td><td>Fatima Malik</td><td>BSCS-6</td>
                                     <td><strong>91</strong>/100</td>
                                     <td><span class="badge badge-success">Pass</span></td>
-                                    <td><button class="btn btn-outline btn-sm" onclick="showToast('Edit marks feature coming soon!','info')"><i class="ph ph-pencil-simple"></i></button></td>
+
                                 </tr>
                             </tbody>
                         </table>
@@ -294,6 +278,7 @@
     </div>
 </div>
 
+<script src="../js/data.js"></script>
 <script src="../js/script.js"></script>
 <script>
     function toggleSidebar() { document.getElementById('dbSidebar').classList.toggle('collapsed'); }
@@ -322,9 +307,7 @@
                             <span><i class="ph ph-book"></i> ${c.program} Sem ${c.semester}</span>
                             <span><i class="ph ph-clock"></i> ${c.credit_hours} Cr. Hrs</span>
                         </div>
-                        <div style="display:flex;gap:0.5rem;">
-                            <button class="btn btn-primary btn-sm" onclick="showToast('Marks entry coming soon!','info')"><i class="ph ph-pencil"></i> Enter Marks</button>
-                        </div>
+
                     </div>
                 `).join('');
             }
