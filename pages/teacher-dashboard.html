@@ -2,91 +2,245 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teacher Dashboard | FCET Portal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Teacher Dashboard | FCET | Emerson University</title>
+    <meta name="description" content="Faculty dashboard for FCET teachers – manage classes, student rosters, attendance and result reports.">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { overflow: hidden; }
-        .db-layout { display: flex; height: 100vh; }
-
-        .db-sidebar {
-            width: 250px;
-            background: linear-gradient(180deg, #0a3161 0%, #0d3f78 100%);
-            display: flex; flex-direction: column; flex-shrink: 0;
-            transition: width 0.25s ease; overflow: hidden;
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg-main);
+            color: var(--text-main);
+            overflow: hidden;
+            height: 100vh;
         }
-        .db-sidebar.collapsed { width: 68px; }
+
+        /* ── Design tokens ── */
+        :root {
+            --primary:#0a3161; --primary-dark:#052040; --primary-pale:#eef2fc;
+            --secondary:#c8102e; --secondary-pale:#fff0f2;
+            --accent:#f4b942; --accent-dark:#d4920a;
+            --success:#198038; --success-pale:#e6f4ea;
+            --warning:#b85c00; --danger:#c5221f;
+            --text-main:#1e2a3e; --text-muted:#5c6f87;
+            --border-color:#e2e8f0;
+            --bg-main:#f8fafc; --bg-card:#ffffff; --bg-hover:#f1f5f9;
+            --shadow-xs:0 1px 2px rgba(0,0,0,.04),0 1px 2px rgba(0,0,0,.06);
+            --shadow-md:0 10px 25px -5px rgba(0,0,0,.06),0 8px 10px -6px rgba(0,0,0,.03);
+            --radius-sm:8px; --radius-md:12px; --radius-lg:16px; --radius-full:9999px;
+        }
+        body.dark {
+            --primary:#3a82c4; --primary-pale:#1a2c3f;
+            --secondary:#e04e5c; --accent:#f4b942;
+            --text-main:#edf2f7; --text-muted:#9aaebf;
+            --border-color:#2d3a48; --bg-main:#0f1724;
+            --bg-card:#1a2538; --bg-hover:#253346;
+        }
+
+        /* ── Layout ── */
+        .db-layout { display:flex; height:100vh; width:100%; }
+
+        /* ── Sidebar ── */
+        .db-sidebar {
+            width:260px; background:linear-gradient(180deg,#0a2b44 0%,#0c3a5c 100%);
+            display:flex; flex-direction:column; flex-shrink:0;
+            transition:width .25s ease; overflow-x:hidden; z-index:20;
+        }
+        .db-sidebar.collapsed { width:72px; }
         .db-sidebar.collapsed .sidebar-label,
-        .db-sidebar.collapsed .sidebar-section-title { display: none; }
-        .db-sidebar.collapsed .db-nav a { justify-content: center; padding: 0.9rem; }
+        .db-sidebar.collapsed .sidebar-section-title span,
+        .db-sidebar.collapsed .sidebar-foot-label { display:none; }
+        .db-sidebar.collapsed .db-nav a { justify-content:center; padding:.8rem; }
 
         .db-sidebar-head {
-            padding: 1.25rem; border-bottom: 1px solid rgba(255,255,255,0.1);
-            display: flex; align-items: center; gap: 0.75rem;
+            padding:1.25rem 1rem; border-bottom:1px solid rgba(255,255,255,.12);
+            display:flex; align-items:center; gap:.75rem;
         }
-        .s-logo { width: 40px; height: 40px; background: rgba(255,255,255,0.15); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .s-logo i { color: var(--accent); font-size: 1.4rem; }
-        .sidebar-label h4 { color: white; font-size: 0.9rem; margin: 0; white-space: nowrap; }
-        .sidebar-label p  { color: rgba(255,255,255,0.5); font-size: 0.68rem; white-space: nowrap; }
+        .s-logo {
+            width:42px; height:42px; background:rgba(255,255,255,.12);
+            border-radius:12px; display:flex; align-items:center; justify-content:center;
+            flex-shrink:0;
+        }
+        .s-logo i { color:var(--accent); font-size:1.6rem; }
+        .sidebar-label h4 { color:white; font-size:1rem; white-space:nowrap; }
+        .sidebar-label p  { color:rgba(255,255,255,.6); font-size:.7rem; white-space:nowrap; }
 
-        .db-nav { flex: 1; padding: 0.75rem 0; overflow-y: auto; }
-        .sidebar-section-title { font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.35); padding: 0.75rem 1.25rem 0.3rem; }
-        .db-nav a { display: flex; align-items: center; gap: 0.85rem; padding: 0.7rem 1.25rem; color: rgba(255,255,255,0.72); font-size: 0.85rem; font-weight: 500; transition: all 0.18s; border-left: 3px solid transparent; white-space: nowrap; }
-        .db-nav a i { font-size: 1.15rem; flex-shrink: 0; }
-        .db-nav a:hover { background: rgba(255,255,255,0.1); color: white; border-left-color: rgba(255,255,255,0.4); }
-        .db-nav a.active { background: rgba(255,255,255,0.15); color: white; border-left-color: var(--accent); font-weight: 700; }
-        .db-sidebar-foot { padding: 1rem; border-top: 1px solid rgba(255,255,255,0.1); }
-        .db-sidebar-foot a { display: flex; align-items: center; gap: 0.7rem; color: rgba(255,255,255,0.55); font-size: 0.82rem; padding: 0.5rem 0.25rem; border-radius: var(--radius-sm); transition: all 0.18s; white-space: nowrap; }
-        .db-sidebar-foot a:hover { background: rgba(255,255,255,0.08); color: white; }
+        .db-nav { flex:1; padding:1rem 0; overflow-y:auto; }
+        .sidebar-section-title {
+            font-size:.65rem; font-weight:700; letter-spacing:1px;
+            color:rgba(255,255,255,.4); padding:.75rem 1.25rem .3rem; text-transform:uppercase;
+        }
+        .db-nav a {
+            display:flex; align-items:center; gap:.8rem; padding:.7rem 1.25rem;
+            color:rgba(255,255,255,.75); font-size:.85rem; font-weight:500;
+            transition:.2s; border-left:3px solid transparent; white-space:nowrap;
+            cursor:pointer; text-decoration:none;
+        }
+        .db-nav a i { font-size:1.2rem; flex-shrink:0; }
+        .db-nav a:hover { background:rgba(255,255,255,.08); color:white; border-left-color:rgba(255,255,255,.4); }
+        .db-nav a.active { background:rgba(255,255,255,.14); color:white; border-left-color:var(--accent); font-weight:600; }
 
-        .db-main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-        .db-topbar { background: var(--bg-card); border-bottom: 1px solid var(--border-color); padding: 0 1.5rem; height: 62px; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-shrink: 0; }
-        .db-topbar-left { display: flex; align-items: center; gap: 1rem; }
-        .db-topbar-left h4 { font-size: 1rem; color: var(--primary); }
-        .db-topbar-right { display: flex; align-items: center; gap: 0.75rem; }
+        .db-sidebar-foot {
+            padding:1rem; border-top:1px solid rgba(255,255,255,.1);
+        }
+        .db-sidebar-foot a {
+            display:flex; align-items:center; gap:.7rem; color:rgba(255,255,255,.6);
+            padding:.5rem .25rem; border-radius:10px; font-size:.8rem;
+            transition:.2s; white-space:nowrap; cursor:pointer; text-decoration:none;
+        }
+        .db-sidebar-foot a:hover { background:rgba(255,255,255,.08); color:white; }
 
-        .profile-pill { display: flex; align-items: center; gap: 0.6rem; padding: 0.35rem 0.75rem 0.35rem 0.35rem; border: 1px solid var(--border-color); border-radius: var(--radius-full); cursor: pointer; transition: all 0.18s; background: var(--bg-main); }
-        .profile-pill:hover { border-color: var(--primary); }
-        .avatar { width: 32px; height: 32px; background: #c8102e; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 0.9rem; }
-        .profile-pill p    { font-size: 0.8rem; font-weight: 600; color: var(--text-main); margin: 0; line-height: 1.2; }
-        .profile-pill small{ font-size: 0.68rem; color: var(--text-muted); }
+        /* ── Main ── */
+        .db-main { flex:1; display:flex; flex-direction:column; overflow:hidden; }
+        .db-topbar {
+            background:var(--bg-card); border-bottom:1px solid var(--border-color);
+            padding:0 1.8rem; height:64px; display:flex; align-items:center;
+            justify-content:space-between; flex-shrink:0;
+        }
+        .db-topbar-left { display:flex; align-items:center; gap:1rem; }
+        .db-topbar-left h4 { font-size:1.05rem; font-weight:700; color:var(--primary); }
+        .profile-pill {
+            display:flex; align-items:center; gap:.65rem;
+            padding:.3rem .8rem .3rem .4rem; border:1px solid var(--border-color);
+            border-radius:60px; background:var(--bg-main); cursor:pointer;
+        }
+        .avatar {
+            width:34px; height:34px; background:var(--secondary); border-radius:50%;
+            display:flex; align-items:center; justify-content:center;
+            font-weight:700; color:white; font-size:.9rem;
+        }
+        .profile-pill p { font-size:.85rem; font-weight:600; }
+        .profile-pill small { color:var(--text-muted); font-size:.72rem; }
 
-        .db-content { flex: 1; padding: 1.5rem; overflow-y: auto; background: var(--bg-main); }
-        .page-title { margin-bottom: 1.5rem; }
-        .page-title h2 { font-size: 1.3rem; color: var(--primary); margin-bottom: 0.2rem; }
-        .page-title p  { font-size: 0.82rem; color: var(--text-muted); }
+        /* ── Content area ── */
+        .db-content { flex:1; overflow-y:auto; padding:1.6rem 2rem; }
 
-        .widgets-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+        /* ── Sections ── */
+        .db-section { display:none; }
+        .db-section.active { display:block; }
 
-        /* Class Card */
+        /* ── Page Title ── */
+        .page-title { margin-bottom:1.6rem; }
+        .page-title h2 { font-size:1.55rem; font-weight:800; color:var(--primary); }
+        .page-title p { color:var(--text-muted); font-size:.88rem; margin-top:.25rem; }
+        .eyebrow { font-size:.65rem; text-transform:uppercase; letter-spacing:1px; color:var(--accent-dark); font-weight:700; margin-bottom:.2rem; }
+
+        /* ── Widgets ── */
+        .widgets-row { display:grid; grid-template-columns:repeat(4,1fr); gap:1.2rem; margin-bottom:2rem; }
+        .stat-widget {
+            background:var(--bg-card); border-radius:var(--radius-lg);
+            padding:1rem 1.2rem; display:flex; align-items:center; gap:1rem;
+            border:1px solid var(--border-color); box-shadow:var(--shadow-xs);
+        }
+        .stat-widget-icon {
+            width:48px; height:48px; border-radius:40px; display:flex;
+            align-items:center; justify-content:center; font-size:1.6rem; flex-shrink:0;
+        }
+        .stat-widget-icon.blue  { background:#eef2ff; color:#1e40af; }
+        .stat-widget-icon.green { background:#e6f7ec; color:#15803d; }
+        .stat-widget-icon.gold  { background:#fff3e6; color:#b45309; }
+        .stat-widget-icon.red   { background:#ffe6e5; color:#b91c1c; }
+        body.dark .stat-widget-icon.blue  { background:#172554; color:#93c5fd; }
+        body.dark .stat-widget-icon.green { background:#064e3b; color:#86efac; }
+        body.dark .stat-widget-icon.gold  { background:#7c2d12; color:#fdba74; }
+        body.dark .stat-widget-icon.red   { background:#7f1d1d; color:#fca5a5; }
+        .stat-widget-info p  { font-size:.75rem; color:var(--text-muted); }
+        .stat-widget-info h3  { font-size:1.5rem; font-weight:800; margin:.2rem 0; }
+
+        /* ── Class cards ── */
+        .classes-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:1.4rem; margin-bottom:1.5rem; }
         .class-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-lg);
-            padding: 1.25rem;
-            border-top: 4px solid var(--primary);
-            box-shadow: var(--shadow-xs);
-            transition: all 0.18s;
+            background:var(--bg-card); border-radius:var(--radius-lg);
+            border:1px solid var(--border-color); padding:1.2rem 1.3rem;
+            border-top:4px solid var(--primary); transition:.22s; cursor:pointer;
         }
-        .class-card:nth-child(2) { border-top-color: var(--secondary); }
-        .class-card:nth-child(3) { border-top-color: var(--success); }
-        .class-card:nth-child(4) { border-top-color: var(--accent-dark); }
-        .class-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
-        .class-card-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.85rem; }
-        .class-code { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--primary); background: var(--primary-pale); padding: 0.2rem 0.5rem; border-radius: var(--radius-xs); }
-        .class-card h4 { font-size: 0.95rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.3rem; }
-        .class-card .class-meta { font-size: 0.75rem; color: var(--text-muted); display: flex; gap: 1rem; margin-bottom: 1rem; }
-        .class-card .class-meta span { display: flex; align-items: center; gap: 0.3rem; }
+        .class-card:nth-child(2) { border-top-color:var(--secondary); }
+        .class-card:hover { transform:translateY(-3px); box-shadow:var(--shadow-md); }
+        .class-card.selected { box-shadow:0 0 0 3px var(--accent); }
+        .class-code {
+            font-size:.65rem; font-weight:800; background:var(--primary-pale);
+            padding:.2rem .7rem; border-radius:40px; color:var(--primary);
+        }
+        .class-meta { display:flex; flex-wrap:wrap; gap:.8rem; font-size:.75rem; color:var(--text-muted); margin:.8rem 0; }
+        .class-actions { display:flex; gap:.5rem; flex-wrap:wrap; }
 
-        /* Students table */
-        .mini-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
-        .mini-table th { background: var(--bg-hover); color: var(--text-muted); padding: 0.5rem 0.75rem; text-align: left; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; }
-        .mini-table td { padding: 0.6rem 0.75rem; border-bottom: 1px solid var(--border-color); }
-        .mini-table tr:last-child td { border-bottom: none; }
-        .mini-table tr:hover td { background: var(--bg-hover); }
+        /* ── Cards ── */
+        .card { background:var(--bg-card); border-radius:var(--radius-lg); border:1px solid var(--border-color); margin-top:1.5rem; overflow:hidden; }
+        .card-header {
+            padding:1rem 1.2rem; border-bottom:1px solid var(--border-color);
+            display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:.5rem;
+        }
+        .card-header h4 { font-size:1rem; font-weight:700; display:flex; align-items:center; gap:.5rem; }
 
-        @media (max-width: 900px) { .widgets-row { grid-template-columns: 1fr 1fr; } }
+        /* ── Table ── */
+        .table-wrapper { overflow-x:auto; }
+        .mini-table { width:100%; border-collapse:collapse; }
+        .mini-table th {
+            text-align:left; padding:.9rem 1rem; background:var(--bg-hover);
+            font-size:.7rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; white-space:nowrap;
+        }
+        .mini-table td { padding:.85rem 1rem; border-bottom:1px solid var(--border-color); font-size:.85rem; }
+        .mini-table tr:last-child td { border-bottom:none; }
+        .mini-table tbody tr:hover td { background:var(--bg-hover); }
+
+        /* ── Badges ── */
+        .badge { font-size:.7rem; padding:.22rem .65rem; border-radius:30px; font-weight:600; white-space:nowrap; }
+        .badge-success { background:var(--success-pale); color:var(--success); }
+        .badge-primary { background:var(--primary-pale); color:var(--primary); }
+        .badge-danger  { background:#ffe6e5; color:var(--danger); }
+        .badge-gold    { background:#fff3e6; color:#b45309; }
+
+        /* ── Buttons ── */
+        .btn { display:inline-flex; align-items:center; gap:.4rem; padding:.45rem .9rem; border-radius:var(--radius-full); font-size:.82rem; font-weight:600; cursor:pointer; border:none; transition:.18s; }
+        .btn-primary { background:var(--primary); color:white; }
+        .btn-primary:hover { background:var(--primary-dark); }
+        .btn-outline { background:transparent; border:1px solid var(--border-color); color:var(--text-main); }
+        .btn-outline:hover { background:var(--bg-hover); }
+        .btn-sm { font-size:.78rem; padding:.35rem .75rem; }
+
+        /* ── Search ── */
+        .search-box {
+            display:flex; align-items:center; gap:.5rem;
+            background:var(--bg-hover); border:1px solid var(--border-color);
+            border-radius:var(--radius-full); padding:.4rem .9rem;
+        }
+        .search-box input {
+            border:none; background:transparent; outline:none;
+            font-size:.85rem; color:var(--text-main); min-width:180px;
+        }
+        .search-box i { color:var(--text-muted); }
+
+        /* ── Attendance table colors ── */
+        td.att-p { color:var(--success); font-weight:700; }
+        td.att-a { color:var(--danger);  font-weight:700; }
+        td.att-l { color:var(--warning); font-weight:700; }
+
+        /* ── Notification items ── */
+        .notif-item {
+            display:flex; gap:1rem; padding:1rem 1.2rem;
+            border-bottom:1px solid var(--border-color); align-items:flex-start;
+        }
+        .notif-item:last-child { border-bottom:none; }
+        .notif-icon { width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.1rem; flex-shrink:0; }
+        .notif-icon.info  { background:var(--primary-pale); color:var(--primary); }
+        .notif-icon.warn  { background:#fff3e6; color:#b45309; }
+        .notif-icon.success { background:var(--success-pale); color:var(--success); }
+        .notif-body h5 { font-size:.88rem; font-weight:600; }
+        .notif-body p  { font-size:.78rem; color:var(--text-muted); margin-top:.15rem; }
+
+        /* ── Schedule table ── */
+        .schedule-day { font-weight:700; color:var(--primary); }
+
+        /* ── Responsive ── */
+        @media (max-width:900px) { .widgets-row { grid-template-columns:1fr 1fr; } }
+        @media (max-width:600px) {
+            .db-content { padding:1rem; }
+            .widgets-row { grid-template-columns:1fr; }
+            .classes-grid { grid-template-columns:1fr; }
+        }
     </style>
 </head>
 <body>
@@ -95,143 +249,145 @@
     <!-- SIDEBAR -->
     <aside class="db-sidebar" id="dbSidebar">
         <div class="db-sidebar-head">
-            <div class="s-logo"><i class="ph-fill ph-chalkboard-teacher"></i></div>
+            <div class="s-logo"><i class="ph-fill ph-shield"></i></div>
             <div class="sidebar-label">
                 <h4>FCET Portal</h4>
                 <p>Teacher Dashboard</p>
             </div>
         </div>
-        <nav class="db-nav">
-            <div class="sidebar-section-title">Main Menu</div>
-            <a href="teacher-dashboard.html" class="active"><i class="ph ph-house"></i><span class="sidebar-label">Dashboard</span></a>
-            <a href="#"><i class="ph ph-chalkboard"></i><span class="sidebar-label">My Classes</span></a>
-            <a href="#"><i class="ph ph-users"></i><span class="sidebar-label">Students</span></a>
-            <a href="#"><i class="ph ph-clipboard-text"></i><span class="sidebar-label">Attendance</span></a>
-            <div class="sidebar-section-title">Reports</div>
-            <a href="#"><i class="ph ph-file-text"></i><span class="sidebar-label">Result Reports</span></a>
-            <a href="#"><i class="ph ph-calendar"></i><span class="sidebar-label">Exam Schedule</span></a>
-            <a href="#"><i class="ph ph-bell"></i><span class="sidebar-label">Notifications</span></a>
+        <nav class="db-nav" id="teacherNav">
+            <div class="sidebar-section-title"><span>Main</span></div>
+            <a href="#" class="active" data-section="sec-overview"  onclick="showSection('sec-overview',this)">
+                <i class="ph ph-house"></i><span class="sidebar-label">Dashboard</span>
+            </a>
+            <a href="#" data-section="sec-classes"   onclick="showSection('sec-classes',this)">
+                <i class="ph ph-chalkboard"></i><span class="sidebar-label">My Classes</span>
+            </a>
+            <a href="#" data-section="sec-students"  onclick="showSection('sec-students',this)">
+                <i class="ph ph-users"></i><span class="sidebar-label">Students</span>
+            </a>
+            <a href="#" data-section="sec-attendance" onclick="showSection('sec-attendance',this)">
+                <i class="ph ph-check-square"></i><span class="sidebar-label">Attendance</span>
+            </a>
+            <div class="sidebar-section-title"><span>Academics</span></div>
+            <a href="#" data-section="sec-results"   onclick="showSection('sec-results',this)">
+                <i class="ph ph-graduation-cap"></i><span class="sidebar-label">Result Reports</span>
+            </a>
+            <a href="#" data-section="sec-schedule"  onclick="showSection('sec-schedule',this)">
+                <i class="ph ph-calendar"></i><span class="sidebar-label">Exam Schedule</span>
+            </a>
+            <a href="#" data-section="sec-notif"     onclick="showSection('sec-notif',this)">
+                <i class="ph ph-bell"></i><span class="sidebar-label">Notifications</span>
+            </a>
         </nav>
         <div class="db-sidebar-foot">
-            <a href="../index.html"><i class="ph ph-arrow-left"></i><span class="sidebar-label">Back to Portal</span></a>
-            <a href="#" onclick="logout()"><i class="ph ph-sign-out"></i><span class="sidebar-label">Logout</span></a>
+            <a href="../pages/login.html" onclick="doLogout(event)">
+                <i class="ph ph-sign-out"></i><span class="sidebar-foot-label">Logout</span>
+            </a>
         </div>
     </aside>
 
-    <!-- MAIN -->
+    <!-- MAIN PANEL -->
     <div class="db-main">
+        <!-- Topbar -->
         <div class="db-topbar">
             <div class="db-topbar-left">
-                <button style="background:none;border:none;cursor:pointer;font-size:1.3rem;color:var(--text-muted);" onclick="toggleSidebar()">
+                <button style="background:none;border:none;cursor:pointer;font-size:1.4rem;color:var(--text-muted);" onclick="toggleSidebar()">
                     <i class="ph ph-list"></i>
                 </button>
-                <h4>Teacher Dashboard</h4>
+                <h4 id="topbarTitle">📘 Faculty Dashboard</h4>
             </div>
-            <div class="db-topbar-right">
-                <button id="theme-toggle" class="btn btn-outline btn-sm" style="padding:0.35rem 0.6rem;">
-                    <i class="ph ph-moon"></i>
-                </button>
-                <div class="profile-pill">
-                    <div class="avatar">D</div>
+            <div style="display:flex;align-items:center;gap:.75rem;">
+                <button id="themeToggleBtn" class="btn btn-outline btn-sm"><i class="ph ph-moon"></i> <span>Dark</span></button>
+                <div class="profile-pill" id="teacherProfile">
+                    <div class="avatar" id="teacherInitials">ZU</div>
                     <div>
-                        <p id="teacherName">Dr. Ahmed Raza</p>
-                        <small>Permanent Faculty</small>
+                        <p id="teacherName">Dr. Zia Ur Rehman</p>
+                        <small>Lecturer · Cyber Security</small>
                     </div>
-                    <i class="ph ph-caret-down" style="font-size:0.8rem;color:var(--text-muted);"></i>
                 </div>
             </div>
         </div>
 
-        <!-- CONTENT -->
+        <!-- Content -->
         <div class="db-content">
-            <div class="page-title">
-                <h2>Welcome, Dr. Ahmed Raza 👨‍🏫</h2>
-                <p>You have <strong>2 assigned classes</strong> this semester. Spring 2026.</p>
-            </div>
 
-            <!-- Stat Widgets -->
-            <div class="widgets-row">
-                <div class="stat-widget">
-                    <div class="stat-widget-icon blue"><i class="ph ph-chalkboard"></i></div>
-                    <div class="stat-widget-info">
-                        <p>Assigned Classes</p>
-                        <h3 id="classCount">2</h3>
-                        <small>Spring 2026</small>
-                    </div>
+            <!-- ════════════════ OVERVIEW ════════════════ -->
+            <div class="db-section active" id="sec-overview">
+                <div class="page-title">
+                    <div class="eyebrow">Spring 2026 — Active Semester</div>
+                    <h2>Welcome back, Dr. Zia Ur Rehman 👋</h2>
+                    <p>You are teaching <strong id="totalClassesCount">2</strong> courses this semester with <strong id="totalStudentsBanner">41</strong> enrolled students.</p>
                 </div>
-                <div class="stat-widget">
-                    <div class="stat-widget-icon green"><i class="ph ph-users"></i></div>
-                    <div class="stat-widget-info">
-                        <p>Total Students</p>
-                        <h3>84</h3>
-                        <small>All classes</small>
-                    </div>
-                </div>
-                <div class="stat-widget">
-                    <div class="stat-widget-icon gold"><i class="ph ph-chart-bar"></i></div>
-                    <div class="stat-widget-info">
-                        <p>Marks Entered</p>
-                        <h3>42</h3>
-                        <small>Pending: 42</small>
-                    </div>
-                </div>
-                <div class="stat-widget">
-                    <div class="stat-widget-icon red"><i class="ph ph-calendar"></i></div>
-                    <div class="stat-widget-info">
-                        <p>Next Exam</p>
-                        <h3>June 15</h3>
-                        <small>Final Term</small>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Classes Grid -->
-            <div class="section-header" style="margin-bottom:1rem;">
-                <p class="eyebrow">Assigned Courses</p>
-                <h2>My Classes — Spring 2026</h2>
-            </div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.5rem;" id="classesGrid">
-                <!-- Demo card 1 -->
-                <div class="class-card">
-                    <div class="class-card-head">
-                        <div>
-                            <span class="class-code">CS-301</span>
-                            <h4 style="margin-top:0.5rem;">Web Engineering</h4>
+                <div class="widgets-row">
+                    <div class="stat-widget">
+                        <div class="stat-widget-icon blue"><i class="ph ph-chalkboard"></i></div>
+                        <div class="stat-widget-info">
+                            <p>My Classes</p>
+                            <h3 id="statClasses">2</h3>
+                            <small>Active Courses</small>
                         </div>
-                        <span class="badge badge-success">Active</span>
                     </div>
-                    <div class="class-meta">
-                        <span><i class="ph ph-users"></i> 42 Students</span>
-                        <span><i class="ph ph-book"></i> BSCS Sem 6</span>
-                        <span><i class="ph ph-clock"></i> 3 Cr. Hrs</span>
-                    </div>
-
-                </div>
-                <!-- Demo card 2 -->
-                <div class="class-card">
-                    <div class="class-card-head">
-                        <div>
-                            <span class="class-code" style="background:rgba(200,16,46,0.1);color:var(--secondary);">SE-402</span>
-                            <h4 style="margin-top:0.5rem;">Software Project Management</h4>
+                    <div class="stat-widget">
+                        <div class="stat-widget-icon green"><i class="ph ph-users"></i></div>
+                        <div class="stat-widget-info">
+                            <p>Total Students</p>
+                            <h3 id="totalStudentsCount">41</h3>
+                            <small>Across sections</small>
                         </div>
-                        <span class="badge badge-success">Active</span>
                     </div>
-                    <div class="class-meta">
-                        <span><i class="ph ph-users"></i> 38 Students</span>
-                        <span><i class="ph ph-book"></i> BSSE Sem 8</span>
-                        <span><i class="ph ph-clock"></i> 3 Cr. Hrs</span>
+                    <div class="stat-widget">
+                        <div class="stat-widget-icon gold"><i class="ph ph-chart-line"></i></div>
+                        <div class="stat-widget-info">
+                            <p>Avg. Attendance</p>
+                            <h3>87%</h3>
+                            <small>This semester</small>
+                        </div>
                     </div>
+                    <div class="stat-widget">
+                        <div class="stat-widget-icon red"><i class="ph ph-calendar-check"></i></div>
+                        <div class="stat-widget-info">
+                            <p>Upcoming Exam</p>
+                            <h3>June 25</h3>
+                            <small>Final Term</small>
+                        </div>
+                    </div>
+                </div>
 
+                <div class="eyebrow">Assigned Courses</div>
+                <h2 style="font-size:1.2rem;margin-bottom:1rem;color:var(--primary);">📚 Current Load — Spring 2026</h2>
+                <div class="classes-grid" id="overviewClassesGrid"></div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h4><i class="ph ph-bell-ringing"></i> Recent Notifications</h4>
+                    </div>
+                    <div id="overviewNotifs"></div>
                 </div>
             </div>
 
-            <!-- Recent Students -->
-            <div class="card">
-                <div class="card-header">
-                    <h4><i class="ph ph-users"></i> Recent Students — Web Engineering (CS-301)</h4>
-                    <span class="badge badge-primary">42 Enrolled</span>
+            <!-- ════════════════ MY CLASSES ════════════════ -->
+            <div class="db-section" id="sec-classes">
+                <div class="page-title">
+                    <div class="eyebrow">Spring 2026</div>
+                    <h2>📚 My Assigned Classes</h2>
+                    <p>Click a class card to view the full student roster below.</p>
                 </div>
-                <div class="card-body" style="padding:0;">
+                <div class="classes-grid" id="classesGrid"></div>
+
+                <div class="card" id="classRosterCard">
+                    <div class="card-header">
+                        <h4><i class="ph ph-users"></i> <span id="activeClassName">Select a class above</span> — Roster</h4>
+                        <span class="badge badge-primary" id="studentCountBadge">0 Enrolled</span>
+                    </div>
+                    <div style="padding:.75rem 1.2rem;border-bottom:1px solid var(--border-color);display:flex;gap:.75rem;flex-wrap:wrap;align-items:center;">
+                        <div class="search-box">
+                            <i class="ph ph-magnifying-glass"></i>
+                            <input type="text" id="rosterSearch" placeholder="Search student name or roll…" oninput="filterRoster()" />
+                        </div>
+                        <button class="btn btn-outline btn-sm" onclick="exportRosterCSV()"><i class="ph ph-download-simple"></i> Export CSV</button>
+                    </div>
                     <div class="table-wrapper">
                         <table class="mini-table">
                             <thead>
@@ -239,80 +395,552 @@
                                     <th>#</th>
                                     <th>Roll No.</th>
                                     <th>Student Name</th>
+                                    <th>Father Name</th>
                                     <th>Program</th>
-                                    <th>Mid Marks</th>
+                                    <th>Mid Exam</th>
+                                    <th>Attendance</th>
                                     <th>Status</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td><td>3400002312</td><td>Ali Hassan</td><td>BSCS-6</td>
-                                    <td><strong>88</strong>/100</td>
-                                    <td><span class="badge badge-success">Pass</span></td>
-
-                                </tr>
-                                <tr>
-                                    <td>2</td><td>3400002313</td><td>Sara Khan</td><td>BSCS-6</td>
-                                    <td><strong>76</strong>/100</td>
-                                    <td><span class="badge badge-success">Pass</span></td>
-
-                                </tr>
-                                <tr>
-                                    <td>3</td><td>3400002314</td><td>Usman Tariq</td><td>BSCS-6</td>
-                                    <td><strong>55</strong>/100</td>
-                                    <td><span class="badge badge-danger">Fail</span></td>
-
-                                </tr>
-                                <tr>
-                                    <td>4</td><td>3400002315</td><td>Fatima Malik</td><td>BSCS-6</td>
-                                    <td><strong>91</strong>/100</td>
-                                    <td><span class="badge badge-success">Pass</span></td>
-
-                                </tr>
+                            <tbody id="studentTableBody">
+                                <tr><td colspan="8" style="text-align:center;padding:2rem;color:var(--text-muted);">Select a class to load students</td></tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
 
-<script src="../js/data.js"></script>
-<script src="../js/script.js"></script>
-<script>
-    function toggleSidebar() { document.getElementById('dbSidebar').classList.toggle('collapsed'); }
-    function logout() { localStorage.removeItem('token'); window.location.href = 'login.html'; }
-
-    (async () => {
-        try {
-            const token = localStorage.getItem('token');
-            if (!token) { window.location.href = 'login.html'; return; }
-            const res = await apiFetch('/api/teacher/classes', { headers: { 'Authorization': 'Bearer ' + token } });
-            if (res.status === 401 || res.status === 403) { window.location.href = 'login.html'; return; }
-            const classes = await res.json();
-            if (classes && classes.length) {
-                document.getElementById('classCount').textContent = classes.length;
-                const grid = document.getElementById('classesGrid');
-                grid.innerHTML = classes.map((c, i) => `
-                    <div class="class-card">
-                        <div class="class-card-head">
-                            <div>
-                                <span class="class-code">${c.subject_code}</span>
-                                <h4 style="margin-top:0.5rem;">${c.subject_name}</h4>
+            <!-- ════════════════ STUDENTS ════════════════ -->
+            <div class="db-section" id="sec-students">
+                <div class="page-title">
+                    <div class="eyebrow">BS Cyber Security — 6th Evening</div>
+                    <h2>👥 All Students</h2>
+                    <p>Complete list of all students across your assigned courses.</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h4><i class="ph ph-users-four"></i> Student Directory</h4>
+                        <div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;">
+                            <div class="search-box">
+                                <i class="ph ph-magnifying-glass"></i>
+                                <input type="text" id="studentDirSearch" placeholder="Search name, roll, father…" oninput="filterStudentDir()" />
                             </div>
-                            <span class="badge badge-success">Active</span>
+                            <span class="badge badge-primary" id="studentDirCount">41 Students</span>
                         </div>
-                        <div class="class-meta">
-                            <span><i class="ph ph-book"></i> ${c.program} Sem ${c.semester}</span>
-                            <span><i class="ph ph-clock"></i> ${c.credit_hours} Cr. Hrs</span>
-                        </div>
-
                     </div>
-                `).join('');
-            }
-        } catch (e) { console.log('Using demo data'); }
-    })();
+                    <div class="table-wrapper">
+                        <table class="mini-table">
+                            <thead>
+                                <tr><th>#</th><th>Roll No.</th><th>Student Name</th><th>Father Name</th><th>CGPA</th><th>Mid Score</th><th>Attendance</th><th>Grade</th></tr>
+                            </thead>
+                            <tbody id="studentDirBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ════════════════ ATTENDANCE ════════════════ -->
+            <div class="db-section" id="sec-attendance">
+                <div class="page-title">
+                    <div class="eyebrow">Session Tracking</div>
+                    <h2>✅ Attendance Overview</h2>
+                    <p>Attendance records for the current semester. P = Present, A = Absent, L = Late.</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h4><i class="ph ph-check-square"></i> Attendance Sheet — <span id="attCourse">Wireless and Mobile Security</span></h4>
+                        <div style="display:flex;gap:.5rem;align-items:center;">
+                            <select id="attCourseSelect" class="btn btn-outline btn-sm" onchange="switchAttCourse(this.value)" style="cursor:pointer;padding:.4rem .75rem;">
+                                <option value="0">Wireless and Mobile Security</option>
+                                <option value="1">Secure Software Design and Development</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="table-wrapper">
+                        <table class="mini-table">
+                            <thead>
+                                <tr id="attHeaderRow"><th>Roll No.</th><th>Student</th></tr>
+                            </thead>
+                            <tbody id="attBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ════════════════ RESULTS ════════════════ -->
+            <div class="db-section" id="sec-results">
+                <div class="page-title">
+                    <div class="eyebrow">Academic Records</div>
+                    <h2>📊 Result Reports</h2>
+                    <p>Mid-term marks summary for enrolled students.</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h4><i class="ph ph-graduation-cap"></i> Mid-Term Marks — Spring 2026</h4>
+                        <div style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;">
+                            <div class="search-box">
+                                <i class="ph ph-magnifying-glass"></i>
+                                <input type="text" id="resultSearch" placeholder="Search student…" oninput="filterResults()" />
+                            </div>
+                            <select id="resultCourseFilter" class="btn btn-outline btn-sm" onchange="filterResults()" style="cursor:pointer;padding:.4rem .75rem;">
+                                <option value="">All Courses</option>
+                                <option value="CYSE-421">CYSE-421 – Wireless &amp; Mobile Security</option>
+                                <option value="CYSE-422">CYSE-422 – Secure Software Design</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="table-wrapper">
+                        <table class="mini-table">
+                            <thead>
+                                <tr><th>#</th><th>Roll No.</th><th>Student Name</th><th>Course</th><th>Mid (30)</th><th>Attendance</th><th>Status</th></tr>
+                            </thead>
+                            <tbody id="resultsTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ════════════════ SCHEDULE ════════════════ -->
+            <div class="db-section" id="sec-schedule">
+                <div class="page-title">
+                    <div class="eyebrow">Academics</div>
+                    <h2>📅 Exam Schedule</h2>
+                    <p>Final term examination schedule for Spring 2026.</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h4><i class="ph ph-calendar-blank"></i> Final Term Datesheet — Spring 2026</h4>
+                        <span class="badge badge-gold">June 2026</span>
+                    </div>
+                    <div class="table-wrapper">
+                        <table class="mini-table">
+                            <thead>
+                                <tr><th>Date</th><th>Day</th><th>Time</th><th>Course Code</th><th>Course Title</th><th>Venue</th></tr>
+                            </thead>
+                            <tbody id="scheduleBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ════════════════ NOTIFICATIONS ════════════════ -->
+            <div class="db-section" id="sec-notif">
+                <div class="page-title">
+                    <div class="eyebrow">Updates</div>
+                    <h2>🔔 Notifications</h2>
+                    <p>System announcements and academic alerts.</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h4><i class="ph ph-bell"></i> All Notifications</h4>
+                        <span class="badge badge-primary" id="notifCount">5 Unread</span>
+                    </div>
+                    <div id="notifList"></div>
+                </div>
+            </div>
+
+        </div><!-- /db-content -->
+    </div><!-- /db-main -->
+</div><!-- /db-layout -->
+
+<script>
+/* ─── Data ─── */
+const TEACHER_NAME  = "Dr. Zia Ur Rehman";
+const TEACHER_INIT  = "ZU";
+
+const teacherCourses = [
+    { subject_code:"CYSE-421", subject_name:"Wireless and Mobile Security",        program:"BS Cyber Security", semester:6, credit_hours:3, shift:"Evening", students_count:41 },
+    { subject_code:"CYSE-422", subject_name:"Secure Software Design and Development", program:"BS Cyber Security", semester:6, credit_hours:3, shift:"Evening", students_count:41 }
+];
+
+const cysecStudents = [
+    { roll:"ECTE231122101", name:"Muhammad Shahzaib",     father:"Zulfqar Ali",                     cgpa:3.55, mid:78 },
+    { roll:"ECTE231122102", name:"Misbah Bibi",           father:"Allah wasaya",                    cgpa:3.70, mid:84 },
+    { roll:"ECTE231122103", name:"Romaisa Khan",          father:"Naveed ur Rehman",                cgpa:3.73, mid:82 },
+    { roll:"ECTE231122104", name:"Javed Iqbal",           father:"Muhammad Iqbal",                  cgpa:3.41, mid:75 },
+    { roll:"ECTE231122106", name:"Muhammad Sanawar Ali",  father:"Abdul Ghaffar",                   cgpa:3.09, mid:68 },
+    { roll:"ECTE231122107", name:"Hira Zafar",            father:"M Zafar",                         cgpa:3.69, mid:88 },
+    { roll:"ECTE231122110", name:"Khansa Aamir",          father:"Aamir Mumtaz",                    cgpa:3.59, mid:77 },
+    { roll:"ECTE231122111", name:"Eman Razaq",            father:"Muhammad Razaq",                  cgpa:3.23, mid:72 },
+    { roll:"ECTE231122112", name:"Muhammad Basit",        father:"Allah Dad",                       cgpa:3.74, mid:86 },
+    { roll:"ECTE231122116", name:"Khuzaima Khalil",       father:"Khalil ur Rehman",                cgpa:3.35, mid:74 },
+    { roll:"ECTE231122118", name:"Allah Nawaz",           father:"Muhammad Hanif",                  cgpa:3.16, mid:69 },
+    { roll:"ECTE231122119", name:"Muhammad Talha Zafar",  father:"Zafar Ahmad",                     cgpa:3.41, mid:79 },
+    { roll:"ECTE231122120", name:"Ghulam Hussain",        father:"Azhar Hussain Khan",               cgpa:2.51, mid:58 },
+    { roll:"ECTE231122121", name:"Muhammad Zahid",        father:"Khadim Hussain",                  cgpa:3.30, mid:73 },
+    { roll:"ECTE231122122", name:"Muhammad Rayyan",       father:"Malik Bashir Ahmad",              cgpa:2.99, mid:65 },
+    { roll:"ECTE231122123", name:"Malik Saad Habib",      father:"Malik Muhammad Khalid",           cgpa:3.36, mid:76 },
+    { roll:"ECTE231122124", name:"Muhammad Imran",        father:"Fazal Ahmad",                     cgpa:3.24, mid:71 },
+    { roll:"ECTE231122125", name:"Rashid Ali",            father:"Mubarik Ali",                     cgpa:2.86, mid:60 },
+    { roll:"ECTE231122126", name:"Muhammad Adnan Ali",    father:"Muhammad Ramzan Ali",             cgpa:2.98, mid:66 },
+    { roll:"ECTE231122128", name:"Hafiz Matti Ur Rehman", father:"Shabbir Ahmad",                   cgpa:3.42, mid:80 },
+    { roll:"ECTE231122130", name:"Daneyal Maqsood",       father:"Maqsood Ahmad",                   cgpa:2.57, mid:62 },
+    { roll:"ECTE231122131", name:"Sharjeel Saqib",        father:"Numan Saqib",                     cgpa:3.80, mid:90 },
+    { roll:"ECTE231122133", name:"M. Hannan Haider",      father:"Touqir Hussain",                  cgpa:3.32, mid:75 },
+    { roll:"ECTE231122134", name:"Muneeb Ur Rehman",      father:"Naveed Akram",                    cgpa:3.10, mid:68 },
+    { roll:"ECTE231122135", name:"Hafiz Hamid Ali",       father:"Muhammad Zakriya",                cgpa:2.97, mid:64 },
+    { roll:"ECTE231122136", name:"Aurang Zaib",           father:"Muhammad Siddique",               cgpa:3.17, mid:70 },
+    { roll:"ECTE231122137", name:"Muhammad Mursaleen",    father:"Abdul Hameed",                    cgpa:3.35, mid:74 },
+    { roll:"ECTE231122139", name:"Abdullah Hamid",        father:"Mohyuddin Ahmad Ali",             cgpa:3.39, mid:78 },
+    { roll:"ECTE231122140", name:"Badar Ahmad",           father:"Muhammad Habib",                  cgpa:3.32, mid:75 },
+    { roll:"ECTE231122141", name:"Mehak Siddiqui",        father:"M Abid Hussain Siddiqui",         cgpa:3.28, mid:72 },
+    { roll:"ECTE231122142", name:"Muhammad Hussain Shahzad", father:"Shahzad Ahmad Shami",          cgpa:3.25, mid:73 },
+    { roll:"ECTE231122143", name:"Malik Shoaib Khan",     father:"Muhammad Hussain Nasir",          cgpa:3.38, mid:76 },
+    { roll:"ECTE231122145", name:"Muhammad Arif",         father:"Rana Abdul Hameed",               cgpa:3.29, mid:74 },
+    { roll:"ECTE231122146", name:"Waleed Saleem",         father:"Saleem",                          cgpa:3.31, mid:76 },
+    { roll:"ECTE231122147", name:"M. Hamad Khalid",       father:"Khalid",                          cgpa:3.40, mid:79 },
+    { roll:"ECTE231122148", name:"Asad Muneer",           father:"Munir Ahmed",                     cgpa:3.35, mid:77 },
+    { roll:"ECTE231122150", name:"Faizan Ali Chohan",     father:"Amjad Ali",                       cgpa:3.30, mid:74 },
+    { roll:"ECTE231122152", name:"Muhammad Abdullah",     father:"Hafiz Muhammad Abdul Ghafoor Abbasi", cgpa:3.33, mid:73 },
+    { roll:"ECTE231122153", name:"Mahrukh Chodry",        father:"Zulfiqar Naseer",                 cgpa:3.35, mid:75 },
+    { roll:"ECTE231122154", name:"Shayan Ahmad",          father:"Muhammad Ismail",                 cgpa:3.31, mid:71 },
+    { roll:"ECTE231122155", name:"Muhammad Aftab",        father:"Muhammad Ramzan",                 cgpa:3.28, mid:72 }
+];
+
+// Deterministic attendance per student
+function attStatus(roll, day) {
+    let h = 0;
+    for (let i=0;i<roll.length;i++) h += roll.charCodeAt(i);
+    const r = (h + day * 37) % 100;
+    if (r < 80) return 'P';
+    if (r < 92) return 'A';
+    return 'L';
+}
+
+const notifications = [
+    { type:'warn',  icon:'ph-warning',       title:'Final Term Date Sheet Released', body:'Final examinations are scheduled from June 25 to July 10, 2026.' },
+    { type:'info',  icon:'ph-info',           title:'Result Submission Deadline',    body:'Please submit final marks for both courses by June 20, 2026.' },
+    { type:'success', icon:'ph-check-circle', title:'Mid-Term Marks Approved',       body:'Your submitted mid-term marks have been verified by the exam department.' },
+    { type:'info',  icon:'ph-calendar',       title:'Spring 2026 Orientation',       body:'New student orientation for BSCS 1st semester scheduled for March 5.' },
+    { type:'warn',  icon:'ph-bell',           title:'Attendance Shortage Warning',   body:'3 students have attendance below 75%. Please take note.' }
+];
+
+const schedule = [
+    { date:'June 25, 2026', day:'Thursday', time:'02:00 PM – 04:00 PM', code:'CYSE-421', title:'Wireless and Mobile Security',              venue:'Hall-A, Block-3' },
+    { date:'June 27, 2026', day:'Saturday', time:'02:00 PM – 04:00 PM', code:'CYSE-422', title:'Secure Software Design and Development',    venue:'Hall-B, Block-3' },
+    { date:'June 30, 2026', day:'Tuesday',  time:'02:00 PM – 04:00 PM', code:'CYSE-423', title:'HCI & Computer Graphics',                   venue:'Lab-2, Block-2'  },
+    { date:'July  02, 2026', day:'Thursday', time:'02:00 PM – 04:00 PM', code:'CYSE-424', title:'Information Security',                      venue:'Hall-C, Block-1' },
+    { date:'July  05, 2026', day:'Sunday',  time:'02:00 PM – 03:30 PM', code:'COSC-2116', title:'Professional Practices',                   venue:'Room-101'        }
+];
+
+/* ─── Render Helpers ─── */
+function gradeFromMid(mid) {
+    if (mid >= 27) return '<span class="grade-A" style="color:#16803c;font-weight:800;">A+</span>';
+    if (mid >= 25) return '<span class="grade-A" style="color:#16803c;font-weight:800;">A</span>';
+    if (mid >= 23) return '<span class="grade-B" style="color:#0369a1;font-weight:800;">B+</span>';
+    if (mid >= 21) return '<span style="color:#0369a1;font-weight:800;">B</span>';
+    if (mid >= 18) return '<span style="color:#b45309;font-weight:800;">C+</span>';
+    return '<span style="color:#b91c1c;font-weight:800;">F</span>';
+}
+
+function attPercent(roll) {
+    let present=0;
+    for(let d=0;d<20;d++) { if (attStatus(roll,d)==='P') present++; }
+    return Math.round(present/20*100);
+}
+
+/* ─── Section Switcher ─── */
+function showSection(id, el) {
+    document.querySelectorAll('.db-section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.db-nav a').forEach(a => a.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    if (el) el.classList.add('active');
+    const titles = {
+        'sec-overview':'📘 Faculty Dashboard','sec-classes':'📚 My Classes',
+        'sec-students':'👥 Students','sec-attendance':'✅ Attendance',
+        'sec-results':'📊 Result Reports','sec-schedule':'📅 Exam Schedule',
+        'sec-notif':'🔔 Notifications'
+    };
+    document.getElementById('topbarTitle').textContent = titles[id] || '📘 Faculty Dashboard';
+    return false;
+}
+
+/* ─── Overview ─── */
+function renderOverview() {
+    document.getElementById('totalClassesCount').textContent = teacherCourses.length;
+    document.getElementById('totalStudentsBanner').textContent = cysecStudents.length;
+    document.getElementById('totalStudentsCount').textContent = cysecStudents.length;
+    document.getElementById('statClasses').textContent = teacherCourses.length;
+
+    const grid = document.getElementById('overviewClassesGrid');
+    grid.innerHTML = teacherCourses.map(c => `
+        <div class="class-card" onclick="gotoClasses('${c.subject_code}')">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+                <span class="class-code">${c.subject_code}</span>
+                <span class="badge badge-success">Active</span>
+            </div>
+            <h4 style="margin-top:.6rem;font-size:1rem;">${c.subject_name}</h4>
+            <div class="class-meta">
+                <span><i class="ph ph-graduation-cap"></i> ${c.program} Sem ${c.semester}</span>
+                <span><i class="ph ph-clock"></i> ${c.credit_hours} Credits</span>
+                <span><i class="ph ph-users"></i> ${c.students_count} Students</span>
+                <span><i class="ph ph-moon-stars"></i> ${c.shift} Shift</span>
+            </div>
+            <div class="class-actions">
+                <button class="btn btn-outline btn-sm"><i class="ph ph-users"></i> View Roster</button>
+                <button class="btn btn-outline btn-sm"><i class="ph ph-chart-bar"></i> Results</button>
+            </div>
+        </div>
+    `).join('');
+
+    const notifEl = document.getElementById('overviewNotifs');
+    notifEl.innerHTML = notifications.slice(0,3).map(n => `
+        <div class="notif-item">
+            <div class="notif-icon ${n.type}"><i class="ph ${n.icon}"></i></div>
+            <div class="notif-body"><h5>${n.title}</h5><p>${n.body}</p></div>
+        </div>
+    `).join('');
+}
+
+/* ─── Classes / Roster ─── */
+let activeRosterCourse = null;
+let rosterData = [];
+
+function renderClassesSection() {
+    const grid = document.getElementById('classesGrid');
+    grid.innerHTML = teacherCourses.map((c, idx) => `
+        <div class="class-card" id="classCard${idx}" onclick="loadRoster(${idx}, this)">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+                <span class="class-code">${c.subject_code}</span>
+                <span class="badge badge-success">Active</span>
+            </div>
+            <h4 style="margin-top:.6rem;font-size:1rem;">${c.subject_name}</h4>
+            <div class="class-meta">
+                <span><i class="ph ph-graduation-cap"></i> ${c.program}</span>
+                <span><i class="ph ph-clock"></i> ${c.credit_hours} Cr. Hrs</span>
+                <span><i class="ph ph-users"></i> ${c.students_count} Students</span>
+            </div>
+        </div>
+    `).join('');
+    loadRoster(0, document.getElementById('classCard0'));
+}
+
+function loadRoster(idx, el) {
+    document.querySelectorAll('#classesGrid .class-card').forEach(c => c.classList.remove('selected'));
+    if (el) el.classList.add('selected');
+    const course = teacherCourses[idx];
+    document.getElementById('activeClassName').textContent = course.subject_name;
+    rosterData = cysecStudents.map(s => ({ ...s, att: attPercent(s.roll) }));
+    document.getElementById('studentCountBadge').textContent = rosterData.length + ' Enrolled';
+    renderRosterTable(rosterData);
+}
+
+function renderRosterTable(data) {
+    const tbody = document.getElementById('studentTableBody');
+    tbody.innerHTML = data.map((s, i) => {
+        const pass = s.mid >= 15;
+        return `<tr>
+            <td>${i+1}</td>
+            <td><strong>${s.roll}</strong></td>
+            <td>${s.name}</td>
+            <td>${s.father}</td>
+            <td>BS Cyber Security (6th Eve)</td>
+            <td>${s.mid}/30</td>
+            <td>${s.att}%</td>
+            <td>${pass ? '<span class="badge badge-success">Pass</span>' : '<span class="badge badge-danger">Fail</span>'}</td>
+        </tr>`;
+    }).join('');
+}
+
+function filterRoster() {
+    const q = document.getElementById('rosterSearch').value.toLowerCase();
+    renderRosterTable(rosterData.filter(s => s.name.toLowerCase().includes(q) || s.roll.toLowerCase().includes(q)));
+}
+
+function exportRosterCSV() {
+    const rows = [['Roll No', 'Name', 'Father', 'Program', 'Mid', 'Attendance']];
+    rosterData.forEach(s => rows.push([s.roll, s.name, s.father, 'BS Cyber Security', s.mid, s.att + '%']));
+    const csv = rows.map(r => r.join(',')).join('\n');
+    const a = document.createElement('a');
+    a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+    a.download = 'roster.csv';
+    a.click();
+}
+
+/* ─── Students Directory ─── */
+function renderStudentDir() {
+    const tbody = document.getElementById('studentDirBody');
+    const allData = cysecStudents.map((s,i) => ({ ...s, att: attPercent(s.roll), idx:i }));
+    window._studentDirAll = allData;
+    renderStudentDirTable(allData);
+}
+
+function renderStudentDirTable(data) {
+    const tbody = document.getElementById('studentDirBody');
+    tbody.innerHTML = data.map((s, i) => {
+        const gradeHtml = s.cgpa >= 3.8 ? '<span class="badge badge-success">A+</span>'
+            : s.cgpa >= 3.5 ? '<span class="badge badge-primary">A</span>'
+            : s.cgpa >= 3.0 ? '<span class="badge badge-gold">B</span>'
+            : '<span class="badge badge-danger">C/D</span>';
+        return `<tr>
+            <td>${i+1}</td>
+            <td><strong>${s.roll}</strong></td>
+            <td>${s.name}</td>
+            <td>${s.father}</td>
+            <td><strong>${s.cgpa.toFixed(2)}</strong></td>
+            <td>${s.mid}/30</td>
+            <td>${s.att}%</td>
+            <td>${gradeHtml}</td>
+        </tr>`;
+    }).join('');
+    document.getElementById('studentDirCount').textContent = data.length + ' Students';
+}
+
+function filterStudentDir() {
+    const q = document.getElementById('studentDirSearch').value.toLowerCase();
+    renderStudentDirTable(window._studentDirAll.filter(s =>
+        s.name.toLowerCase().includes(q) || s.roll.toLowerCase().includes(q) || s.father.toLowerCase().includes(q)
+    ));
+}
+
+/* ─── Attendance ─── */
+const ATT_DATES = ['Mar 1','Mar 5','Mar 8','Mar 12','Mar 15','Mar 19','Mar 22','Mar 26','Apr 2','Apr 5',
+                   'Apr 9','Apr 12','Apr 16','Apr 19','Apr 23','Apr 26','Apr 30','May 3','May 7','May 10'];
+
+function renderAttendance(courseIdx) {
+    const course = teacherCourses[courseIdx];
+    document.getElementById('attCourse').textContent = course.subject_name;
+
+    const hdr = document.getElementById('attHeaderRow');
+    hdr.innerHTML = '<th>Roll</th><th>Name</th>' + ATT_DATES.map(d => `<th style="font-size:.65rem;">${d}</th>`).join('') + '<th>%</th>';
+
+    const tbody = document.getElementById('attBody');
+    tbody.innerHTML = cysecStudents.map(s => {
+        let pCount = 0;
+        const cells = ATT_DATES.map((_, d) => {
+            const st = attStatus(s.roll, d + courseIdx*5);
+            if (st==='P') pCount++;
+            const cls = st==='P' ? 'att-p' : st==='A' ? 'att-a' : 'att-l';
+            return `<td class="${cls}">${st}</td>`;
+        }).join('');
+        const pct = Math.round(pCount/20*100);
+        const pctColor = pct >= 75 ? 'var(--success)' : 'var(--danger)';
+        return `<tr><td><strong style="font-size:.78rem;">${s.roll.slice(-5)}</strong></td><td style="white-space:nowrap;">${s.name}</td>${cells}<td style="font-weight:700;color:${pctColor};">${pct}%</td></tr>`;
+    }).join('');
+}
+
+function switchAttCourse(val) {
+    renderAttendance(parseInt(val));
+}
+
+/* ─── Results ─── */
+let _allResultRows = [];
+function renderResults() {
+    _allResultRows = [];
+    cysecStudents.forEach(s => {
+        teacherCourses.forEach(c => {
+            const att = attPercent(s.roll);
+            _allResultRows.push({ ...s, course: c.subject_name, code: c.subject_code, att });
+        });
+    });
+    renderResultsTable(_allResultRows);
+}
+
+function renderResultsTable(data) {
+    const tbody = document.getElementById('resultsTableBody');
+    tbody.innerHTML = data.map((r, i) => {
+        const pass = r.mid >= 15;
+        const attOk = r.att >= 75;
+        return `<tr>
+            <td>${i+1}</td>
+            <td><strong>${r.roll}</strong></td>
+            <td>${r.name}</td>
+            <td><span class="badge badge-primary">${r.code}</span></td>
+            <td>${r.mid}/30</td>
+            <td style="color:${attOk ? 'var(--success)' : 'var(--danger)'};">${r.att}%</td>
+            <td>${pass ? '<span class="badge badge-success">Pass</span>' : '<span class="badge badge-danger">Fail</span>'}</td>
+        </tr>`;
+    }).join('');
+}
+
+function filterResults() {
+    const q = document.getElementById('resultSearch').value.toLowerCase();
+    const codeFilter = document.getElementById('resultCourseFilter').value;
+    renderResultsTable(_allResultRows.filter(r =>
+        (r.name.toLowerCase().includes(q) || r.roll.toLowerCase().includes(q)) &&
+        (!codeFilter || r.code === codeFilter)
+    ));
+}
+
+/* ─── Schedule ─── */
+function renderSchedule() {
+    document.getElementById('scheduleBody').innerHTML = schedule.map(s => `
+        <tr>
+            <td>${s.date}</td>
+            <td class="schedule-day">${s.day}</td>
+            <td>${s.time}</td>
+            <td><span class="badge badge-primary">${s.code}</span></td>
+            <td>${s.title}</td>
+            <td>${s.venue}</td>
+        </tr>
+    `).join('');
+}
+
+/* ─── Notifications ─── */
+function renderNotifications() {
+    document.getElementById('notifCount').textContent = notifications.length + ' Unread';
+    document.getElementById('notifList').innerHTML = notifications.map(n => `
+        <div class="notif-item">
+            <div class="notif-icon ${n.type}"><i class="ph ${n.icon}"></i></div>
+            <div class="notif-body"><h5>${n.title}</h5><p>${n.body}</p></div>
+        </div>
+    `).join('');
+}
+
+/* ─── Theme ─── */
+function initTheme() {
+    const stored = localStorage.getItem('theme');
+    if (stored === 'dark') document.body.classList.add('dark');
+    const btn = document.getElementById('themeToggleBtn');
+    btn.addEventListener('click', () => {
+        document.body.classList.toggle('dark');
+        const isDark = document.body.classList.contains('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        btn.innerHTML = isDark ? '<i class="ph ph-sun"></i> Light' : '<i class="ph ph-moon"></i> Dark';
+    });
+    if (stored==='dark') btn.innerHTML = '<i class="ph ph-sun"></i> Light';
+}
+
+function toggleSidebar() {
+    document.getElementById('dbSidebar').classList.toggle('collapsed');
+}
+
+function doLogout(e) {
+    e.preventDefault();
+    localStorage.clear();
+    window.location.href = 'login.html';
+}
+
+function gotoClasses(code) {
+    const el = document.querySelector('[data-section="sec-classes"]');
+    showSection('sec-classes', el);
+    const idx = teacherCourses.findIndex(c => c.subject_code === code);
+    if (idx >= 0) setTimeout(() => loadRoster(idx, document.getElementById('classCard'+idx)), 100);
+}
+
+window.showSection  = showSection;
+window.toggleSidebar = toggleSidebar;
+window.doLogout     = doLogout;
+window.gotoClasses  = gotoClasses;
+window.loadRoster   = loadRoster;
+window.filterRoster = filterRoster;
+window.exportRosterCSV = exportRosterCSV;
+window.filterStudentDir = filterStudentDir;
+window.filterResults = filterResults;
+window.switchAttCourse = switchAttCourse;
+
+/* ─── Boot ─── */
+document.getElementById('teacherName').textContent   = TEACHER_NAME;
+document.getElementById('teacherInitials').textContent = TEACHER_INIT;
+
+renderOverview();
+renderClassesSection();
+renderStudentDir();
+renderAttendance(0);
+renderResults();
+renderSchedule();
+renderNotifications();
+initTheme();
 </script>
 </body>
 </html>

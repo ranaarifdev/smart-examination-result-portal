@@ -63,9 +63,6 @@
                 <button class="auth-tab-btn" id="tab-teacher" onclick="switchTab('teacher')">
                     <i class="ph ph-chalkboard-teacher"></i> Teacher
                 </button>
-                <button class="auth-tab-btn" id="tab-admin" onclick="switchTab('admin')">
-                    <i class="ph ph-shield-check"></i> Admin
-                </button>
             </div>
 
             <!-- Student Form -->
@@ -109,7 +106,7 @@
                 <div class="form-group">
                     <label class="form-label">Employee ID / CNIC</label>
                     <div style="position:relative;">
-                        <input type="text" id="teacher-id" class="form-control" placeholder="e.g. EMP-998" required style="padding-left:2.5rem;">
+                        <input type="text" id="teacher-id" class="form-control" placeholder="e.g. EMP-013" required style="padding-left:2.5rem;">
                         <i class="ph ph-identification-badge" style="position:absolute;left:0.75rem;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:1.1rem;"></i>
                     </div>
                 </div>
@@ -133,38 +130,7 @@
                     <i class="ph ph-sign-in"></i> Sign In as Teacher
                 </button>
                 <div style="background:var(--primary-pale);border-radius:var(--radius-sm);padding:0.75rem;margin-top:1rem;font-size:0.78rem;color:var(--text-muted);">
-                    <strong style="color:var(--primary);">Demo:</strong> Employee ID: <code>EMP-998</code> &nbsp; Pass: <code>teacher123</code>
-                </div>
-            </form>
-
-            <!-- Admin Form -->
-            <form id="admin-form" class="auth-form" onsubmit="handleLogin(event,'admin')">
-                <div style="background:rgba(200,16,46,0.07);border:1px solid rgba(200,16,46,0.2);border-radius:var(--radius-sm);padding:0.75rem;margin-bottom:1.25rem;font-size:0.8rem;color:var(--secondary);display:flex;gap:0.5rem;align-items:center;">
-                    <i class="ph ph-warning" style="flex-shrink:0;font-size:1rem;"></i>
-                    Restricted area. Authorized administrators only.
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Admin Email / Username</label>
-                    <div style="position:relative;">
-                        <input type="text" id="admin-id" class="form-control" placeholder="admin@fcet.edu.pk" required style="padding-left:2.5rem;">
-                        <i class="ph ph-shield-check" style="position:absolute;left:0.75rem;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:1.1rem;"></i>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <div style="position:relative;">
-                        <input type="password" id="admin-pass" class="form-control" placeholder="Enter admin password" required style="padding-left:2.5rem; padding-right:2.5rem;">
-                        <i class="ph ph-lock" style="position:absolute;left:0.75rem;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:1.1rem;"></i>
-                        <button type="button" onclick="togglePass('admin-pass',this)" style="position:absolute;right:0.75rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text-muted);">
-                            <i class="ph ph-eye"></i>
-                        </button>
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-secondary btn-block btn-lg" id="btn-admin" style="margin-top:1rem;">
-                    <i class="ph ph-shield-check"></i> Sign In as Admin
-                </button>
-                <div style="background:var(--primary-pale);border-radius:var(--radius-sm);padding:0.75rem;margin-top:1rem;font-size:0.78rem;color:var(--text-muted);">
-                    <strong style="color:var(--primary);">Demo:</strong> Email: <code>admin@fcet.edu.pk</code> &nbsp; Pass: <code>admin123</code>
+                    <strong style="color:var(--primary);">Demo:</strong> Employee ID: <code>EMP-013</code> &nbsp; Pass: <code>teacher123</code>
                 </div>
             </form>
         </div>

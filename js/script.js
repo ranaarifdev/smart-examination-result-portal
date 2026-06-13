@@ -193,6 +193,111 @@ function fakeResponse(responseData, status = 200) {
     };
 }
 
+function getCoursesAndMarksForStudent(student, db) {
+    const program = student.program || 'BSCS';
+    const semester = student.semester || 6;
+    let studentCourses = [];
+
+    // Filter from data.js classes
+    if (db.classes) {
+        studentCourses = db.classes.filter(c => c.program.toLowerCase() === program.toLowerCase() && c.semester === semester);
+    }
+
+    // Default courses if empty
+    if (studentCourses.length === 0) {
+        if (program.toUpperCase() === 'BSCS') {
+            studentCourses = [
+                { subject_name: 'Web Engineering', subject_code: 'CS-301', credit_hours: 3 },
+                { subject_name: 'Artificial Intelligence', subject_code: 'CS-305', credit_hours: 4 },
+                { subject_name: 'Software Project Management', subject_code: 'SE-402', credit_hours: 3 },
+                { subject_name: 'Computer Networks', subject_code: 'CS-311', credit_hours: 4 },
+                { subject_name: 'Technical Writing & Presentation', subject_code: 'HU-201', credit_hours: 3 }
+            ];
+        } else if (program.toUpperCase().includes('CYBER') || program.toUpperCase() === 'BSCYS') {
+            studentCourses = [
+                { subject_name: 'Wireless and Mobile Security', subject_code: 'CYSE-421', credit_hours: 3 },
+                { subject_name: 'Secure Software Design', subject_code: 'CYSE-422', credit_hours: 3 },
+                { subject_name: 'HCI & Computer Graphics', subject_code: 'CYSE-423', credit_hours: 3 },
+                { subject_name: 'Information Security', subject_code: 'CYSE-424', credit_hours: 3 },
+                { subject_name: 'Professional Practices', subject_code: 'COSC-2116', credit_hours: 2 }
+            ];
+        } else if (program.toUpperCase() === 'BSIT') {
+            studentCourses = [
+                { subject_name: 'Virtual System and Services', subject_code: 'IT-401', credit_hours: 4 },
+                { subject_name: 'Advance OOP with Java', subject_code: 'IT-403', credit_hours: 3 },
+                { subject_name: 'Telecommunication Systems', subject_code: 'IT-405', credit_hours: 3 },
+                { subject_name: 'Information Security', subject_code: 'IT-407', credit_hours: 3 },
+                { subject_name: 'Entrepreneurship', subject_code: 'MG-409', credit_hours: 3 }
+            ];
+        } else {
+            studentCourses = [
+                { subject_name: 'Course 1', subject_code: 'SUB-101', credit_hours: 3 },
+                { subject_name: 'Course 2', subject_code: 'SUB-102', credit_hours: 3 },
+                { subject_name: 'Course 3', subject_code: 'SUB-103', credit_hours: 3 },
+                { subject_name: 'Course 4', subject_code: 'SUB-104', credit_hours: 3 },
+                { subject_name: 'Course 5', subject_code: 'SUB-105', credit_hours: 3 }
+            ];
+        }
+    }
+
+    // Generate deterministic marks based on roll number hash and SGPA
+    const sgpa = student.sgpa || 3.0;
+    const rollNum = student.roll_number || '3400002312';
+    let hash = 0;
+    for (let i = 0; i < rollNum.length; i++) {
+        hash += rollNum.charCodeAt(i);
+    }
+
+    const totalCredits = studentCourses.reduce((sum, c) => sum + (c.credit_hours || 3), 0);
+    const gpas = [];
+    let remainingGPPoints = sgpa * totalCredits;
+
+    for (let i = 0; i < studentCourses.length; i++) {
+        const course = studentCourses[i];
+        const credits = course.credit_hours || 3;
+        let gpa;
+        if (i === studentCourses.length - 1) {
+            gpa = Math.min(4.0, Math.max(0.0, remainingGPPoints / credits));
+        } else {
+            const variation = (((hash + i) % 11) - 5) * 0.1;
+            gpa = Math.min(4.0, Math.max(0.0, sgpa + variation));
+            remainingGPPoints -= gpa * credits;
+        }
+        gpas.push(gpa);
+    }
+
+    return studentCourses.map((course, idx) => {
+        const gpa = parseFloat(gpas[idx].toFixed(2));
+        let grade = 'B';
+        let obtainedMarks = 75;
+        if (gpa >= 4.0) { grade = 'A+'; obtainedMarks = 90 + (hash % 10); }
+        else if (gpa >= 3.8) { grade = 'A'; obtainedMarks = 85 + (hash % 5); }
+        else if (gpa >= 3.5) { grade = 'B+'; obtainedMarks = 80 + (hash % 5); }
+        else if (gpa >= 3.0) { grade = 'B'; obtainedMarks = 75 + (hash % 4); }
+        else if (gpa >= 2.5) { grade = 'C+'; obtainedMarks = 70 + (hash % 4); }
+        else if (gpa >= 2.0) { grade = 'C'; obtainedMarks = 60 + (hash % 10); }
+        else if (gpa >= 1.0) { grade = 'D'; obtainedMarks = 50 + (hash % 10); }
+        else { grade = 'F'; obtainedMarks = 40 + (hash % 10); }
+
+        const mid = Math.round(obtainedMarks * 0.3);
+        const final = obtainedMarks - mid;
+
+        return {
+            code: course.subject_code || course.course_code,
+            name: course.subject_name || course.course_title,
+            creditHours: course.credit_hours || 3,
+            mid,
+            final,
+            obtained: obtainedMarks,
+            grade,
+            gpa
+        };
+    });
+}
+
+// Expose helper globally
+window.getCoursesAndMarksForStudent = getCoursesAndMarksForStudent;
+
 async function fakeFetch(endpoint, options = {}) {
     const db = getDatabase();
     const url = new URL(endpoint, 'https://example.com');
@@ -211,8 +316,6 @@ async function fakeFetch(endpoint, options = {}) {
             user = db.users.find(u => u.role === 'student' && (u.login_id === id || u.email === id));
         } else if (role === 'teacher') {
             user = db.users.find(u => u.role === 'teacher' && (u.login_id === id || u.email === id));
-        } else {
-            user = db.users.find(u => u.role === 'admin' && (u.login_id === id || u.email === id || u.username === id));
         }
 
         if (!user || user.password !== password) {
@@ -226,47 +329,23 @@ async function fakeFetch(endpoint, options = {}) {
         return fakeResponse({ message: 'Login successful', token, user }, 200);
     }
 
-
-
     if (path === '/api/student/results' && method === 'GET') {
         if (!currentUser || currentUser.role !== 'student') {
             return fakeResponse({ error: 'Unauthorized' }, 401);
         }
-        const results = db.results.filter(r => r.roll_number === currentUser.login_id);
-        return fakeResponse(results, 200);
+        const studentResult = db.results.find(r => r.roll_number === currentUser.login_id);
+        if (!studentResult) return fakeResponse([], 200);
+        const marks = getCoursesAndMarksForStudent(studentResult, db);
+        return fakeResponse(marks, 200);
     }
 
     if (path === '/api/teacher/dashboard' && method === 'GET') {
         if (!currentUser || currentUser.role !== 'teacher') {
             return fakeResponse({ error: 'Unauthorized' }, 401);
         }
+        // Find teacher courses
         const classes = db.classes.filter(c => c.teacher_id === currentUser.login_id);
         return fakeResponse({ teacher: currentUser, classes, timetable: db.timetable }, 200);
-    }
-
-    if (path === '/api/admin/details' && method === 'GET') {
-        if (!currentUser || currentUser.role !== 'admin') {
-            return fakeResponse({ error: 'Unauthorized' }, 401);
-        }
-        const students = db.users.filter(u => u.role === 'student');
-        const teachers = db.users.filter(u => u.role === 'teacher');
-        return fakeResponse({
-            stats: computeStats(db),
-            students,
-            teachers,
-            classes: db.classes,
-            timetable: db.timetable,
-            courseAllocation: db.courseAllocation,
-            notifications: db.notifications,
-            results: db.results
-        }, 200);
-    }
-
-    if (path === '/api/admin/stats' && method === 'GET') {
-        if (!currentUser || currentUser.role !== 'admin') {
-            return fakeResponse({ error: 'Unauthorized' }, 401);
-        }
-        return fakeResponse(computeStats(db), 200);
     }
 
     if (!currentUser) {
@@ -281,7 +360,8 @@ async function fakeFetch(endpoint, options = {}) {
             semester: currentUser.semester || 1,
             cgpa: currentUser.cgpa || 0.0
         };
-        return fakeResponse({ student, notifications: db.notifications }, 200);
+        const studentResult = db.results.find(r => r.roll_number === currentUser.login_id) || {};
+        return fakeResponse({ student, studentResult, notifications: db.notifications }, 200);
     }
 
     if (path === '/api/teacher/classes' && currentUser.role === 'teacher') {
@@ -289,15 +369,14 @@ async function fakeFetch(endpoint, options = {}) {
         return fakeResponse(classes, 200);
     }
 
-    if (path === '/api/admin/stats' && currentUser.role === 'admin') {
-        return fakeResponse(db.stats, 200);
-    }
-
     if (path === '/api/public/search' && method === 'GET') {
         const roll = url.searchParams.get('roll_number');
-        const student = db.results.find(r => r.roll_number === roll);
-        if (!student) return fakeResponse({ error: 'Result not found' }, 404);
-        return fakeResponse(student, 200);
+        const studentResult = db.results.find(r => r.roll_number === roll);
+        if (!studentResult) return fakeResponse({ error: 'Result not found' }, 404);
+        
+        // Add dynamic marks detail
+        const marksDetail = getCoursesAndMarksForStudent(studentResult, db);
+        return fakeResponse({ ...studentResult, username: studentResult.name, marks: marksDetail }, 200);
     }
 
     return fakeResponse({ error: 'Endpoint not found' }, 404);

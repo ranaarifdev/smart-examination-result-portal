@@ -3,26 +3,279 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Final Term Date Sheet 2026</title>
+    <title>Final Term Datesheet 2026 | FCET</title>
+    <meta name="description" content="Official final term examination datesheet for Spring 2026 at FCET, Emerson University Multan.">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: Arial, sans-serif; margin: 2rem; line-height: 1.6; color: #111; }
-        .container { max-width: 900px; margin: 0 auto; }
-        h1 { color: #0C4A6E; }
-        p { margin: 1rem 0; }
-        .notice { padding: 1rem; border: 1px solid #B8C0C9; background: #F8FAFC; border-radius: 0.75rem; }
-        a { color: #0C4A6E; text-decoration: none; font-weight: 600; }
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+        :root{
+            --primary:#0a3161;--primary-pale:#eef2fc;--secondary:#c8102e;
+            --accent:#f4b942;--success:#198038;--success-pale:#e6f4ea;
+            --danger:#c5221f;--warning:#b85c00;
+            --text-main:#1e2a3e;--text-muted:#5c6f87;
+            --border-color:#e2e8f0;--bg-main:#f8fafc;--bg-card:#ffffff;--bg-hover:#f1f5f9;
+            --radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-full:9999px;
+            --shadow-xs:0 1px 3px rgba(0,0,0,.06);
+        }
+        body{font-family:'Inter',system-ui,sans-serif;background:var(--bg-main);color:var(--text-main);}
+        .topbar{background:linear-gradient(135deg,#0a3161 0%,#1a5cad 100%);padding:1.2rem 0;margin-bottom:2rem;}
+        .topbar-inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;}
+        .topbar-left{display:flex;align-items:center;gap:1rem;}
+        .topbar-left a{color:rgba(255,255,255,.7);font-size:.82rem;display:flex;align-items:center;gap:.3rem;text-decoration:none;}
+        .topbar-left a:hover{color:white;}
+        .topbar-left h1{font-size:1.15rem;color:white;font-weight:800;}
+        .topbar-right{display:flex;gap:.5rem;}
+        .container{max-width:1100px;margin:0 auto;padding:0 1.25rem;}
+        .page-header{margin-bottom:1.5rem;}
+        .eyebrow{font-size:.65rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#b45309;margin-bottom:.3rem;}
+        .page-header h2{font-size:1.5rem;font-weight:800;color:var(--primary);}
+        .page-header p{font-size:.88rem;color:var(--text-muted);margin-top:.3rem;}
+        .filter-bar{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:1rem 1.25rem;margin-bottom:1.5rem;display:flex;flex-wrap:wrap;gap:.75rem;align-items:center;}
+        .search-group{display:flex;align-items:center;gap:.5rem;background:var(--bg-hover);border:1px solid var(--border-color);border-radius:var(--radius-full);padding:.4rem 1rem;flex:1;min-width:200px;max-width:360px;}
+        .search-group input{border:none;background:transparent;outline:none;font-size:.88rem;color:var(--text-main);width:100%;}
+        .search-group i{color:var(--text-muted);}
+        select.fs{border:1px solid var(--border-color);border-radius:var(--radius-full);padding:.4rem .9rem;font-size:.82rem;background:var(--bg-hover);color:var(--text-main);cursor:pointer;outline:none;}
+        .btn{display:inline-flex;align-items:center;gap:.4rem;padding:.45rem .9rem;border-radius:var(--radius-full);font-size:.82rem;font-weight:600;cursor:pointer;border:none;transition:.18s;}
+        .btn-outline{background:transparent;border:1px solid rgba(255,255,255,.3);color:white;}
+        .btn-sm{font-size:.78rem;padding:.35rem .75rem;}
+        .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem;}
+        .stat-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:1rem 1.25rem;display:flex;align-items:center;gap:.9rem;}
+        .stat-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.35rem;flex-shrink:0;}
+        .stat-icon.blue{background:#eef2ff;color:#1e40af;} .stat-icon.green{background:#e6f7ec;color:#15803d;}
+        .stat-icon.gold{background:#fff3e6;color:#b45309;} .stat-icon.red{background:#ffe6e5;color:#b91c1c;}
+        .stat-info p{font-size:.72rem;color:var(--text-muted);} .stat-info h3{font-size:1.3rem;font-weight:800;}
+        .card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-xs);margin-bottom:1.5rem;}
+        .card-header{padding:1rem 1.25rem;border-bottom:1px solid var(--border-color);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;}
+        .card-header h4{font-size:.95rem;font-weight:700;display:flex;align-items:center;gap:.5rem;}
+        .table-wrapper{overflow-x:auto;}
+        .data-table{width:100%;border-collapse:collapse;}
+        .data-table th{text-align:left;padding:.85rem 1rem;background:var(--bg-hover);font-size:.7rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;white-space:nowrap;}
+        .data-table td{padding:.85rem 1rem;border-bottom:1px solid var(--border-color);font-size:.85rem;}
+        .data-table tr:last-child td{border-bottom:none;}
+        .data-table tbody tr:hover td{background:var(--bg-hover);}
+        .data-table tbody tr.today-row td{background:#fff9e6;}
+        .badge{font-size:.7rem;padding:.2rem .65rem;border-radius:30px;font-weight:600;white-space:nowrap;}
+        .badge-success{background:var(--success-pale);color:var(--success);}
+        .badge-primary{background:var(--primary-pale);color:var(--primary);}
+        .badge-gold{background:#fff3e6;color:#b45309;}
+        .badge-danger{background:#ffe6e5;color:#b91c1c;}
+        .badge-muted{background:var(--bg-hover);color:var(--text-muted);}
+        .day-label{font-weight:700;color:var(--primary);}
+        .calendar-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin-bottom:1.5rem;}
+        .cal-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:1.1rem;position:relative;overflow:hidden;}
+        .cal-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--primary);}
+        .cal-card:nth-child(even)::before{background:var(--secondary);}
+        .cal-date{font-size:.72rem;font-weight:700;color:var(--text-muted);margin-bottom:.3rem;}
+        .cal-course{font-weight:700;font-size:.95rem;margin-bottom:.4rem;}
+        .cal-meta{font-size:.78rem;color:var(--text-muted);display:flex;flex-direction:column;gap:.2rem;}
+        @media(max-width:750px){.stats-row{grid-template-columns:1fr 1fr;}}
+        @media print{.topbar,.filter-bar,.no-print{display:none!important;}body{background:white;}}
     </style>
 </head>
 <body>
+<div class="topbar">
     <div class="container">
-        <h1>Final Term Date Sheet 2026</h1>
-        <p>This placeholder file has been added so the app can link to a downloadable date sheet.</p>
-        <div class="notice">
-            <strong>Important:</strong> Replace this file with the actual date sheet HTML or PDF file from your system.
-            The app already points to <code>public/downloads/final-term-datesheet-2026.html</code>.
+        <div class="topbar-inner">
+            <div class="topbar-left">
+                <a href="../index.html"><i class="ph ph-arrow-left"></i> Home</a>
+                <h1><i class="ph ph-calendar"></i> Final Term Datesheet — Spring 2026</h1>
+            </div>
+            <div class="topbar-right">
+                <button class="btn btn-outline btn-sm" onclick="toggleView()" id="viewToggleBtn"><i class="ph ph-squares-four"></i> Card View</button>
+                <button class="btn btn-outline btn-sm" onclick="exportCSV()"><i class="ph ph-download-simple"></i> Export</button>
+                <button class="btn btn-outline btn-sm" onclick="window.print()"><i class="ph ph-printer"></i> Print</button>
+            </div>
         </div>
-        <p>If you want, rename the actual date sheet file to <code>final-term-datesheet-2026.html</code> and place it here.</p>
-        <p><a href="../pages/datesheet.html">Back to Date Sheet page</a></p>
     </div>
+</div>
+
+<div class="container">
+    <div class="page-header">
+        <div class="eyebrow">FCET — Emerson University Multan</div>
+        <h2>Final Term Examination Schedule — Spring 2026</h2>
+        <p>Examinations run from <strong>June 25 to July 10, 2026</strong>. Time: 2:00 PM – 4:00 PM (Evening) | 8:30 AM – 10:30 AM (Morning).</p>
+    </div>
+
+    <div class="stats-row">
+        <div class="stat-card"><div class="stat-icon blue"><i class="ph ph-calendar-blank"></i></div><div class="stat-info"><p>Total Exams</p><h3 id="statTotal">0</h3></div></div>
+        <div class="stat-card"><div class="stat-icon green"><i class="ph ph-check-circle"></i></div><div class="stat-info"><p>Completed</p><h3 id="statDone">0</h3></div></div>
+        <div class="stat-card"><div class="stat-icon gold"><i class="ph ph-clock"></i></div><div class="stat-info"><p>Upcoming</p><h3 id="statUp">0</h3></div></div>
+        <div class="stat-card"><div class="stat-icon red"><i class="ph ph-map-pin"></i></div><div class="stat-info"><p>Venues</p><h3 id="statVenues">0</h3></div></div>
+    </div>
+
+    <!-- Announce Banner -->
+    <div style="background:linear-gradient(135deg,#fff3e6,#fff9f0);border:1px solid #f4b942;border-radius:var(--radius-md);padding:1rem 1.25rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:.75rem;">
+        <i class="ph ph-bell-ringing" style="font-size:1.5rem;color:#b45309;flex-shrink:0;"></i>
+        <div>
+            <strong>Important Notice:</strong> Students must bring their University ID cards and Admit Cards. Mobile phones are strictly prohibited in examination halls.
+        </div>
+    </div>
+
+    <div class="filter-bar no-print">
+        <div class="search-group">
+            <i class="ph ph-magnifying-glass"></i>
+            <input type="text" id="searchInput" placeholder="Search course or venue…" oninput="applyFilters()">
+        </div>
+        <select class="fs" id="progFilter" onchange="applyFilters()">
+            <option value="">All Programs</option>
+            <option value="BSCS">BS Computer Science</option>
+            <option value="BSCYS">BS Cyber Security</option>
+            <option value="BSIT">BS Information Technology</option>
+        </select>
+        <select class="fs" id="shiftFilter" onchange="applyFilters()">
+            <option value="">All Shifts</option>
+            <option value="Morning">Morning</option>
+            <option value="Evening">Evening</option>
+        </select>
+        <span class="badge badge-primary" id="rowCount" style="font-size:.78rem;padding:.3rem .8rem;">0 exams</span>
+    </div>
+
+    <!-- Table View (default) -->
+    <div id="tableView">
+        <div class="card">
+            <div class="card-header">
+                <h4><i class="ph ph-calendar-dots"></i> Examination Timetable</h4>
+                <span class="badge badge-gold">Spring 2026</span>
+            </div>
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr><th>#</th><th>Date</th><th>Day</th><th>Time</th><th>Code</th><th>Course Title</th><th>Program</th><th>Semester</th><th>Shift</th><th>Venue</th><th>Status</th></tr>
+                    </thead>
+                    <tbody id="dateBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card View (toggle) -->
+    <div id="cardView" style="display:none;">
+        <div class="calendar-grid" id="cardGrid"></div>
+    </div>
+</div>
+
+<script>
+const today = new Date('2026-06-13');
+const schedule = [
+    // Cyber Security Evening
+    {date:'2026-06-25',day:'Thursday', time:'02:00 PM – 04:00 PM', code:'CYSE-421', course:'Wireless and Mobile Security',        prog:'BSCYS', sem:6, shift:'Evening', venue:'Hall-A, Block-3'},
+    {date:'2026-06-27',day:'Saturday', time:'02:00 PM – 04:00 PM', code:'CYSE-422', course:'Secure Software Design',              prog:'BSCYS', sem:6, shift:'Evening', venue:'Hall-B, Block-3'},
+    {date:'2026-06-30',day:'Tuesday',  time:'02:00 PM – 04:00 PM', code:'CYSE-423', course:'HCI & Computer Graphics',             prog:'BSCYS', sem:6, shift:'Evening', venue:'Lab-2, Block-2'},
+    {date:'2026-07-02',day:'Thursday', time:'02:00 PM – 04:00 PM', code:'CYSE-424', course:'Information Security',                prog:'BSCYS', sem:6, shift:'Evening', venue:'Hall-C, Block-1'},
+    {date:'2026-07-05',day:'Sunday',   time:'02:00 PM – 03:30 PM', code:'COSC-2116',course:'Professional Practices',             prog:'BSCYS', sem:6, shift:'Evening', venue:'Room-101'},
+    // CS Morning
+    {date:'2026-06-25',day:'Thursday', time:'08:30 AM – 10:30 AM', code:'CS-501', course:'Advanced Algorithms',                  prog:'BSCS',  sem:7, shift:'Morning', venue:'Hall-D, Block-1'},
+    {date:'2026-06-26',day:'Friday',   time:'08:30 AM – 10:30 AM', code:'CS-503', course:'Distributed Computing',                prog:'BSCS',  sem:7, shift:'Morning', venue:'Hall-E, Block-2'},
+    {date:'2026-06-28',day:'Sunday',   time:'08:30 AM – 10:30 AM', code:'CS-511', course:'Machine Learning',                     prog:'BSCS',  sem:7, shift:'Morning', venue:'Hall-A, Block-3'},
+    {date:'2026-06-30',day:'Tuesday',  time:'08:30 AM – 10:30 AM', code:'CS-401', course:'Operating Systems',                    prog:'BSCS',  sem:5, shift:'Morning', venue:'Hall-B, Block-3'},
+    {date:'2026-07-01',day:'Wednesday',time:'08:30 AM – 10:30 AM', code:'CS-302', course:'Database Systems',                     prog:'BSCS',  sem:5, shift:'Morning', venue:'Hall-C, Block-1'},
+    {date:'2026-07-03',day:'Friday',   time:'08:30 AM – 10:30 AM', code:'CS-311', course:'Computer Networks',                    prog:'BSCS',  sem:5, shift:'Evening', venue:'Hall-D, Block-2'},
+    {date:'2026-07-05',day:'Sunday',   time:'09:00 AM – 10:30 AM', code:'HU-201', course:'Technical Writing',                    prog:'BSCS',  sem:3, shift:'Morning', venue:'Room-102'},
+    // IT Morning
+    {date:'2026-06-26',day:'Friday',   time:'08:30 AM – 10:30 AM', code:'IT-401', course:'Virtual Systems and Services',         prog:'BSIT',  sem:5, shift:'Morning', venue:'Lab-3, Block-4'},
+    {date:'2026-06-29',day:'Monday',   time:'08:30 AM – 10:30 AM', code:'IT-403', course:'Advanced OOP with Java',               prog:'BSIT',  sem:5, shift:'Morning', venue:'Lab-1, Block-4'},
+    {date:'2026-07-01',day:'Wednesday',time:'08:30 AM – 10:30 AM', code:'IT-405', course:'Telecommunication Systems',            prog:'BSIT',  sem:5, shift:'Morning', venue:'Hall-E, Block-2'},
+];
+
+let filtered = [...schedule];
+
+function statusBadge(dateStr) {
+    const d = new Date(dateStr);
+    if (d < today) return '<span class="badge badge-muted">Done</span>';
+    if (d.toDateString() === today.toDateString()) return '<span class="badge badge-gold">Today</span>';
+    return '<span class="badge badge-success">Upcoming</span>';
+}
+
+function fmtDate(dateStr) {
+    return new Date(dateStr).toLocaleDateString('en-PK', {day:'2-digit',month:'short',year:'numeric'});
+}
+
+function applyFilters() {
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    const pf = document.getElementById('progFilter').value;
+    const sf = document.getElementById('shiftFilter').value;
+    filtered = schedule.filter(r => {
+        const mQ = r.course.toLowerCase().includes(q) || r.code.toLowerCase().includes(q) || r.venue.toLowerCase().includes(q);
+        const mP = !pf || r.prog === pf;
+        const mS = !sf || r.shift === sf;
+        return mQ && mP && mS;
+    });
+    render();
+}
+
+function render() {
+    const tbody = document.getElementById('dateBody');
+    tbody.innerHTML = filtered.map((r,i) => {
+        const d = new Date(r.date);
+        const isPast = d < today;
+        return `<tr class="${d.toDateString()===today.toDateString()?'today-row':''}">
+            <td>${i+1}</td>
+            <td><strong>${fmtDate(r.date)}</strong></td>
+            <td class="day-label">${r.day}</td>
+            <td>${r.time}</td>
+            <td><span class="badge badge-primary">${r.code}</span></td>
+            <td>${r.course}</td>
+            <td>${r.prog}</td>
+            <td>Semester ${r.sem}</td>
+            <td><span class="badge ${r.shift==='Evening'?'badge-gold':'badge-success'}">${r.shift}</span></td>
+            <td>${r.venue}</td>
+            <td>${statusBadge(r.date)}</td>
+        </tr>`;
+    }).join('');
+    document.getElementById('rowCount').textContent = filtered.length + ' exams';
+
+    // Card view
+    const cg = document.getElementById('cardGrid');
+    cg.innerHTML = filtered.map(r => `
+        <div class="cal-card">
+            <div class="cal-date">${fmtDate(r.date)} · ${r.day}</div>
+            <div class="cal-course">${r.course}</div>
+            <div class="cal-meta">
+                <span><i class="ph ph-tag"></i> ${r.code} · ${r.prog} Sem ${r.sem}</span>
+                <span><i class="ph ph-clock"></i> ${r.time}</span>
+                <span><i class="ph ph-map-pin"></i> ${r.venue}</span>
+                <span style="margin-top:.3rem;">${statusBadge(r.date)}</span>
+            </div>
+        </div>
+    `).join('');
+}
+
+function updateStats() {
+    const total = schedule.length;
+    let done=0, up=0;
+    schedule.forEach(r => { if(new Date(r.date)<today) done++; else up++; });
+    const venues = new Set(schedule.map(r=>r.venue)).size;
+    document.getElementById('statTotal').textContent = total;
+    document.getElementById('statDone').textContent = done;
+    document.getElementById('statUp').textContent = up;
+    document.getElementById('statVenues').textContent = venues;
+}
+
+let isCardView = false;
+function toggleView() {
+    isCardView = !isCardView;
+    document.getElementById('tableView').style.display = isCardView ? 'none' : '';
+    document.getElementById('cardView').style.display  = isCardView ? '' : 'none';
+    document.getElementById('viewToggleBtn').innerHTML = isCardView
+        ? '<i class="ph ph-list"></i> Table View'
+        : '<i class="ph ph-squares-four"></i> Card View';
+}
+
+function exportCSV(){
+    const rows=[['Date','Day','Time','Code','Course','Program','Semester','Shift','Venue','Status']];
+    filtered.forEach(r=>{
+        const d=new Date(r.date); const st=d<today?'Done':d.toDateString()===today.toDateString()?'Today':'Upcoming';
+        rows.push([fmtDate(r.date),r.day,r.time,r.code,r.course,r.prog,'Semester '+r.sem,r.shift,r.venue,st]);
+    });
+    const csv=rows.map(r=>r.join(',')).join('\n');
+    const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+    a.download='final-term-datesheet-2026.csv';a.click();
+}
+
+updateStats();
+applyFilters();
+</script>
 </body>
 </html>

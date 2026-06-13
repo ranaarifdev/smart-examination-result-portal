@@ -187,17 +187,17 @@
                 <p>Student Dashboard</p>
             </div>
         </div>
-        <nav class="db-nav">
+        <nav class="db-nav" id="sidebarNav">
             <div class="sidebar-section-title">Main Menu</div>
-            <a href="student-dashboard.html" class="active"><i class="ph ph-house"></i><span class="sidebar-label">Dashboard</span></a>
-            <a href="result.html"><i class="ph ph-chart-bar"></i><span class="sidebar-label">My Results</span></a>
-            <a href="#"><i class="ph ph-calendar"></i><span class="sidebar-label">Datesheet</span></a>
-            <a href="#"><i class="ph ph-book-open"></i><span class="sidebar-label">Courses</span></a>
-            <a href="#"><i class="ph ph-clipboard-text"></i><span class="sidebar-label">Attendance</span></a>
+            <a href="#" class="active" onclick="switchSidebarTab(event, 'dashboard')"><i class="ph ph-house"></i><span class="sidebar-label">Dashboard</span></a>
+            <a href="#" onclick="viewOfficialResult(event)"><i class="ph ph-chart-bar"></i><span class="sidebar-label">My Results</span></a>
+            <a href="#" onclick="switchSidebarTab(event, 'datesheet')"><i class="ph ph-calendar"></i><span class="sidebar-label">Datesheet</span></a>
+            <a href="#" onclick="switchSidebarTab(event, 'courses')"><i class="ph ph-book-open"></i><span class="sidebar-label">Courses</span></a>
+            <a href="#" onclick="switchSidebarTab(event, 'attendance')"><i class="ph ph-clipboard-text"></i><span class="sidebar-label">Attendance</span></a>
             <div class="sidebar-section-title">Account</div>
-            <a href="#"><i class="ph ph-user-circle"></i><span class="sidebar-label">My Profile</span></a>
-            <a href="#"><i class="ph ph-bell"></i><span class="sidebar-label">Notifications</span></a>
-            <a href="#"><i class="ph ph-download-simple"></i><span class="sidebar-label">Downloads</span></a>
+            <a href="#" onclick="switchSidebarTab(event, 'profile')"><i class="ph ph-user-circle"></i><span class="sidebar-label">My Profile</span></a>
+            <a href="#" onclick="switchSidebarTab(event, 'notifications')"><i class="ph ph-bell"></i><span class="sidebar-label">Notifications</span></a>
+            <a href="#" onclick="switchSidebarTab(event, 'downloads')"><i class="ph ph-download-simple"></i><span class="sidebar-label">Downloads</span></a>
         </nav>
         <div class="db-sidebar-foot">
             <a href="../index.html"><i class="ph ph-arrow-left"></i><span class="sidebar-label">Back to Portal</span></a>
@@ -213,17 +213,17 @@
                 <button id="sidebar-toggle" style="background:none;border:none;cursor:pointer;font-size:1.3rem;color:var(--text-muted);" onclick="toggleSidebar()">
                     <i class="ph ph-list"></i>
                 </button>
-                <h4>Student Dashboard</h4>
+                <h4 id="barTitle">Student Dashboard</h4>
             </div>
             <div class="db-topbar-right">
                 <button id="theme-toggle" class="btn btn-outline btn-sm" style="padding:0.35rem 0.6rem;">
                     <i class="ph ph-moon"></i>
                 </button>
-                <div class="profile-pill" id="profilePill">
-                    <div class="avatar" id="avatarInitial">A</div>
+                <div class="profile-pill" id="profilePill" onclick="switchSidebarTab(null, 'profile')">
+                    <div class="avatar" id="avatarInitial">S</div>
                     <div class="profile-info">
-                        <p id="profileName">Ali Hassan</p>
-                        <small id="profileProgram">BSCS — Semester 6</small>
+                        <p id="profileName">Student</p>
+                        <small id="profileProgram">Loading...</small>
                     </div>
                     <i class="ph ph-caret-down" style="font-size:0.8rem;color:var(--text-muted);"></i>
                 </div>
@@ -232,146 +232,280 @@
 
         <!-- CONTENT -->
         <div class="db-content">
-            <div class="page-title">
-                <h2 id="welcomeMsg">Welcome back, Student! 👋</h2>
-                <p>Here's a summary of your academic progress for Spring 2026.</p>
+            
+            <!-- DASHBOARD TAB -->
+            <div id="tab-dashboard" class="tab-content-panel">
+                <div class="page-title">
+                    <h2 id="welcomeMsg">Welcome back! 👋</h2>
+                    <p>Here's a summary of your academic progress for Spring 2026.</p>
+                </div>
+
+                <!-- Stat Widgets -->
+                <div class="widgets-row">
+                    <div class="stat-widget">
+                        <div class="stat-widget-icon blue"><i class="ph ph-trophy"></i></div>
+                        <div class="stat-widget-info">
+                            <p>Current CGPA</p>
+                            <h3 id="cgpaVal">0.00</h3>
+                            <small>Good Standing</small>
+                        </div>
+                    </div>
+                    <div class="stat-widget">
+                        <div class="stat-widget-icon green"><i class="ph ph-check-circle"></i></div>
+                        <div class="stat-widget-info">
+                            <p>Attendance</p>
+                            <h3 id="attendanceVal">88%</h3>
+                            <small>Sessional Track</small>
+                        </div>
+                    </div>
+                    <div class="stat-widget">
+                        <div class="stat-widget-icon gold"><i class="ph ph-book-open"></i></div>
+                        <div class="stat-widget-info">
+                            <p>Current Semester</p>
+                            <h3 id="semVal">6th</h3>
+                            <small id="programVal">BSCS</small>
+                        </div>
+                    </div>
+                    <div class="stat-widget">
+                        <div class="stat-widget-icon red"><i class="ph ph-calendar-x"></i></div>
+                        <div class="stat-widget-info">
+                            <p>Pending Fees</p>
+                            <h3>PKR 0</h3>
+                            <small class="text-success">All clear</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Two-column grid -->
+                <div style="display:grid;grid-template-columns:1fr 360px;gap:1.25rem;margin-bottom:1.25rem;">
+                    <!-- Results Preview -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h4><i class="ph ph-chart-bar"></i> Recent Results — Spring 2026 Mid</h4>
+                            <a href="#" onclick="viewOfficialResult(event)" style="font-size:0.78rem;font-weight:600;color:var(--primary);">Full Result →</a>
+                        </div>
+                        <div class="card-body" style="padding:0;">
+                            <div class="table-wrapper">
+                                <table class="data-table" style="font-size:0.82rem;width:100%;">
+                                    <thead>
+                                        <tr>
+                                            <th>Code</th>
+                                            <th style="text-align:left;">Subject</th>
+                                            <th>Marks</th>
+                                            <th>Grade</th>
+                                            <th>GPA</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="studentResultsBody">
+                                        <tr>
+                                            <td colspan="5" style="text-align:center;color:var(--text-muted);padding:1rem;">Loading results...</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div style="padding:1rem 1.5rem;background:linear-gradient(135deg,var(--primary),#1a5cad);display:flex;justify-content:space-around;">
+                                <div style="text-align:center;"><div style="font-size:0.68rem;color:rgba(255,255,255,0.7);text-transform:uppercase;">Total</div><div id="sumTotal" style="font-weight:800;color:white;font-size:1.1rem;">-/-</div></div>
+                                <div style="text-align:center;"><div style="font-size:0.68rem;color:rgba(255,255,255,0.7);text-transform:uppercase;">Percentage</div><div id="sumPercent" style="font-weight:800;color:var(--accent);font-size:1.1rem;">-%</div></div>
+                                <div style="text-align:center;"><div style="font-size:0.68rem;color:rgba(255,255,255,0.7);text-transform:uppercase;">Semester GPA</div><div id="sumGpa" style="font-weight:800;color:var(--accent);font-size:1.1rem;">-.--</div></div>
+                                <div style="text-align:center;"><div style="font-size:0.68rem;color:rgba(255,255,255,0.7);text-transform:uppercase;">Status</div><div id="sumStatus" style="font-weight:800;color:#6ef9a0;font-size:1.1rem;">-</div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notifications -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h4><i class="ph ph-bell-ringing"></i> Notifications</h4>
+                            <span class="badge badge-secondary" id="notifCount">0</span>
+                        </div>
+                        <div class="card-body" id="notifList">
+                            <!-- Loading -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Action Cards -->
+                <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;">
+                    <a href="#" onclick="viewOfficialResult(event)" class="card" style="padding:1.25rem;text-align:center;text-decoration:none;display:block;">
+                        <i class="ph ph-file-pdf" style="font-size:2rem;color:var(--secondary);display:block;margin-bottom:0.5rem;"></i>
+                        <div style="font-size:0.82rem;font-weight:700;color:var(--text-main);">Download Result</div>
+                        <div style="font-size:0.72rem;color:var(--text-muted);">Official PDF card</div>
+                    </a>
+                    <a href="#" onclick="switchSidebarTab(event, 'datesheet')" class="card" style="padding:1.25rem;text-align:center;text-decoration:none;display:block;">
+                        <i class="ph ph-calendar" style="font-size:2rem;color:var(--primary);display:block;margin-bottom:0.5rem;"></i>
+                        <div style="font-size:0.82rem;font-weight:700;color:var(--text-main);">View Datesheet</div>
+                        <div style="font-size:0.72rem;color:var(--text-muted);">Final term schedule</div>
+                    </a>
+                    <a href="#" onclick="switchSidebarTab(event, 'attendance')" class="card" style="padding:1.25rem;text-align:center;text-decoration:none;display:block;">
+                        <i class="ph ph-clipboard-text" style="font-size:2rem;color:var(--success);display:block;margin-bottom:0.5rem;"></i>
+                        <div style="font-size:0.82rem;font-weight:700;color:var(--text-main);">Attendance Report</div>
+                        <div style="font-size:0.72rem;color:var(--text-muted);">Sessional attendance & marks</div>
+                    </a>
+                    <a href="#" onclick="switchSidebarTab(event, 'profile')" class="card" style="padding:1.25rem;text-align:center;text-decoration:none;display:block;">
+                        <i class="ph ph-identification-card" style="font-size:2rem;color:var(--accent-dark);display:block;margin-bottom:0.5rem;"></i>
+                        <div style="font-size:0.82rem;font-weight:700;color:var(--text-main);">My Profile</div>
+                        <div style="font-size:0.72rem;color:var(--text-muted);">Update information</div>
+                    </a>
+                </div>
             </div>
 
-            <!-- Stat Widgets -->
-            <div class="widgets-row">
-                <div class="stat-widget">
-                    <div class="stat-widget-icon blue"><i class="ph ph-trophy"></i></div>
-                    <div class="stat-widget-info">
-                        <p>Current CGPA</p>
-                        <h3 id="cgpaVal">3.84</h3>
-                        <small>Excellent</small>
-                    </div>
+            <!-- DATESHEET TAB -->
+            <div id="tab-datesheet" class="tab-content-panel" style="display:none;">
+                <div class="page-title">
+                    <h2>📅 My Examination Datesheet</h2>
+                    <p>Spring 2026 Final Term exam schedule.</p>
                 </div>
-                <div class="stat-widget">
-                    <div class="stat-widget-icon green"><i class="ph ph-check-circle"></i></div>
-                    <div class="stat-widget-info">
-                        <p>Attendance</p>
-                        <h3>88%</h3>
-                        <small>5 courses tracked</small>
-                    </div>
-                </div>
-                <div class="stat-widget">
-                    <div class="stat-widget-icon gold"><i class="ph ph-book-open"></i></div>
-                    <div class="stat-widget-info">
-                        <p>Current Semester</p>
-                        <h3 id="semVal">6th</h3>
-                        <small id="programVal">BSCS</small>
-                    </div>
-                </div>
-                <div class="stat-widget">
-                    <div class="stat-widget-icon red"><i class="ph ph-calendar-x"></i></div>
-                    <div class="stat-widget-info">
-                        <p>Pending Fees</p>
-                        <h3>PKR 0</h3>
-                        <small class="text-success">All clear</small>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Two-column grid -->
-            <div style="display:grid;grid-template-columns:1fr 360px;gap:1.25rem;margin-bottom:1.25rem;">
-
-                <!-- Results Preview -->
                 <div class="card">
                     <div class="card-header">
-                        <h4><i class="ph ph-chart-bar"></i> Recent Results — Spring 2026 Mid</h4>
-                        <a href="result.html" style="font-size:0.78rem;font-weight:600;color:var(--primary);">Full Result →</a>
+                        <h4><i class="ph ph-calendar"></i> Final Exam Timetable</h4>
                     </div>
                     <div class="card-body" style="padding:0;">
                         <div class="table-wrapper">
-                            <table class="data-table" style="font-size:0.82rem;">
+                            <table class="mini-table">
                                 <thead>
                                     <tr>
-                                        <th>Code</th>
-                                        <th style="text-align:left;">Subject</th>
-                                        <th>Marks</th>
-                                        <th>Grade</th>
-                                        <th>GPA</th>
+                                        <th>Subject</th>
+                                        <th>Date/Day</th>
+                                        <th>Time</th>
+                                        <th>Room</th>
+                                        <th>Teacher</th>
                                     </tr>
                                 </thead>
-                                <tbody id="studentResultsBody">
-                                    <tr>
-                                        <td colspan="5" style="text-align:center;color:var(--text-muted);padding:1rem;">Loading results...</td>
-                                    </tr>
+                                <tbody id="datesheetTableBody">
+                                    <tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:1.5rem;">No exam timetable loaded.</td></tr>
                                 </tbody>
                             </table>
                         </div>
-                        <div style="padding:1rem 1.5rem;background:linear-gradient(135deg,var(--primary),#1a5cad);display:flex;justify-content:space-around;">
-                            <div style="text-align:center;"><div style="font-size:0.68rem;color:rgba(255,255,255,0.7);text-transform:uppercase;">Total</div><div style="font-weight:800;color:white;font-size:1.1rem;">418/500</div></div>
-                            <div style="text-align:center;"><div style="font-size:0.68rem;color:rgba(255,255,255,0.7);text-transform:uppercase;">Percentage</div><div style="font-weight:800;color:var(--accent);font-size:1.1rem;">83.6%</div></div>
-                            <div style="text-align:center;"><div style="font-size:0.68rem;color:rgba(255,255,255,0.7);text-transform:uppercase;">Semester GPA</div><div style="font-weight:800;color:var(--accent);font-size:1.1rem;">3.62</div></div>
-                            <div style="text-align:center;"><div style="font-size:0.68rem;color:rgba(255,255,255,0.7);text-transform:uppercase;">Status</div><div style="font-weight:800;color:#6ef9a0;font-size:1.1rem;">PASS ✓</div></div>
-                        </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Notifications -->
+            <!-- COURSES TAB -->
+            <div id="tab-courses" class="tab-content-panel" style="display:none;">
+                <div class="page-title">
+                    <h2>📚 Enrolled Courses</h2>
+                    <p>Current semester course allocations.</p>
+                </div>
                 <div class="card">
                     <div class="card-header">
-                        <h4><i class="ph ph-bell-ringing"></i> Notifications</h4>
-                        <span class="badge badge-secondary" id="notifCount">3</span>
+                        <h4><i class="ph ph-book-open"></i> Course Details</h4>
                     </div>
-                    <div class="card-body" id="notifList">
-                        <div class="notif-item">
-                            <div class="notif-dot red"></div>
-                            <div>
-                                <p style="font-size:0.83rem;font-weight:600;margin-bottom:0.1rem;">Final Term Datesheet uploaded</p>
-                                <small style="color:var(--text-muted);font-size:0.72rem;">May 15, 2026 &nbsp;·&nbsp; Exam</small>
-                            </div>
-                        </div>
-                        <div class="notif-item">
-                            <div class="notif-dot blue"></div>
-                            <div>
-                                <p style="font-size:0.83rem;font-weight:600;margin-bottom:0.1rem;">Mid Term result published</p>
-                                <small style="color:var(--text-muted);font-size:0.72rem;">May 10, 2026 &nbsp;·&nbsp; Result</small>
-                            </div>
-                        </div>
-                        <div class="notif-item">
-                            <div class="notif-dot gold"></div>
-                            <div>
-                                <p style="font-size:0.83rem;font-weight:600;margin-bottom:0.1rem;">Fee submission deadline: June 15</p>
-                                <small style="color:var(--text-muted);font-size:0.72rem;">May 05, 2026 &nbsp;·&nbsp; Fee</small>
-                            </div>
+                    <div class="card-body" style="padding:0;">
+                        <div class="table-wrapper">
+                            <table class="mini-table">
+                                <thead>
+                                    <tr>
+                                        <th>Code</th>
+                                        <th>Course Title</th>
+                                        <th>Credit Hours</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="coursesTableBody">
+                                    <tr><td colspan="4" style="text-align:center;color:var(--text-muted);padding:1.5rem;">No courses assigned.</td></tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Quick Action Cards -->
-            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;">
-                <a href="result.html" class="card" style="padding:1.25rem;text-align:center;text-decoration:none;display:block;">
-                    <i class="ph ph-file-pdf" style="font-size:2rem;color:var(--secondary);display:block;margin-bottom:0.5rem;"></i>
-                    <div style="font-size:0.82rem;font-weight:700;color:var(--text-main);">Download Result</div>
-                    <div style="font-size:0.72rem;color:var(--text-muted);">Official PDF card</div>
-                </a>
-                <a href="datesheet.html" class="card" style="padding:1.25rem;text-align:center;text-decoration:none;display:block;">
-                    <i class="ph ph-calendar" style="font-size:2rem;color:var(--primary);display:block;margin-bottom:0.5rem;"></i>
-                    <div style="font-size:0.82rem;font-weight:700;color:var(--text-main);">View Datesheet</div>
-                    <div style="font-size:0.72rem;color:var(--text-muted);">Final term schedule</div>
-                </a>
-                <a href="attendance-marks.html" class="card" style="padding:1.25rem;text-align:center;text-decoration:none;display:block;">
-                    <i class="ph ph-clipboard-text" style="font-size:2rem;color:var(--success);display:block;margin-bottom:0.5rem;"></i>
-                    <div style="font-size:0.82rem;font-weight:700;color:var(--text-main);">Attendance Report</div>
-                    <div style="font-size:0.72rem;color:var(--text-muted);">Sessional attendance & marks</div>
-                </a>
-                <a href="#" class="card" style="padding:1.25rem;text-align:center;text-decoration:none;display:block;">
-                    <i class="ph ph-identification-card" style="font-size:2rem;color:var(--accent-dark);display:block;margin-bottom:0.5rem;"></i>
-                    <div style="font-size:0.82rem;font-weight:700;color:var(--text-main);">My Profile</div>
-                    <div style="font-size:0.72rem;color:var(--text-muted);">Update information</div>
-                </a>
+            <!-- ATTENDANCE TAB -->
+            <div id="tab-attendance" class="tab-content-panel" style="display:none;">
+                <div class="page-title">
+                    <h2>📋 Sessional Attendance & Activity</h2>
+                    <p>Track your attendance, quizzes, and assignments status.</p>
+                </div>
+                <div id="attendanceDynamicContainer">
+                    <!-- Dynamic Attendance content -->
+                </div>
             </div>
+
+            <!-- PROFILE TAB -->
+            <div id="tab-profile" class="tab-content-panel" style="display:none;">
+                <div class="page-title">
+                    <h2>👤 My Profile</h2>
+                    <p>Official student registration details.</p>
+                </div>
+                <div class="card" style="max-width: 650px;">
+                    <div class="card-header">
+                        <h4><i class="ph ph-user-circle"></i> Student Information</h4>
+                    </div>
+                    <div class="card-body" style="padding: 1.5rem 2rem;">
+                        <div style="display:grid; grid-template-columns: 180px 1fr; gap: 1rem 0.5rem; font-size: 0.9rem;">
+                            <strong>Full Name:</strong> <span id="prof-name">-</span>
+                            <strong>Father Name:</strong> <span id="prof-father">-</span>
+                            <strong>Roll Number:</strong> <span id="prof-roll">-</span>
+                            <strong>Program:</strong> <span id="prof-program">-</span>
+                            <strong>Semester:</strong> <span id="prof-sem">-</span>
+                            <strong>Shift / Class:</strong> <span id="prof-shift">-</span>
+                            <strong>Email Address:</strong> <span id="prof-email">-</span>
+                            <strong>CNIC / Identity:</strong> <span id="prof-cnic">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NOTIFICATIONS TAB -->
+            <div id="tab-notifications" class="tab-content-panel" style="display:none;">
+                <div class="page-title">
+                    <h2>🔔 Notifications & Announcements</h2>
+                    <p>Latest updates from the exam cell and faculty.</p>
+                </div>
+                <div class="card">
+                    <div class="card-body" id="notifFullList" style="padding:1.5rem;">
+                        <!-- Dynamic -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- DOWNLOADS TAB -->
+            <div id="tab-downloads" class="tab-content-panel" style="display:none;">
+                <div class="page-title">
+                    <h2>📥 Downloads Portal</h2>
+                    <p>Access and search official gazettes, datesheets, and academic sheets.</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h4><i class="ph ph-download-simple"></i> Available Academic Downloads</h4>
+                    </div>
+                    <div class="card-body" style="padding: 1.5rem;">
+                        <ul class="download-list" id="downloadsFullList">
+                            <li>
+                                <i class="ph ph-file-pdf file-icon"></i>
+                                <a href="datesheet.html">Complete Final Term Date Sheet 2026 (All 60 Entries)</a>
+                                <a href="datesheet.html" class="dl-btn"><i class="ph ph-download-simple"></i> View</a>
+                            </li>
+                            <li>
+                                <i class="ph ph-file-pdf file-icon"></i>
+                                <a href="attendance-marks.html">6th Semester Sessional Attendance and Paper Marks</a>
+                                <a href="attendance-marks.html" class="dl-btn"><i class="ph ph-download-simple"></i> View</a>
+                            </li>
+                            <li>
+                                <i class="ph ph-file-doc file-icon"></i>
+                                <a href="course-allocation.html">Course Allocation Fall 2025</a>
+                                <a href="course-allocation.html" class="dl-btn"><i class="ph ph-download-simple"></i> View</a>
+                            </li>
+                            <li>
+                                <i class="ph ph-file-pdf file-icon"></i>
+                                <a href="award-sheet.html">Award Sheet ICySec E Fall 2025</a>
+                                <a href="award-sheet.html" class="dl-btn"><i class="ph ph-download-simple"></i> View</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
 
 <script src="../js/data.js"></script>
 <script src="../js/script.js"></script>
+<script src="../js/Attendance.js"></script>
 <script>
+    let currentStudent = null;
+
     function toggleSidebar() {
         document.getElementById('dbSidebar').classList.toggle('collapsed');
     }
@@ -381,7 +515,264 @@
         window.location.href = 'login.html';
     }
 
-    // Load student data
+    function viewOfficialResult(e) {
+        if (e) e.preventDefault();
+        if (currentStudent) {
+            window.location.href = 'result.html?roll=' + encodeURIComponent(currentStudent.login_id);
+        }
+    }
+
+    function switchSidebarTab(e, tabName) {
+        if (e) e.preventDefault();
+        
+        // Hide all panels
+        document.querySelectorAll('.tab-content-panel').forEach(p => p.style.display = 'none');
+        
+        // Show active panel
+        const targetPanel = document.getElementById('tab-' + tabName);
+        if (targetPanel) targetPanel.style.display = 'block';
+
+        // Update active class on sidebar links
+        document.querySelectorAll('#sidebarNav a').forEach(a => a.classList.remove('active'));
+        
+        // Find clicked element or equivalent
+        let activeLink = null;
+        document.querySelectorAll('#sidebarNav a').forEach(a => {
+            if (a.getAttribute('onclick') && a.getAttribute('onclick').includes(`'${tabName}'`)) {
+                activeLink = a;
+            }
+        });
+        if (activeLink) activeLink.classList.add('active');
+
+        // Set bar title
+        const titles = {
+            dashboard: "Student Dashboard",
+            datesheet: "Examination Datesheet",
+            courses: "Enrolled Courses",
+            attendance: "Attendance & Sessional Status",
+            profile: "My Profile",
+            notifications: "Notifications",
+            downloads: "Downloads Portal"
+        };
+        document.getElementById('barTitle').textContent = titles[tabName] || "Student Dashboard";
+
+        // Load specific tab data
+        if (tabName === 'datesheet') renderDatesheetTab();
+        if (tabName === 'courses') renderCoursesTab();
+        if (tabName === 'attendance') renderAttendanceTab();
+        if (tabName === 'profile') renderProfileTab();
+        if (tabName === 'notifications') renderNotificationsTab();
+    }
+
+    // Dynamic Renderers
+    function renderDatesheetTab() {
+        if (!currentStudent || !window.CampusData) return;
+        const program = currentStudent.program || 'BSCS';
+        const semester = currentStudent.semester || 6;
+        
+        const schedule = window.CampusData.timetable.filter(t => 
+            t.program.toLowerCase().includes(program.toLowerCase()) && 
+            t.semester === semester
+        );
+
+        const tbody = document.getElementById('datesheetTableBody');
+        if (schedule.length) {
+            tbody.innerHTML = schedule.map(s => `
+                <tr>
+                    <td class="subject-col"><strong>${s.subject}</strong></td>
+                    <td>${s.day || 'TBD'}</td>
+                    <td>${s.time || 'TBD'}</td>
+                    <td>${s.room || 'TBD'}</td>
+                    <td>${s.teacher || 'TBD'}</td>
+                </tr>
+            `).join('');
+        } else {
+            // fallback generated exam timetable
+            tbody.innerHTML = `
+                <tr>
+                    <td class="subject-col"><strong>Web Engineering</strong></td>
+                    <td>Monday</td>
+                    <td>8:30 - 11:30 AM</td>
+                    <td>BOT-B1-F-104</td>
+                    <td>Dr. Sohail Raza</td>
+                </tr>
+                <tr>
+                    <td class="subject-col"><strong>Artificial Intelligence</strong></td>
+                    <td>Tuesday</td>
+                    <td>8:30 - 11:30 AM</td>
+                    <td>CLB-B1-G-Software Lab</td>
+                    <td>Dr. Samina Naz</td>
+                </tr>
+                <tr>
+                    <td class="subject-col"><strong>Computer Networks</strong></td>
+                    <td>Wednesday</td>
+                    <td>8:30 - 11:30 AM</td>
+                    <td>CLB-B1-G-Computing2</td>
+                    <td>Mr. Zahid Aziz</td>
+                </tr>
+                <tr>
+                    <td class="subject-col"><strong>Software Project Management</strong></td>
+                    <td>Thursday</td>
+                    <td>8:30 - 11:30 AM</td>
+                    <td>CTB-B2-G-06</td>
+                    <td>Dr. Zia Ur Rehman</td>
+                </tr>
+                <tr>
+                    <td class="subject-col"><strong>Technical Writing & Pres.</strong></td>
+                    <td>Friday</td>
+                    <td>8:30 - 11:30 AM</td>
+                    <td>CTB-B1-F-103</td>
+                    <td>Ms. Farzeen Khan</td>
+                </tr>
+            `;
+        }
+    }
+
+    function renderCoursesTab() {
+        if (!currentStudent || !window.CampusData) return;
+        const program = currentStudent.program || 'BSCS';
+        const semester = currentStudent.semester || 6;
+
+        let list = window.CampusData.courseAllocation.filter(c => 
+            c.program.toLowerCase().includes(program.toLowerCase()) && 
+            c.semester === semester
+        );
+
+        if (!list.length && window.CampusData.classes) {
+            list = window.CampusData.classes.filter(c => 
+                c.program.toLowerCase().includes(program.toLowerCase()) && 
+                c.semester === semester
+            ).map(c => ({ course_code: c.subject_code, course_title: c.subject_name, credit_hours: c.credit_hours }));
+        }
+
+        const tbody = document.getElementById('coursesTableBody');
+        if (list.length) {
+            tbody.innerHTML = list.map(c => `
+                <tr>
+                    <td><strong>${c.course_code || c.subject_code}</strong></td>
+                    <td style="text-align:left;">${c.course_title || c.subject_name}</td>
+                    <td>${c.credit_hours} Cr. Hrs</td>
+                    <td><span class="badge badge-success">Enrolled</span></td>
+                </tr>
+            `).join('');
+        } else {
+            // fallback
+            tbody.innerHTML = `
+                <tr><td>CS-301</td><td style="text-align:left;">Web Engineering</td><td>3 Cr. Hrs</td><td><span class="badge badge-success">Enrolled</span></td></tr>
+                <tr><td>CS-305</td><td style="text-align:left;">Artificial Intelligence</td><td>4 Cr. Hrs</td><td><span class="badge badge-success">Enrolled</span></td></tr>
+                <tr><td>SE-402</td><td style="text-align:left;">Software Project Management</td><td>3 Cr. Hrs</td><td><span class="badge badge-success">Enrolled</span></td></tr>
+                <tr><td>CS-311</td><td style="text-align:left;">Computer Networks</td><td>4 Cr. Hrs</td><td><span class="badge badge-success">Enrolled</span></td></tr>
+                <tr><td>HU-201</td><td style="text-align:left;">Technical Writing & Presentation</td><td>3 Cr. Hrs</td><td><span class="badge badge-success">Enrolled</span></td></tr>
+            `;
+        }
+    }
+
+    function renderAttendanceTab() {
+        if (!currentStudent) return;
+        const roll = currentStudent.login_id;
+        
+        // Find in Attendance.js
+        let attData = null;
+        if (typeof studentsData !== 'undefined') {
+            attData = studentsData.find(s => s.rollNo.toLowerCase() === roll.toLowerCase());
+        }
+
+        const container = document.getElementById('attendanceDynamicContainer');
+        if (attData) {
+            const attPercent = attData.attendancePercent;
+            const progressWidth = Math.min(100, Math.max(0, attPercent));
+            const progressColor = attPercent >= 75 ? 'var(--success)' : (attPercent >= 50 ? 'var(--warning)' : 'var(--danger)');
+
+            container.innerHTML = `
+                <div class="card" style="padding: 2rem;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+                        <h4 style="margin:0;"><i class="ph ph-calendar-check"></i> Overall Sessional Attendance</h4>
+                        <span style="font-size:1.5rem; font-weight:800; color:${progressColor}">${attPercent.toFixed(1)}%</span>
+                    </div>
+                    <div style="background:var(--bg-main); border-radius: var(--radius-full); height: 12px; width: 100%; overflow: hidden; margin-bottom: 1rem; border: 1px solid var(--border-color);">
+                        <div style="background:${progressColor}; width: ${progressWidth}%; height: 100%; transition: width 0.5s ease-out;"></div>
+                    </div>
+                    <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom: 2rem;"><i class="ph ph-info"></i> Standard university policy requires minimum 75% attendance to sit in final term examinations.</p>
+
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1.5rem;">
+                        <div class="card" style="padding:1.2rem; margin:0;">
+                            <h4 style="margin-bottom:1rem;"><i class="ph ph-list-checks"></i> Quizzes Submitted</h4>
+                            <div style="display:flex; flex-direction:column; gap:0.75rem;">
+                                <div style="display:flex; justify-content:space-between; font-size:0.85rem;"><span>Quiz 1</span> <span class="badge ${attData.quizzes.q1 ? 'badge-success' : 'badge-danger'}">${attData.quizzes.q1 ? 'Submitted' : 'Missing'}</span></div>
+                                <div style="display:flex; justify-content:space-between; font-size:0.85rem;"><span>Quiz 2</span> <span class="badge ${attData.quizzes.q2 ? 'badge-success' : 'badge-danger'}">${attData.quizzes.q2 ? 'Submitted' : 'Missing'}</span></div>
+                                <div style="display:flex; justify-content:space-between; font-size:0.85rem;"><span>Quiz 3</span> <span class="badge ${attData.quizzes.q3 ? 'badge-success' : 'badge-danger'}">${attData.quizzes.q3 ? 'Submitted' : 'Missing'}</span></div>
+                            </div>
+                        </div>
+                        <div class="card" style="padding:1.2rem; margin:0;">
+                            <h4 style="margin-bottom:1rem;"><i class="ph ph-notebook"></i> Assignments Submitted</h4>
+                            <div style="display:flex; flex-direction:column; gap:0.75rem;">
+                                <div style="display:flex; justify-content:space-between; font-size:0.85rem;"><span>Assignment 1</span> <span class="badge ${attData.assignments.a1 ? 'badge-success' : 'badge-danger'}">${attData.assignments.a1 ? 'Submitted' : 'Missing'}</span></div>
+                                <div style="display:flex; justify-content:space-between; font-size:0.85rem;"><span>Assignment 2</span> <span class="badge ${attData.assignments.a2 ? 'badge-success' : 'badge-danger'}">${attData.assignments.a2 ? 'Submitted' : 'Missing'}</span></div>
+                                <div style="display:flex; justify-content:space-between; font-size:0.85rem;"><span>Assignment 3</span> <span class="badge ${attData.assignments.a3 ? 'badge-success' : 'badge-danger'}">${attData.assignments.a3 ? 'Submitted' : 'Missing'}</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card" style="padding:1.2rem; margin-top:1.5rem;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.9rem;">
+                            <span><strong>Class Presentation Status:</strong></span>
+                            <span class="badge ${attData.presentation ? 'badge-success' : 'badge-danger'}">${attData.presentation ? 'Presented ✓' : 'Not Presented'}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        } else {
+            // Default generic fallback
+            const percent = currentStudent.cgpa >= 3.5 ? 92 : (currentStudent.cgpa >= 3.0 ? 81 : 68);
+            container.innerHTML = `
+                <div class="card" style="padding: 2rem;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+                        <h4 style="margin:0;"><i class="ph ph-calendar-check"></i> Overall Sessional Attendance</h4>
+                        <span style="font-size:1.5rem; font-weight:800; color:var(--success)">${percent}%</span>
+                    </div>
+                    <div style="background:var(--bg-main); border-radius: var(--radius-full); height: 12px; width: 100%; overflow: hidden; margin-bottom: 1rem; border: 1px solid var(--border-color);">
+                        <div style="background:var(--success); width: ${percent}%; height: 100%;"></div>
+                    </div>
+                    <p style="font-size:0.8rem; color:var(--text-muted);"><i class="ph ph-info"></i> Standard university policy requires minimum 75% attendance to sit in final term examinations.</p>
+                    <div class="card" style="padding:1.2rem; margin-top:1.5rem;">
+                        <p style="margin:0; text-align:center;">Sessional Quizzes & Assignments: <strong>All Submitted</strong></p>
+                    </div>
+                </div>
+            `;
+        }
+    }
+
+    function renderProfileTab() {
+        if (!currentStudent) return;
+        const s = currentStudent;
+        document.getElementById('prof-name').textContent = s.username || s.name || '-';
+        document.getElementById('prof-father').textContent = s.father_name || 'Rana Abdul Hameed';
+        document.getElementById('prof-roll').textContent = s.login_id || '-';
+        document.getElementById('prof-program').textContent = s.program || 'BSCS';
+        document.getElementById('prof-sem').textContent = (s.semester || '6') + 'th Semester';
+        document.getElementById('prof-shift').textContent = s.shift || 'Morning';
+        document.getElementById('prof-email').textContent = s.email || '-';
+        document.getElementById('prof-cnic').textContent = s.cnic || '36304-xxxxxxx-x';
+    }
+
+    function renderNotificationsTab() {
+        if (!window.CampusData) return;
+        const list = window.CampusData.notifications || [];
+        const notifFullList = document.getElementById('notifFullList');
+        const colors = { Exam: 'red', Result: 'blue', Fee: 'gold', Admin: 'gold' };
+        
+        notifFullList.innerHTML = list.length ? list.map(n => `
+            <div class="notif-item" style="padding: 1rem 0; border-bottom: 1px solid var(--border-color);">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.25rem;">
+                    <strong style="font-size:0.95rem;">${n.type.toUpperCase()}: Announcement</strong>
+                    <small style="color:var(--text-muted); font-size:0.75rem;">${n.date}</small>
+                </div>
+                <p style="font-size:0.85rem; color:var(--text-main);">${n.message}</p>
+            </div>
+        `).join('') : '<p style="text-align:center;color:var(--text-muted);">No notifications available.</p>';
+    }
+
+    // Load student data initially
     (async () => {
         try {
             const token = localStorage.getItem('token');
@@ -394,20 +785,29 @@
             if (res.status === 401 || res.status === 403) { window.location.href = 'login.html'; return; }
 
             if (data.student) {
+                currentStudent = data.student;
                 const s = data.student;
-                document.getElementById('welcomeMsg').textContent = 'Welcome back, ' + (s.user_name || 'Student') + '! 👋';
-                document.getElementById('profileName').textContent = s.user_name || 'Student';
+                document.getElementById('welcomeMsg').textContent = 'Welcome back, ' + (s.username || 'Student') + '! 👋';
+                document.getElementById('profileName').textContent = s.username || 'Student';
                 document.getElementById('profileProgram').textContent = (s.program || 'BSCS') + ' — Semester ' + (s.semester || '');
                 document.getElementById('cgpaVal').textContent = s.cgpa || '0.00';
                 document.getElementById('semVal').textContent = (s.semester || '?') + 'th';
                 document.getElementById('programVal').textContent = s.program || '';
-                document.getElementById('avatarInitial').textContent = (s.user_name || 'S')[0].toUpperCase();
+                document.getElementById('avatarInitial').textContent = (s.username || 'S')[0].toUpperCase();
+
+                // Compute student attendance percentage dynamically
+                if (typeof studentsData !== 'undefined') {
+                    const att = studentsData.find(st => st.rollNo.toLowerCase() === s.login_id.toLowerCase());
+                    if (att) {
+                        document.getElementById('attendanceVal').textContent = att.attendancePercent.toFixed(0) + '%';
+                    }
+                }
             }
 
             if (data.notifications && data.notifications.length) {
                 document.getElementById('notifCount').textContent = data.notifications.length;
                 const notifColors = { Exam: 'red', Result: 'blue', Fee: 'gold', Admin: 'gold' };
-                document.getElementById('notifList').innerHTML = data.notifications.map(n => `
+                document.getElementById('notifList').innerHTML = data.notifications.slice(0, 3).map(n => `
                     <div class="notif-item">
                         <div class="notif-dot ${notifColors[n.type] || 'blue'}"></div>
                         <div>
@@ -423,15 +823,27 @@
                 const results = await resultsRes.json();
                 document.getElementById('studentResultsBody').innerHTML = results.length ? results.map(r => `
                     <tr>
-                        <td>${r.roll_number}</td>
-                        <td style="text-align:left;">${r.username}</td>
-                        <td>${r.program}</td>
-                        <td>${r.semester}</td>
-                        <td>${r.cgpa?.toFixed(2) || '0.00'}</td>
+                        <td><strong>${r.code}</strong></td>
+                        <td style="text-align:left;">${r.name}</td>
+                        <td>${r.obtained}/100</td>
+                        <td><span class="grade-badge" style="background:var(--primary-pale); color:var(--primary);">${r.grade}</span></td>
+                        <td><strong>${r.gpa.toFixed(2)}</strong></td>
                     </tr>
                 `).join('') : `<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:1rem;">No results found yet.</td></tr>`;
+
+                if (results.length) {
+                    const totalObt = results.reduce((sum, r) => sum + r.obtained, 0);
+                    const totalMax = results.length * 100;
+                    const percent = ((totalObt / totalMax) * 100).toFixed(1);
+                    document.getElementById('sumTotal').textContent = `${totalObt}/${totalMax}`;
+                    document.getElementById('sumPercent').textContent = `${percent}%`;
+                    
+                    const sgpa = data.studentResult?.sgpa || 3.5;
+                    document.getElementById('sumGpa').textContent = sgpa.toFixed(2);
+                    document.getElementById('sumStatus').textContent = sgpa >= 2.0 ? 'PASS ✓' : 'PROBATION ⚠';
+                }
             }
-        } catch (e) { console.log('Using demo data'); }
+        } catch (e) { console.log('Dashboard error', e); }
     })();
 </script>
 </body>
